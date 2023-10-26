@@ -1,0 +1,10 @@
+<div id="menu-holder">
+
+    <nav id="mainmenu" class="nav">
+      <ul id="menu">
+        <% for (const [menu, link] of Object.entries(mainMenu())) {%>
+        <li><a href="<%= link %>"><%= menu %></a></li>
+        <% } %>
+      </ul>
+    </nav>
+  </div> 

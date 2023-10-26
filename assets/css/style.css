@@ -1,0 +1,28 @@
+
+ul#menu {
+    list-style-type: none;
+    width: 80%;
+  }
+  
+  #menu li {
+    display: inline;
+    margin: 0.5em;
+    font-size: 12pt;
+    font-family: Verdana, Arial, sans-serif;
+  }
+  ul#menu li a {
+    text-decoration: none;
+    background-color: darkcyan;
+    padding: 0.3em;
+    color: black;
+  }
+  ul#menu li a:link {
+    background-color: lightgray;
+    color: lightskyblue;
+  }
+  ul#menu li a:visited {
+    background-color: lightblue;
+  }
+  ul#menu li a:hover {
+    background-color: lightseagreen;
+  }
