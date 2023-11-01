@@ -1,6 +1,7 @@
 const defaultMenu = {
     Home : '/',
-    Sort : '/it/sort'
+    Sort : '/learn/sort',
+    Chapters: '/learn/chapters'
   };
     
   export function mainMenu(){

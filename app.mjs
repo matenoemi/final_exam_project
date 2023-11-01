@@ -58,7 +58,7 @@ import { router as learningRouter }  from './routes/learning.mjs';
 
 // útvonalválasztók
 app.use('/', indexRouter);
-app.use('/it', learningRouter);
+app.use('/learn', learningRouter);
 
 
 app.use((req, res)=>{
