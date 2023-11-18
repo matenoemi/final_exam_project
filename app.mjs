@@ -23,21 +23,6 @@ app.set("view engine", "ejs");
 app.use(expressLayouts);
 app.set('layout', 'layouts/layout');
 
-//szessziókezelő modul
-import session from "express-session";
-import filestore from "session-file-store";
-const FileStore = filestore(session); //szesszió adatok fájlban tárolva
-app.use(
-  session({
-    store: new FileStore(), //állományba kerül kimentésre a session objektum
-    secret: "Nilus macska titkos 🔑-a", //a sütik aláírására használt kulcs
-    resave: true,         //szesszió adatok mentésére megadott opciók
-    saveUninitialized: true,
-    cookie: {                 //szesszió lejárati ideje
-      maxAge: 1000 * 60 * 30, //1 sec * 60 * 30 = 30 perc
-    },
-  })
-);
 
 app.locals.mainMenu = mainMenu; 
 

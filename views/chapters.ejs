@@ -8,7 +8,7 @@
         <ol style="list-style-position: inside; list-style-type: decimal;">
         <% for(let j=0; j<chapters[i].lessons.length; j++){ %>
             <li>
-            <a href="/learn/lesson:<%= chapters[i].lessons[j].lesson_id %>"><%= chapters[i].lessons[j].lesson_name %></a>
+            <a href="/learn/lesson/<%= chapters[i].lessons[j].lesson_id %>"><%= chapters[i].lessons[j].lesson_name %></a>
             </li>
         <% } %>
         </ol>

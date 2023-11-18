@@ -1,0 +1,14 @@
+<div style="display: flex; justify-content: center; align-items: center; flex-direction: column;" >
+    <div>
+    <% for(let i=0; i<slides.length; i++){ %>
+        <div <% if (i === 0) { %>style="visibility: visible;" <% } else { %>style="visibility: hidden;" <% } %>>
+            <div>
+            <p><%= slides[i].slide_text %></p>
+            </div>
+            <div>
+            <img src="data:image/jpeg;base64, <%= slides[i].image_object.toString('base64') %>" alt="<%= slides[i].image_text %>">
+            </div>
+        </div>
+    <% } %>
+    </div>
+</div>

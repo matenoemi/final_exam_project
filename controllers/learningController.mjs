@@ -5,7 +5,7 @@ export async function sort(req, res, next) {
   res.render("sort", {
     menu: mainMenu,
   });
-  }
+}
 
 export async function chapters(req,res,next){
   const chapters = await queries.getChapters();
@@ -18,4 +18,10 @@ export async function chapters(req,res,next){
   res.render('chapters',{
     chapters
   });
+}
+
+export async function lessonLearning(req, res, next) {
+  const lessonId = req.params.id;
+  const slides = await queries.getSlidesByLesson(lessonId);
+  res.render('slide',{slides});
 }
