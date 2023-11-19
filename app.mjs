@@ -28,6 +28,7 @@ app.locals.mainMenu = mainMenu;
 
 //res.locals egy kérés idejére
 //ez lefut minden kérésre az útvonalaink előtt
+/*
 app.use((req, res, next)=>{
   if(req.session.user){
     res.locals.user=req.session.user;
@@ -36,6 +37,7 @@ app.use((req, res, next)=>{
   }
   next();
 })
+*/
 
 import { router as indexRouter } from './routes/index.mjs';
 import { router as learningRouter }  from './routes/learning.mjs';

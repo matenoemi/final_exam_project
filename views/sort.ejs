@@ -1,7 +1,102 @@
-<div>
-    <%for(int i=0; i<9; i++){%>
-        <div>
-            
+<div style="display: flex; justify-content: center; align-items: center; flex-direction: row;">
+    <%for(let i=10; i>=1; i--){%>
+        <div class="itemContainer" id="<%= i %>" style="height: 80px; width: 80px; background-color: lightcyan; border: black 2px solid;">
+            <div class = "item" draggable="true" style="text-align: center; font-size: 70px; height: 80px; width: 80px; background-color: lightseagreen; ">
+               
+                    <%= i %>
+                
+            </div>
         </div>
     <%} %>
 </div>
+<div style="display: flex; justify-content: center; align-items: center; flex-direction: row;">
+    <div id = "temp" style="height: 80px; width: 80px; background-color: lightcyan; border: black 2px solid;">
+    </div>
+</div>
+<div style="display: flex; justify-content: end;  flex-direction: row;">
+    <div>
+        <button id="checkButton" style="height: 40px; width: 60px;">Check!</button>
+    </div>
+</div>
+
+<script>
+    function playCorrectSound(){
+        const aud = new Audio("correct.mp4");
+        aud.muted=false;
+        aud.play();
+    }
+    function playIncorrectSound(){
+        const aud = new Audio("incorrect.mp3");
+        aud.muted=false;
+        aud.play();
+    }
+    
+    let items = document.getElementsByClassName("item");
+    let temp = document.getElementById("temp");
+    let containers = document.getElementsByClassName("itemContainer");
+    let selected = null;
+    const button = document.getElementById("checkButton");
+    button.addEventListener("click",function(e){
+        let hasItem = temp.querySelectorAll("div");
+        if(hasItem.length!=0){
+            alert("The temporary container must be empty!");
+        }
+        else{
+            let values = [];
+            let sorted = document.getElementsByClassName("item");
+            for(item of sorted){
+                values[values.length]=item.textContent;
+            }
+            let numbers = values.map(function (str) {
+                return Number(str);
+            });
+            let incorrect = false;
+            for(let i=0; i<numbers.length-1; i++){
+                if(numbers[i]>numbers[i+1]){
+                    incorrect = true;
+                    playIncorrectSound();
+                    alert("The sorting is incorrect!");
+
+                    break;
+                }
+            }
+            if(!incorrect){
+                playCorrectSound();
+                alert("The sorting is correct! :)");
+            }   
+        }
+    })
+
+    for(item of items){
+        item.addEventListener("dragstart", function(e){
+            let selected = e.target;
+
+            
+        temp.addEventListener("dragover",function(e){
+                    e.preventDefault();
+                })
+        temp.addEventListener("drop",function(e){
+                    temp.appendChild(selected);
+                    selected=null;
+        })
+    //console.log(containers);
+        for(container of containers){
+            container.addEventListener("dragover",function(e){
+                e.preventDefault();
+            })
+            container.addEventListener("drop",function(e){
+                let targetContainer = e.target.closest(".itemContainer");
+                let hasItem = targetContainer.querySelectorAll("div");
+                //console.log(hasItem);
+
+                if (targetContainer && hasItem.length==0) {
+                    targetContainer.appendChild(selected);
+                    selected = null;
+                }
+            })
+        }
+        })
+    }
+
+
+</script>

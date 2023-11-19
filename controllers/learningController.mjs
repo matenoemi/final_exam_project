@@ -2,7 +2,7 @@ import { mainMenu } from "../helpers/menus.mjs";
 import * as queries from "../db/queries.mjs";
 
 export async function sort(req, res, next) {
-  res.render("sort", {
+  res.render('sort', {
     menu: mainMenu,
   });
 }
