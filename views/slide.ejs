@@ -1,14 +1,61 @@
-<div style="display: flex; justify-content: center; align-items: center; flex-direction: column;" >
-    <div>
-    <% for(let i=0; i<slides.length; i++){ %>
-        <div <% if (i === 0) { %>style="visibility: visible;" <% } else { %>style="visibility: hidden;" <% } %>>
-            <div>
-            <p><%= slides[i].slide_text %></p>
+<form method="GET" action="/learn/exercise/<%= lessonID %>/0">
+    <div style="display: flex; justify-content: center; align-items: center; flex-direction: column;" >
+        <div style="height: 400px; overflow: hidden;">
+        <% for(let i=0; i<slides.length; i++){ %>
+            <div class="slide" <% if (i === 0) { %>style="display: block;" <% } else { %>style="display: none;" <% } %>>
+                <div>
+                <p><%= slides[i].slide_text %></p>
+                </div>
+                <div style="text-align: center;">
+                <img src="data:image/jpeg;base64, <%= slides[i].image_object.toString('base64') %>" alt="<%= slides[i].image_text %>">
+                </div>
             </div>
-            <div>
-            <img src="data:image/jpeg;base64, <%= slides[i].image_object.toString('base64') %>" alt="<%= slides[i].image_text %>">
-            </div>
+        <% } %>
         </div>
-    <% } %>
+        <div>
+            <button type="button" id="prevButton" style="display: none;" onclick="prevSlide()">Prev</button>
+            <button type="button" onclick="nextSlide()">Next</button>
+        </div>
+        <div>
+            <input id="solveButton" type="submit" value="Solve exercises" style="display: none;" />
+        </div>
     </div>
-</div>
+</form>
+
+<script>
+    let currentSlide = 0;
+    const slides = document.querySelectorAll(".slide");
+    const solveButton = document.getElementById("solveButton");
+    const prevButton = document.getElementById("prevButton");
+
+    function showSlide(index) {
+        // show and hide prevButton
+        if(currentSlide === 0){
+            prevButton.style.display="none";
+        }
+        else{
+            prevButton.style.display="inline";
+        }
+        // show and hide solveButton
+        if(currentSlide === slides.length-1){
+            solveButton.style.display="block";
+        }
+        else{
+            solveButton.style.display="none";
+        }
+        slides.forEach((slide, i) => {
+            slide.style.display = i === index ? "block" : "none";
+        });
+
+    }
+
+    function prevSlide() {
+        currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+        showSlide(currentSlide);
+    }
+
+    function nextSlide() {
+        currentSlide = (currentSlide + 1) % slides.length;
+        showSlide(currentSlide);
+    }
+</script>

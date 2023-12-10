@@ -21,7 +21,17 @@ export async function chapters(req,res,next){
 }
 
 export async function lessonLearning(req, res, next) {
-  const lessonId = req.params.id;
-  const slides = await queries.getSlidesByLesson(lessonId);
-  res.render('slide',{slides});
+  const lessonID = req.params.id;
+  const slides = await queries.getSlidesByLesson(lessonID);
+  res.render('slide',{slides, lessonID});
+}
+
+export async function getExercise(req, res, next){
+  console.log("GET exercise");
+  const lessonID = Number(req.params.lessonID);
+  const exercisePos = Number(req.params.exercisePos) + 1;
+  const exercise = await queries.getExercise(lessonID, exercisePos);
+  console.log("exercise:"+exercise);
+  const answers = await queries.getAnswers(exercise.exercise_id);
+  res.render('exercise',{exercise, answers, lessonID, exercisePos});
 }
