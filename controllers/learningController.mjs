@@ -1,5 +1,6 @@
 import { mainMenu } from "../helpers/menus.mjs";
 import * as queries from "../db/queries.mjs";
+import { conn } from "../db/mysqlconn.mjs";
 
 export async function sort(req, res, next) {
   res.render('sort', {
@@ -34,4 +35,16 @@ export async function getExercise(req, res, next){
   console.log("exercise:"+exercise);
   const answers = await queries.getAnswers(exercise.exercise_id);
   res.render('exercise',{exercise, answers, lessonID, exercisePos});
+}
+
+export async function playWithBits(req,res,next){
+  const imageID = 18;
+  const [image] = await conn.execute(
+    "select image_object from images where image_id = ?",[imageID]
+  )
+  res.render('bits',{image: image[0]});
+}
+
+export async function dragAndDrop(){
+  res.render();
 }

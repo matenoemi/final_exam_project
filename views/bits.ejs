@@ -1,0 +1,53 @@
+<div style="display: flex; justify-content: center; align-items: center;">
+    <div style="display: flex; flex-direction: row;">
+        <% for(let i=0; i<8; i++){ %>
+            <div class="item" style="background-color: white; text-align: center; margin-right: 10px; border: solid black 1.5px;">
+                <span class="number" style="font-size: 40px;">0</span>
+                <div style="border: solid black 1.5px;">
+                  <img src="data:image/jpeg;base64, <%= image.image_object.toString('base64') %>" style="width: 80px; height: 80px; margin-top: 5px;">
+                </div>
+            </div>
+        <% } %>
+    </div>
+</div>
+<div id="result" style="font-size: 40px;">
+</div>
+<div>
+    <button id="calculateButton" type="button">Calculate</button>
+</div>
+
+<script>
+    function binaryToDecimal(binaryString) {
+        return parseInt(binaryString, 2);
+    }
+
+    let result = document.getElementById("result");
+    const calculateButton = document.getElementById("calculateButton");
+    calculateButton.addEventListener('click', function(){
+        let concatenated="";
+        const spanItems = document.querySelectorAll(".number");
+        for(const item of spanItems){
+            const number = item.innerText;
+            concatenated+=number;
+        }
+        const binaryNumber = Number(concatenated);
+        const decimalNumber = binaryToDecimal(binaryNumber);
+        result.innerText=decimalNumber;
+        console.log(decimalNumber);
+    });
+
+    let items = document.getElementsByClassName("item");
+    for (let item of items) {
+        item.addEventListener('click', function() {
+            let spanItem = item.querySelector(".number");
+            if(item.style.backgroundColor==="white"){
+                item.style.backgroundColor="yellow";
+                spanItem.innerText="1";
+            }
+            else{
+                item.style.backgroundColor="white";
+                spanItem.innerText="0";
+            }
+        });
+    }
+</script>

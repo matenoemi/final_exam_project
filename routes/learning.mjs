@@ -7,3 +7,6 @@ router.get('/sort', learningController.sort);
 router.get('/chapters',learningController.chapters);
 router.get('/lesson/:id',learningController.lessonLearning);
 router.get('/exercise/:lessonID/:exercisePos',learningController.getExercise);
+
+router.get('/bits',learningController.playWithBits);
+router.get('/draganddrop',learningController.dragAndDrop);
