@@ -8,6 +8,9 @@ import morgan from 'morgan';
 import { __dirname } from './dirname.mjs';
 import { mainMenu } from "./helpers/menus.mjs";
 
+import session from "express-session";
+import filestore from "session-file-store";
+
 const app = express();
 
 app.use(morgan("dev")); 
@@ -24,28 +27,45 @@ app.use(expressLayouts);
 app.set('layout', 'layouts/layout');
 
 
+
+const FileStore = filestore(session);
+app.use(
+  session({
+    store: new FileStore(),
+    secret: "StrangerThings",
+    resave: true,
+    saveUninitialized: true,
+    cookie: {                 
+      maxAge: 1000 * 60 * 60,
+    },
+  })
+);
+
 app.locals.mainMenu = mainMenu; 
 
-//res.locals egy kérés idejére
-//ez lefut minden kérésre az útvonalaink előtt
-/*
 app.use((req, res, next)=>{
+  console.log("RES BEALLITVA");
+  console.log("SESSION AND LOCALS: "+req.session.user);
+  console.log(req.session.user);
   if(req.session.user){
+    console.log("TRUE");
     res.locals.user=req.session.user;
   }else{
     res.locals.user=null;
   }
   next();
 })
-*/
+
 
 import { router as indexRouter } from './routes/index.mjs';
 import { router as learningRouter }  from './routes/learning.mjs';
+import { router as userRouter }  from './routes/user.mjs';
 
 
 // útvonalválasztók
 app.use('/', indexRouter);
 app.use('/learn', learningRouter);
+app.use("/user", userRouter);
 
 
 app.use((req, res)=>{

@@ -1,0 +1,43 @@
+<p>Login</p>
+
+<% if (error) { %>
+<p class="error"><%= error %></p>
+<% } %> 
+
+<form id="form" method="POST" action="/user/login" >
+  <div class="container">
+
+    <label for="email" class="item"> <span>Email cím:</span> </label>
+    <input
+      id="email"
+      class="input"
+      type="email"
+      name="email"
+      value="<%= userData.email %>"
+      class="item"
+      placeholder="nev@pelda.ro"
+      pattern="([a-z0-9_]|\-|\.)+@(([a-z0-9_]|\-)+\.)+[a-z]{2,10}"
+    >
+
+    <label for="password" class="item"> <span>Jelszó:</span></label>
+    <input
+      id="password"
+      class="input"
+      type="password"
+      name="password"
+      value=""
+      class="item"
+      pattern=".{4,100}"
+    >
+
+    <label for="elkuld" class="item"> </label>
+    <input id="elkuld" type="submit" class="item" name="submit" value="Submit" >
+    </div>
+</form>
+
+
+<p>A felhasználók: </p>
+<ul style="list-style-type: none">
+  <li><span>a@b.ro</span>Szerep:<span>student</span><span> Jelszó:</span><span>alma333</span></li>
+  <li><span>c@d.ro</span>Szerep:<span>teacher</span><span> Jelszó:</span><span>alma333</span></li>
+</ul>

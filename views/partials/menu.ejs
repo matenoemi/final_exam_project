@@ -2,9 +2,20 @@
 
     <nav id="mainmenu" class="nav">
       <ul id="menu">
-        <% for (const [menu, link] of Object.entries(mainMenu())) {%>
+        <% for (const [menu, link] of Object.entries(mainMenu(user))) {%>
         <li><a href="<%= link %>"><%= menu %></a></li>
         <% } %>
+      </ul>
+    </nav>
+
+    <nav id="loginmenu" class="nav">
+      <ul>
+        <% if (user) { %>
+          <li><a href="/user/logout"><%= 'Log out' %></a></li>
+          <li class="role">név: <%= user.user_name %>, role: <%= user.user_role %></li>
+        <% } else { %>
+          <li><a href="/user/login"><%= 'Log in' %></a></li>     
+        <% } %>  
       </ul>
     </nav>
   </div> 

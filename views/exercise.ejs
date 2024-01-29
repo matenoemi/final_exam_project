@@ -15,8 +15,8 @@
         <!-- answers -->
         <div style="display: flex; flex-direction: row;">
             <% for(let i=0; i<answers.length; i++){ %>
-            <div style="border: solid lightseagreen 2px;">
-                <input type="checkbox" id="answers[i].answer_id">
+            <div style="border: solid gray 1px;">
+                <input type="checkbox" class="answer" id="<%= answers[i].answer_id %>" flag="<%= answers[i].answer_flag %>">
                 <div>
                 <img src="data:image/jpeg;base64, <%= answers[i].image_object.toString('base64') %>" alt="<%= answers[i].image_text %>">
                 </div>
@@ -25,7 +25,36 @@
         </div>
 
         <div>
-            <input id="submit" type="submit" value="Submit" style="display: block;" />
+            <button id="checkButton">Check</button>
+            <input type="submit" value="Next" id="nextButton" style="display: none;">
         </div>
     </div>
 </form>
+
+<script>
+    const checkButton=document.getElementById("checkButton");
+    const nextButton=document.getElementById("nextButton");
+    checkButton.addEventListener("click",function(e){
+        e.preventDefault();
+        e.target.style.display="none";
+        let answers=document.getElementsByClassName("answer");
+        for(let i=0; i<answers.length; i++){
+            answers[i].disabled=true;
+            let parentDiv = answers[i].closest('div');
+            if(answers[i].checked){
+                if(answers[i].getAttribute("flag")==1){
+                    parentDiv.style.border="5px solid green";
+                }
+                else{
+                    parentDiv.style.border="5px solid red";
+                }
+            }
+            else{
+                if(answers[i].getAttribute("flag")==1){
+                    parentDiv.style.border="5px solid yellow";
+                }
+            }
+        }
+        nextButton.style.display="block";
+    });
+</script>

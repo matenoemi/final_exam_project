@@ -17,17 +17,24 @@
     <div>
         <button id="checkButton" style="height: 40px; width: 60px;">Check!</button>
     </div>
+
+    <audio controls id="aud1" style="display: none;">
+        <source src="https://freesound.org/people/timgormly/sounds/181859/" type="audio/mpeg">
+    </audio>
+    
+    <audio controls id="aud2" style="display: none;">
+        <source src="./incorrect.mp3" type="audio/mpeg">
+    </audio> 
+
 </div>
 
 <script>
     function playCorrectSound(){
-        const aud = new Audio("correct.mp4");
-        aud.muted=false;
+        const aud=document.getElementById("aud1");
         aud.play();
     }
     function playIncorrectSound(){
-        const aud = new Audio("incorrect.mp3");
-        aud.muted=false;
+        const aud=document.getElementById("aud2");
         aud.play();
     }
     

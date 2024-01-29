@@ -1,0 +1,88 @@
+<div style="display: flex; justify-content: center;">
+    <div style="display: flex; flex-direction: row;">
+        <% for(let i=0; i<images.length; i++){ %>
+            <div style="border: lightseagreen solid 2px; width: 95px; height: 75px; ">
+            <div draggable="true" class="image" name="image"  style="border: lightseagreen solid 2px;">
+                <img type="<%= images[i].type %>" src="data:image/jpeg;base64, <%= images[i].image_object.toString('base64') %>" style="width: 95px; height: 75px;">
+            </div>
+            </div>
+        <% } %>
+    </div>
+</div>
+
+<div style="display: flex; justify-content: center;">
+    <div style="display: flex; flex-direction: row; text-align: center; font-size: 18px;">
+        <div style="margin-right: 20px;">
+        <p>Bemeneti</p>
+        <div name="container" class="itemContainer" id="in" style="height: 480px; width: 125px; border: solid lightseagreen 2px;"></div>
+        </div>
+        <div style="margin-right: 20px;">
+        <p>Kimeneti</p>
+        <div name="container" class="itemContainer" id="out" style="height: 480px; width: 125px; border: solid lightseagreen 2px;"></div>
+        </div>
+        <div style="margin-right: 20px;">
+        <p>Be- és kimeneti</p>
+        <div name="container" class="itemContainer" id="in-out" style="height: 480px; width: 125px; border: solid lightseagreen 2px;"></div>
+        </div>
+    </div>
+</div>
+
+<div>
+    <button id="checkButton" type="button" style="height: 40px; width: 60px;">Check!</button>
+</div>
+
+<script>
+     function checkContainer(container, type) {
+            const items = container.querySelectorAll("img");
+            console.log(items);
+            for (let item of items) {
+                console.log(item);
+                const itemType = item.getAttribute('type');
+               
+                if (itemType !== type) {
+                    console.log(itemType);
+                    console.log(type);
+                    return false;
+                }
+            }
+            return true;
+        }
+
+    let checkButton = document.getElementById("checkButton");
+    checkButton.addEventListener('click',function(){
+        const inContainer = document.getElementById("in");
+        const outContainer = document.getElementById("out");
+        const mixedContainer = document.getElementById("in-out");
+        let flag = true;
+
+        if (!checkContainer(inContainer, "in") || !checkContainer(outContainer, "out") || !checkContainer(mixedContainer, "in-out")) {
+            flag = false;
+        }
+
+        if(flag){
+            alert("Correct!");
+        }
+        else{
+            alert("Incorrect!");
+        }
+    });
+
+    let selected = null;
+    let images = document.getElementsByName("image");
+    let containers = document.getElementsByName("container");
+    for(image of images){
+        image.addEventListener('dragstart',function(e){
+            selected = e.target;
+        });
+        for(container of containers){
+            container.addEventListener("dragover",function(e){
+                    e.preventDefault();
+            });
+            container.addEventListener("drop",function(e){
+                    let targetContainer = e.target.closest(".itemContainer");
+                    targetContainer.appendChild(selected);
+                    selected=null;
+            });
+        }
+    }
+</script>
