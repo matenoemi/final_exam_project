@@ -7,7 +7,10 @@ export const router = express.Router();
 router.get('/sort', isAuth(['student']), learningController.sort);
 router.get('/chapters', isAuth(['student']), learningController.chapters);
 router.get('/lesson/:id', isAuth(['student']), learningController.lessonLearning);
+
 router.get('/exercise/:lessonID/:exercisePos', isAuth(['student']), learningController.getExercise);
+router.post('/exercise/:lessonID/:exercisePos', isAuth(['student']), learningController.checkAnswers);
 
 router.get('/bits',learningController.playWithBits);
 router.get('/draganddrop', isAuth(['student']), learningController.dragAndDrop);
+

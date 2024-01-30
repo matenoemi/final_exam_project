@@ -2,6 +2,7 @@ import { mainMenu } from "../helpers/menus.mjs";
 import * as queries from "../db/queries.mjs";
 import { conn } from "../db/mysqlconn.mjs";
 
+
 export async function sort(req, res, next) {
   res.render('sort', {
     menu: mainMenu,
@@ -27,10 +28,42 @@ export async function lessonLearning(req, res, next) {
   res.render('slide',{slides, lessonID});
 }
 
-export async function getExercise(req, res, next){
-  console.log("GET exercise");
+export async function checkAnswers(req,res,next){
+  let checkedAnswers = req.body.answer;
+  console.log(checkedAnswers);
+  checkedAnswers=checkedAnswers.map(Number);
+
+  console.log(checkedAnswers);
   const lessonID = Number(req.params.lessonID);
-  const exercisePos = Number(req.params.exercisePos) + 1;
+  const exercisePos = Number(req.params.exercisePos);
+  const exercise = await queries.getExercise(lessonID, exercisePos);
+  let answers = await queries.getAnswers(exercise.exercise_id);
+  let checkedCorrectAnswers=0;
+  const correctAnswers = await queries.getNumberOfCorrectAnswers(exercise.exercise_id);
+  for(let i=0; i<answers.length; i++){
+    answers[i].checked = false;
+    if(answers[i].answer_flag == 1){
+      if(checkedAnswers.includes(answers[i].answer_id)){
+        answers[i].checked=true;
+        checkedCorrectAnswers++;
+      }
+    }
+    else{
+      if(checkedAnswers.includes(answers[i].answer_id)){
+        answers[i].checked=true;
+      }
+    }
+  }
+  const saveResult = await queries.saveResult(req.session.user, exercise.exercise_id, checkedCorrectAnswers);
+  console.log(answers);
+  console.log(correctAnswers);
+  console.log(checkedCorrectAnswers);
+  res.render('correctedExercise',{exercise, answers, lessonID, exercisePos, correctAnswers, checkedCorrectAnswers});
+}
+
+export async function getExercise(req, res, next){
+  const lessonID = Number(req.params.lessonID);
+  const exercisePos = Number(req.params.exercisePos)+1; 
   const exercise = await queries.getExercise(lessonID, exercisePos);
   console.log("exercise:"+exercise);
   const answers = await queries.getAnswers(exercise.exercise_id);
