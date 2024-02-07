@@ -8,12 +8,13 @@ const studentMenu = {
   Chapters: '/learn/chapters',
   Sort : '/learn/sort',
   Bits: '/learn/bits',
-  "Drag and drop": '/learn/draganddrop'
+  "Drag and drop": '/learn/draganddrop',
+  "Test": '/learn/test'
 };
 
 const teacherMenu = {
   Home : '/',
-  Statistics: '/learn/statistics'
+  Overview: '/learn/overview'
 };
 
 export function mainMenu(user){

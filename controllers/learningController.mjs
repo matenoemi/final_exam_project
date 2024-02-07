@@ -2,6 +2,13 @@ import { mainMenu } from "../helpers/menus.mjs";
 import * as queries from "../db/queries.mjs";
 import { conn } from "../db/mysqlconn.mjs";
 
+export async function overview(req, res, next){
+  const results = await queries.resultsOverview();
+  for(let i=0; i<results.length; i++){
+    results[i].total=await queries.getNumberOfCorrectAnswers(results[i].exercise_id);
+  }
+  res.render('overview',{results});
+}
 
 export async function sort(req, res, next) {
   res.render('sort', {
@@ -107,4 +114,11 @@ export async function dragAndDrop(req,res,next){
 
 function shuffleArray(array) {
   return array.sort(() => Math.random() - 0.5);
+}
+
+export async function test(req, res, next){
+  const lessonID = 2; const exercisePos = 3;
+  const exercise = await queries.getExercise(2,3);
+  const answers = await queries.getOrderingAnswers(exercise.exercise_id);
+  res.render('ordering',{exercise, answers, lessonID, exercisePos});
 }

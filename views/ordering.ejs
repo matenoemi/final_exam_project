@@ -1,0 +1,78 @@
+<form method="POST" action="/learn/exercise/<%= lessonID %>/<%= exercisePos %>">
+    <div style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
+        <!-- exercise's text -->
+        <div>
+            <div>
+                <p style="font-weight: bold;"><%= exercise.exercise_text %></p>
+            </div>
+            <div>
+            <% if(exercise.image_object){ %>
+            <div style="text-align: center;">
+            <img src="data:image/jpeg;base64, <%= exercise.image_object.toString('base64') %>" alt="<%= exercise.image_text %>">
+            </div>
+            <% } %>
+        </div>
+        <!-- answers -->
+        <div style="display: flex; flex-direction: row; margin-bottom: 20px;">
+            <% for(let i=0; i<answers.length; i++){ %>
+            <div class="initialContainer"  style="border: solid gray 1px; background-color: white; width: 100px; height: 100px;">
+                <div class = "item" draggable="true" value="<%= answers[i].answer_id %>">
+                <img src="data:image/jpeg;base64, <%= answers[i].image_object.toString('base64') %>" alt="<%= answers[i].image_text %>" style="width: 100px; height: 100px;">
+                </div>
+            </div>
+            <% } %>
+        </div>
+        <div style="display: flex; flex-direction: row;">
+            <% for(let i=0; i<answers.length; i++){ %>
+            <div class="finalContainer" style="border: solid gray 1px; background-color: white; width: 100px; height: 100px;">
+            </div>
+            <% } %>
+        </div>
+
+        <div>
+            <button id="checkButton">Check</button>
+        </div>
+    </div>
+</form>
+
+<script>
+    const items = document.getElementsByClassName("item");
+    const initialContainers = document.getElementsByClassName("initialContainer");
+    const finalContainers = document.getElementsByClassName("finalContainer");
+
+    for(item of items){
+        item.addEventListener("dragstart", function(e){
+            let selected = e.target;
+
+            for(initial of initialContainers){
+                initial.addEventListener("dragover",function(e){
+                    e.preventDefault();
+                });
+                initial.addEventListener("drop",function(e){
+                    let targetContainer = e.target.closest(".initialContainer");
+                    let hasItem = targetContainer.querySelectorAll("div");
+                    
+                    if (targetContainer && hasItem.length==0) {
+                        targetContainer.appendChild(selected);
+                        selected = null;
+                    }
+                });
+            }
+
+            for(final of finalContainers){
+                final.addEventListener("dragover",function(e){
+                    e.preventDefault();
+                });
+                final.addEventListener("drop",function(e){
+                    let targetContainer = e.target.closest(".finalContainer");
+                    let hasItem = targetContainer.querySelectorAll("div");
+                    
+                    if (targetContainer && hasItem.length==0) {
+                        targetContainer.appendChild(selected);
+                        selected = null;
+                    }
+                });
+            }
+        });
+    }
+</script>

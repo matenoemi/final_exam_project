@@ -1,5 +1,14 @@
 import { conn } from "../db/mysqlconn.mjs";
 
+
+export async function resultsOverview(){
+    const [res] = await conn.execute(
+        "select u.user_name, l.lesson_name, e.exercise_id, e.exercise_text, r.result_value, r.result_date from results r join users u on r.user_id = u.user_id join exercises e on "+
+        "e.exercise_id = r.exercise_id join lessons l on e.lesson_id = l.lesson_id"
+    );
+    return res;
+}
+
 export async function saveResult(user, exerciseID, correctAnswers){
     const [res] = await conn.execute(
         "insert into results(user_id, exercise_id, result_value) values(?, ?, ?)",
@@ -48,7 +57,7 @@ export async function getExerciseID(lessonID, exercisePos){
 
 export async function getExercise(lessonID, exercisePos){
     const [exerciseTemp] = await conn.execute(
-        "select exercise_id, exercise_text, exercise_position, image_id from exercises "+
+        "select exercise_id, exercise_text, exercise_position, image_id, exercise_type, exercise_direction from exercises "+
         "where lesson_id = ? and exercise_position = ?", [lessonID, exercisePos]   
     );
     let exercise = exerciseTemp[0];
@@ -71,6 +80,15 @@ export async function getExercise(lessonID, exercisePos){
 export async function getAnswers(exerciseID){
     const [answers] = await conn.execute(
         "select a.answer_id, a.answer_text, i.image_object, i.image_text, a.answer_flag "+
+        "from answers a join images i on a.image_id = i.image_id "+
+        "where a.exercise_id = ?", [exerciseID]
+    );
+    return answers;
+}
+
+export async function getOrderingAnswers(exerciseID){
+    const [answers] = await conn.execute(
+        "select a.answer_id, a.answer_text, i.image_object, i.image_text, a.answer_order "+
         "from answers a join images i on a.image_id = i.image_id "+
         "where a.exercise_id = ?", [exerciseID]
     );

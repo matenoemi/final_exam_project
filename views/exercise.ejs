@@ -15,8 +15,8 @@
         <!-- answers -->
         <div style="display: flex; flex-direction: row;">
             <% for(let i=0; i<answers.length; i++){ %>
-            <div style="border: solid gray 1px;">
-                <input type="checkbox" name="answer" value="<%= answers[i].answer_id %>" flag="<%= answers[i].answer_flag %>">
+            <div style="border: solid gray 1px; background-color: white;">
+                <input type="checkbox" name="answer" value="<%= answers[i].answer_id %>">
                 <div>
                 <img src="data:image/jpeg;base64, <%= answers[i].image_object.toString('base64') %>" alt="<%= answers[i].image_text %>">
                 </div>

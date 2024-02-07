@@ -1,0 +1,24 @@
+<div style="display: flex; justify-content: center; align-items: center;">
+    <table style="border-collapse: collapse">
+        <tr>
+            <th style="border: solid grey 2px; padding: 8px;">Diák</th>
+            <th style="border: solid grey 2px; padding: 8px;">Lecke</th>
+            <th style="border: solid grey 2px; padding: 8px;">Feladat</th>
+            <th style="border: solid grey 2px; padding: 8px;">Összes</th>
+            <th style="border: solid grey 2px; padding: 8px;">Elért</th>
+            <th style="border: solid grey 2px; padding: 8px;">Időpont</th>
+        </tr>
+
+        <% for(let i=0; i<results.length; i++) { %>
+            <tr style="border: solid grey 2px; padding: 8px;">
+                <td style="border: solid grey 2px; padding: 8px;"><%= results[i].user_name %></td>
+                <td style="border: solid grey 2px; padding: 8px;"><%= results[i].lesson_name %></td>
+                <td style="border: solid grey 2px; padding: 8px;"><%= results[i].exercise_text %></td>
+                <td style="border: solid grey 2px; padding: 8px;"><%= results[i].total %></td>
+                <td style="border: solid grey 2px; padding: 8px;"><%= results[i].result_value %></td>
+                <td style="border: solid grey 2px; padding: 8px;"><%= results[i].result_date.toLocaleDateString('en-US',{ weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' }) %></td>
+            </tr>
+        <% } %>
+
+    </table>
+</div>

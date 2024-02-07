@@ -14,3 +14,7 @@ router.post('/exercise/:lessonID/:exercisePos', isAuth(['student']), learningCon
 router.get('/bits',learningController.playWithBits);
 router.get('/draganddrop', isAuth(['student']), learningController.dragAndDrop);
 
+router.get('/overview', isAuth(['teacher']), learningController.overview);
+
+router.get('/test', isAuth(['student']),learningController.test);
+
