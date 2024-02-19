@@ -1,0 +1,47 @@
+<form method="GET" action="/learn/exercise/<%= lessonID %>/<%= exercisePos %>">
+<div style="display: flex; justify-content: center; flex-direction: column;">
+    <div style="display: flex; justify-content: center;">
+        <div style="display: flex; justify-content: center; font-size: 18px;">
+            <% for(let i=0; i<groups.length; i++) { %>
+                <div style="margin-right: 40px; display: flex; justify-content: center; flex-direction: column; align-items: center;">
+                    <p><%= groups[i].group_name %></p>
+                    <div value="<%= groups[i].group_id %>" name="container" class="itemContainer" style="display: flex; justify-content: flex-start; flex-direction: column; align-items: center; height: 400px; width: 125px; border: solid lightseagreen 2px;">
+                    <% for(let j=0; j<answers.length; j++) { %>
+                        <% if(answers[j].selectedGroup == groups[i].group_id) { %>
+                            <div value="<%= answers[j].selectedGroup %>" group="<%= answers[j].group_id %>" name="image" class="image" style="width: 95px; height: 75px;">
+                                <img src="data:image/jpeg;base64, <%= answers[j].image_object.toString('base64') %>" style="width: 95px; height: 75px;">
+                            </div>
+                        <% } %>
+                    <% } %>
+                    </div>
+                </div>
+            <% } %>
+        </div> 
+        
+    </div>
+
+    <div>
+        <input type="submit" value="Next" id="nextButton">
+    </div>
+</div>
+</form>
+
+<script>
+    const containers = document.getElementsByName("container");
+    function colour(){
+        for(container of containers){
+            console.log(container);
+            let images = container.getElementsByClassName("image");
+            for(image of images){
+                console.log(image);
+                if(image.getAttribute("value") == image.getAttribute("group")){
+                    image.style.border="solid 3px green";
+                }
+                else{
+                    image.style.border="solid 3px red";
+                }
+            }
+        }
+    }
+    window.onload = colour;
+</script>

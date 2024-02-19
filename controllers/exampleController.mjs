@@ -1,4 +1,5 @@
 import { mainMenu } from "../helpers/menus.mjs";
+import {conn} from "../db/mysqlconn.mjs"
 
 export async function sort(req, res, next) {
     res.render('sort', {

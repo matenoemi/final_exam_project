@@ -57,7 +57,9 @@ export async function getAnswers(exerciseID){
             break;
         case "ordering":
             answers = await getAnswersTypeOrdering(exerciseID);
-            break;    
+            break;
+        case "grouping":
+            answers = await getAnswersTypeGrouping(exerciseID);  
     }
     return answers;
 }
@@ -80,6 +82,21 @@ export async function getAnswersTypeOrdering(exerciseID){
     return answers;
 }
 
+export async function getAnswersTypeGrouping(exerciseID){
+    const [items] = await conn.execute(
+        "select a.answer_id, a.group_id, i.image_object, i.image_text "+
+        "from answers a join images i on a.image_id = i.image_id "+
+        "where a.exercise_id = ?", [exerciseID]
+    );
+
+    const [groups] = await conn.execute(
+        "select distinct g.group_id, g.group_name from answers a join groups g "+
+        "on a.group_id = g.group_id where a.exercise_id = ? order by 1", [exerciseID]
+    );
+
+    return {items, groups};
+}
+
 export async function correct(exercise, type, answer){
     let result;
     switch(type){
@@ -89,6 +106,9 @@ export async function correct(exercise, type, answer){
         case "ordering":
             result = await correctAnswersTypeOrdering(exercise, answer);
             break;    
+        case "grouping":
+            result = await correctAnswersTypeGrouping(exercise, answer);
+            break;
     }
     return result;
 }
@@ -145,5 +165,33 @@ export async function correctAnswersTypeOrdering(exercise, answer){
     const tempAnswers = answers.concat(userAnswer);
     console.log(points);
     return {points, answers: tempAnswers};
+}
+
+export async function correctAnswersTypeGrouping(exercise, answer){
+    for(let i=0; i<answer.length; i++){
+        const numbersArray = answer[i].split(" ");
+        const numbers = numbersArray.map(numString => parseInt(numString));
+        answer[i]=numbers;
+    }
+    const temp = await getAnswersTypeGrouping(exercise.exercise_id);
+    const groups = temp.groups;
+    let answers = temp.items;
+    let points = 0;
+
+    for(let i=0; i<groups.length; i++){
+        const array = answer[i];
+        for(let j=0; j<array.length; j++){
+            for(let k=0; k<answers.length; k++){
+                if(array[j] == answers[k].answer_id){
+                    answers[k].selectedGroup = groups[i].group_id;
+                    if(answers[k].selectedGroup == answers[k].group_id){
+                        points++;
+                    }
+                }
+            }
+        }
+    }
+    console.log(answers);
+    return {points, answers, groups};
 }
 

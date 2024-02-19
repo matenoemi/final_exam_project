@@ -1,0 +1,78 @@
+<form method="POST" action="/learn/exercise/<%= lessonID %>/<%= exercisePos %>">
+    <div style="display: flex; justify-content: center;">
+        <div style="display: flex; flex-direction: row;">
+            <% for(let i=0; i<answers.items.length; i++){ %>
+                <div style="border: solid grey 1px; height: 75px; width: 95px;">
+                    <div draggable="true" class="image" name="image" value="<%= answers.items[i].answer_id %>">
+                        <img src="data:image/jpeg;base64, <%= answers.items[i].image_object.toString('base64') %>" style="width: 95px; height: 75px;">
+                    </div>
+                </div>
+            <% } %>
+        </div>
+    </div>
+
+    <div style="display: flex; justify-content: center;">
+        <div style="display: flex; justify-content: center; font-size: 18px;">
+            <% for(let i=0; i<answers.groups.length; i++) { %>
+                <div style="margin-right: 40px; display: flex; justify-content: center; flex-direction: column; align-items: center;">
+                    <p><%= answers.groups[i].group_name %></p>
+                    <div name="container" class="itemContainer" style="text-align: center; height: 400px; width: 125px; border: solid lightseagreen 2px;"></div>
+                </div>
+            <% } %>
+        </div>    
+    </div>
+
+    <div style="display: none;">
+        <% for(let i=0; i<answers.groups.length; i++) { %>
+            <input type="text" name="answer">
+        <% } %>
+    </div>
+
+    <div>
+        <button id="checkButton" type="button" style="height: 40px; width: 60px;">Check</button>
+    </div>
+</form>
+
+<script>
+    const button = document.getElementById("checkButton");
+    button.addEventListener('click',function(e){
+        let numbers="";
+        e.preventDefault();
+
+        const containers = document.getElementsByName("container");
+        const answers = document.getElementsByName("answer");
+        for(let i=0; i<containers.length; i++){
+            const images = containers[i].getElementsByClassName("image");
+            let numbers = "";
+            for(image of images){
+                numbers=numbers+image.getAttribute("value")+" ";
+            }
+            answers[i].setAttribute("value",numbers);
+            console.log(answers[i].getAttribute("value"));
+        }
+
+        
+        const form = e.target.closest("form");
+        form.submit();
+    })
+
+    let selected = null;
+    let images = document.getElementsByName("image");
+    let containers = document.getElementsByName("container");
+    for (let image of images) {
+        image.addEventListener('dragstart', function (e) {
+            selected = e.target.closest(".image");
+        });
+    }
+
+    for (let container of containers) {
+        container.addEventListener("dragover", function (e) {
+            e.preventDefault();
+        });
+        container.addEventListener("drop", function (e) {
+            let targetContainer = e.target.closest(".itemContainer");
+            targetContainer.appendChild(selected);
+            selected = null;
+        });
+    }
+</script>

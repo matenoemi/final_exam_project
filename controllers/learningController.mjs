@@ -48,6 +48,10 @@ export async function correctAnswers(req,res,next){
       break;
     case "ordering":
       res.render('correctedOrdering', {exercise, answers, lessonID, exercisePos, correctAnswers: 1, points});
+      break;
+    case "grouping":
+      res.render('correctedGrouping', {exercise, answers, groups: result.groups, lessonID, exercisePos, correctAnswers: 9, points});
+      break;
   }
 
 }
