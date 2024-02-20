@@ -1,0 +1,20 @@
+<div style="display: flex; justify-content: center; align-items: center;">
+    <div>
+        <table style="border-collapse: collapse;">
+            <thead>
+                <tr style="border: solid grey 1px;">
+                    <th style="border: solid grey 1px;">Osztály megnevezése</th>
+                    <th style="border: solid grey 1px;">Évfolyam</th>
+                </tr>
+            </thead>
+            <tbody>
+                    <% for(let i=0; i<classes.length; i++) { %>
+                        <tr style="border: solid grey 1px;">
+                            <td style="border: solid grey 1px;"><a href="/teacher/students/<%= classes[i].class_id %>"><%= classes[i].class_name %></a></td>
+                            <td style="border: solid grey 1px; text-align: center;"><%= classes[i].class_grade %></td>
+                        </tr>
+                    <% } %>
+            </tbody>
+        </table>
+    </div>
+</div>

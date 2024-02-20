@@ -2,15 +2,6 @@ import * as queries from "../db/queries.mjs";
 import * as exerciseModel from "../models/exercise.mjs";
 
 
-export async function overview(req, res, next){
-  const results = await queries.resultsOverview();
-  for(let i=0; i<results.length; i++){
-    results[i].total=await exerciseModel.getNumberOfCorrectAnswers(results[i].exercise_id);
-  }
-  res.render('overview',{results});
-}
-
-
 export async function chapters(req,res,next){
   const chapters = await queries.getChapters();
   console.log(chapters);
