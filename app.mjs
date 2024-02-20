@@ -60,12 +60,14 @@ app.use((req, res, next)=>{
 import { router as indexRouter } from './routes/index.mjs';
 import { router as learningRouter }  from './routes/learning.mjs';
 import { router as userRouter }  from './routes/user.mjs';
+import { router as teacherRouter } from './routes/teacher.mjs';
 
 
 // útvonalválasztók
 app.use('/', indexRouter);
 app.use('/learn', learningRouter);
-app.use("/user", userRouter);
+app.use('/user', userRouter);
+app.use('/teacher', teacherRouter);
 
 
 app.use((req, res)=>{

@@ -7,14 +7,14 @@ const studentMenu = {
   Home : '/',
   Chapters: '/learn/chapters',
   Sort : '/learn/sort',
-  Bits: '/learn/bits',
-  "Drag and drop": '/learn/draganddrop',
-  "Test": '/learn/test'
+  Bits: '/learn/bits'
 };
 
 const teacherMenu = {
   Home : '/',
-  Overview: '/learn/overview'
+  Results: '/teacher/results',
+  Classes: '/teacher/classes'
+
 };
 
 export function mainMenu(user){

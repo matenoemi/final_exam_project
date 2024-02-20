@@ -5,7 +5,7 @@ import * as exerciseModel from "../models/exercise.mjs";
 export async function overview(req, res, next){
   const results = await queries.resultsOverview();
   for(let i=0; i<results.length; i++){
-    results[i].total=await queries.getNumberOfCorrectAnswers(results[i].exercise_id);
+    results[i].total=await exerciseModel.getNumberOfCorrectAnswers(results[i].exercise_id);
   }
   res.render('overview',{results});
 }
@@ -52,6 +52,8 @@ export async function correctAnswers(req,res,next){
     case "grouping":
       res.render('correctedGrouping', {exercise, answers, groups: result.groups, lessonID, exercisePos, correctAnswers: 9, points});
       break;
+    case "radio":
+      res.render('correctedRadio', {exercise, answers, lessonID, exercisePos, correctAnswers: 1, points})
   }
 
 }

@@ -60,6 +60,10 @@ export async function getAnswers(exerciseID){
             break;
         case "grouping":
             answers = await getAnswersTypeGrouping(exerciseID);  
+            break;
+        case "radio":
+            answers = await getAnswersTypeCheck(exerciseID);
+            break;
     }
     return answers;
 }
@@ -108,6 +112,9 @@ export async function correct(exercise, type, answer){
             break;    
         case "grouping":
             result = await correctAnswersTypeGrouping(exercise, answer);
+            break;
+        case "radio":
+            result = await correctAnswersTypeRadio(exercise, answer);
             break;
     }
     return result;
@@ -193,5 +200,19 @@ export async function correctAnswersTypeGrouping(exercise, answer){
     }
     console.log(answers);
     return {points, answers, groups};
+}
+
+export async function correctAnswersTypeRadio(exercise, answer){
+    let answers = await getAnswersTypeCheck(exercise.exercise_id);
+    let points = 0;
+    for(let i=0; i<answers.length; i++){
+        if(answers[i].answer_id == answer){
+            answers[i].checked = true;
+            if(answers[i].answer_flag){
+                points=1;
+            }
+        }
+    }
+    return {points, answers};
 }
 

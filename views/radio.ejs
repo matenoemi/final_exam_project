@@ -1,0 +1,30 @@
+<form method="POST" action="/learn/exercise/<%= lessonID %>/<%= exercisePos %>">
+    <div style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
+        <!-- exercise's text -->
+        <div>
+            <div>
+                <p style="font-weight: bold;"><%= exercise.exercise_text %></p>
+            </div>
+            <div>
+            <% if(exercise.image_object){ %>
+            <div style="text-align: center;">
+            <img src="data:image/jpeg;base64, <%= exercise.image_object.toString('base64') %>" alt="<%= exercise.image_text %>">
+            </div>
+            <% } %>
+        </div>
+        <!-- answers -->
+        <div style="display: flex; flex-direction: row;">
+            <% for(let i=0; i<answers.length; i++){ %>
+            <div style="border: solid gray 1px; background-color: white;">
+                <input type="radio" name="answer" value="<%= answers[i].answer_id %>">
+                <div>
+                <img src="data:image/jpeg;base64, <%= answers[i].image_object.toString('base64') %>" alt="<%= answers[i].image_text %>">
+                </div>
+            </div>
+            <% } %>
+        </div>
+        <div>
+            <button id="checkButton">Check</button>
+        </div>
+    </div>
+</form>
