@@ -13,7 +13,8 @@ const studentMenu = {
 const teacherMenu = {
   Home : '/',
   Results: '/teacher/results',
-  Classes: '/teacher/classes'
+  Classes: '/teacher/classes',
+  Exercises: '/teacher/exercises'
 
 };
 

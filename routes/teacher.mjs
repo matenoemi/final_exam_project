@@ -8,5 +8,8 @@ router.get('/results', isAuth(['teacher']), teacherController.results);
 router.get('/classes', isAuth(['teacher']), teacherController.classes);
 router.get('/students/:classID', isAuth(['teacher']), teacherController.studentsByClass);
 router.get('/student/:studentID', isAuth(['teacher']), teacherController.studentByID);
+router.get('/exercises', isAuth(['teacher']), teacherController.exercises);
+
+router.post('/exercises', isAuth(['teacher']), teacherController.exercises);
 
 

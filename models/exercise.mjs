@@ -216,3 +216,29 @@ export async function correctAnswersTypeRadio(exercise, answer){
     return {points, answers};
 }
 
+export async function getTypes(){
+    const [types] = await conn.execute(
+        "select distinct exercise_type as type from exercises"
+    );
+    console.log(types);
+    return types;
+}
+
+export async function getList(type){
+    let exercises = null;
+    if(type){
+        [exercises] = await conn.execute(
+            "select * from exercises where exercise_type = ?",[type]
+        );
+    }
+    else{
+        [exercises] = await conn.execute(
+            "select * from exercises"
+        );
+    }
+    for(let i=0; i<exercises.length; i++){
+        exercises[i].answers = await getAnswers(exercises[i].exercise_id);
+    }
+    return exercises;
+}
+
