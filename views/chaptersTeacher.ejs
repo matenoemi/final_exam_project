@@ -1,0 +1,21 @@
+<div style="display: flex; justify-content: center; align-items: center;">
+    <div>
+    <ol>
+    <% for(let i=0; i<chapters.length; i++){ %>
+        <li>
+        <span style="font-weight: bold;"><%= chapters[i].chapter_name %></span>
+        </li>
+        <ol style="list-style-position: inside; list-style-type: decimal;">
+        <% for(let j=0; j<chapters[i].lessons.length; j++){ %>
+            <li>
+                <span style="font-weight: bold;"><%= chapters[i].lessons[j].lesson_name %></span>
+                <p>
+                    <a href="/teacher/tests/<%= chapters[i].lessons[j].lesson_id %>">Feladatsorok</a>
+                </p>
+            </li>
+        <% } %>
+        </ol>
+    <% } %>
+    </ol>
+    </div>
+</div>

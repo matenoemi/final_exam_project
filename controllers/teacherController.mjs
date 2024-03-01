@@ -2,6 +2,7 @@ import * as queries from "../db/queries.mjs";
 import * as exerciseModel from "../models/exercise.mjs";
 import * as classModel from "../models/class.mjs";
 import * as studentModel from "../models/student.mjs";
+import * as testModel from "../models/test.mjs";
 
 
 export async function results(req, res, next){
@@ -29,11 +30,47 @@ export async function studentByID(req, res, next){
 
 export async function exercises(req, res, next){
     let type = null;
+    let testID = req.params.testID;
     if(req.method == 'POST'){
         type=req.body.type;
     }
     const types = await exerciseModel.getTypes();
-    const exercises = await exerciseModel.getList(type);
-    console.log(exercises);
-    res.render('searchExercise', {types, exercises});
+    const exercises = await exerciseModel.getList(type, testID);
+    res.render('searchExercise', {types, exercises, testID});
+}
+
+
+export async function chapters(req, res, next){
+    const chapters = await queries.getChapters();
+    for(let i=0; i<chapters.length; i++){
+        chapters[i].lessons = await queries.getLessonsByChapter(chapters[i].chapter_id);
+    }
+    res.render('chaptersTeacher', {chapters});
+}
+
+export async function testsByLesson(req, res, next){
+    const lessonID = req.params.lessonID;
+    const tests = await testModel.getListByLesson(lessonID);
+    res.render('tests', {tests});
+}
+
+export async function testByID(req, res, next){
+    const testID = req.params.testID;
+    const exercises = await exerciseModel.getByTestID(testID);
+    res.render('testExercises', {exercises, testID});
+}
+
+export async function addExercises(req, res, next){
+    const testID = req.params.testID;
+    const exercises = req.body.exercise;
+    if(Array.isArray(exercises)){
+        for(let i=0; i<exercises.length; i++){
+            let result = await testModel.addExercise(testID, exercises[i]);
+        }
+    }
+    else{
+        let result = await testModel.addExercise(testID, exercises);
+    }
+    const path = '/teacher/test/'+testID;
+    res.redirect(path);
 }

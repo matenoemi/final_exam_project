@@ -1,0 +1,7 @@
+<div style="display: flex; align-items: center; justify-content: center; flex-direction: column;">
+    <% for(let i=0; i<tests.length; i++) { %>
+        <div>
+            <a href="/teacher/test/<%= tests[i].test_id %>"><%= tests[i].test_name %></a>
+        </div>
+    <% } %>
+</div>

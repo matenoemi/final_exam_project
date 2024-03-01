@@ -1,4 +1,5 @@
 import { conn } from "../db/mysqlconn.mjs";
+import { getByID } from "./student.mjs";
 
 export async function getID(lessonID, exercisePos){
     const [exerciseTemp] = await conn.execute(
@@ -224,17 +225,40 @@ export async function getTypes(){
     return types;
 }
 
-export async function getList(type){
+export async function getList(type, testID){
+    const [lessonID] = await conn.execute("select lesson_id from tests where test_id = ?", [testID]);
     let exercises = null;
     if(type){
         [exercises] = await conn.execute(
-            "select * from exercises where exercise_type = ?",[type]
+            "select * from exercises where exercise_type = ?", [type]
         );
     }
     else{
         [exercises] = await conn.execute(
-            "select * from exercises"
+            "select * from exercises where lesson_id = ? and exercise_id not in "+
+            "(select exercise_id from tests_and_exercises where test_id = ?) ", [lessonID[0].lesson_id, testID]
         );
+    }
+    for(let i=0; i<exercises.length; i++){
+        exercises[i].answers = await getAnswers(exercises[i].exercise_id);
+    }
+    return exercises;
+}
+
+export async function getExerciseByID(exerciseID){
+    const [exercise] = await conn.execute(
+        "select * from exercises where exercise_id = ?", [exerciseID]);
+    return exercise[0];
+}
+
+export async function getByTestID(testID){
+    let [exerciseIDs] = await conn.execute(
+        "select exercise_id from tests_and_exercises where test_id = ? ", [testID]
+    );
+    const idArray = exerciseIDs.map(exercise => exercise.exercise_id);
+    let exercises = [];
+    for(let i=0; i<idArray.length; i++){
+        exercises[i]= await getExerciseByID(idArray[i]);
     }
     for(let i=0; i<exercises.length; i++){
         exercises[i].answers = await getAnswers(exercises[i].exercise_id);

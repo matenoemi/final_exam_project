@@ -14,7 +14,7 @@ const teacherMenu = {
   Home : '/',
   Results: '/teacher/results',
   Classes: '/teacher/classes',
-  Exercises: '/teacher/exercises'
+  Chapters: '/teacher/chapters'
 
 };
 

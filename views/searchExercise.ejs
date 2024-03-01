@@ -1,4 +1,4 @@
-<form method="POST" action="/teacher/exercises">
+<form id="form" test="<%= testID %>" method="POST" action="">
 <div style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
     <div style="display: flex; justify-content: center; align-items: center; flex-direction: row;">
     <div>
@@ -21,7 +21,10 @@
         </select>
     </div>
     <div> 
-        <button>Keres</button>
+        <button id="searchButton">Keres</button>
+    </div>
+    <div style="margin-left: 700px;">
+        <button id="addButton">Hozzáad</button>
     </div>
     </div>
 
@@ -29,8 +32,8 @@
         <% for(let i=0; i<exercises.length; i++) { %>
             <div style="border: solid 2px cadetblue; margin-bottom: 10px; width: 1000px; padding: 10px;">
                 <input type="checkbox" name="exercise" value="<%= exercises[i].exercise_id %>">
-                <p><%= exercises[i].exercise_text %></p>
-                <p>
+                <p>Feladat leírása: <%= exercises[i].exercise_text %></p>
+                <p>Típusa: 
                     <% switch(exercises[i].exercise_type) { case 'radio': %>
                         Egy helyes válasz
                         <% break; case 'check': %>
@@ -77,10 +80,28 @@
 
 <script>
     let containers = document.getElementsByClassName("container");
-    console.log(containers);
     for(let i=0; i<containers.length; i++){
         if(containers[i].getAttribute("orientation")=="vertical"){
             containers[i].style.flexDirection="column";
         }
     }
+
+    const addButton = document.getElementById("addButton");
+    const searchButton = document.getElementById("searchButton");
+    const form = document.getElementById("form");
+    //console.log(form);
+
+    searchButton.addEventListener('click', function(e){
+        e.preventDefault();
+        const searchActionString = '/teacher/exercises/'+form.getAttribute("test");
+        form.setAttribute("action",searchActionString);
+        form.submit();
+    })
+    
+    addButton.addEventListener('click', function(e){
+        e.preventDefault();
+        const addActionString = '/teacher/addExercises/'+form.getAttribute("test");
+        form.setAttribute("action", addActionString);
+        form.submit();
+    });
 </script>
