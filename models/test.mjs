@@ -14,3 +14,17 @@ export async function addExercise(testID, exerciseID){
     );
     return result;
 }
+
+export async function addToLesson(testName, lessonID){
+    const [result] = await conn.execute(
+        "insert into tests (test_name, lesson_id) values (?, ?)", [testName, lessonID]
+    );
+    return result;
+}
+
+export async function getName(testID){
+    const [test] = await conn.execute(
+        "select test_name from tests where test_id = ?", [testID]
+    );
+    return test[0].test_name;
+}

@@ -30,13 +30,14 @@ export async function studentByID(req, res, next){
 
 export async function exercises(req, res, next){
     let type = null;
-    let testID = req.params.testID;
+    const testID = req.params.testID;
+    const testName = await testModel.getName(testID);
     if(req.method == 'POST'){
         type=req.body.type;
     }
     const types = await exerciseModel.getTypes();
     const exercises = await exerciseModel.getList(type, testID);
-    res.render('searchExercise', {types, exercises, testID});
+    res.render('searchExercise', {types, exercises, testID, testName});
 }
 
 
@@ -51,13 +52,14 @@ export async function chapters(req, res, next){
 export async function testsByLesson(req, res, next){
     const lessonID = req.params.lessonID;
     const tests = await testModel.getListByLesson(lessonID);
-    res.render('tests', {tests});
+    res.render('tests', {tests, lessonID});
 }
 
 export async function testByID(req, res, next){
     const testID = req.params.testID;
+    const testName = await testModel.getName(testID);
     const exercises = await exerciseModel.getByTestID(testID);
-    res.render('testExercises', {exercises, testID});
+    res.render('testExercises', {exercises, testID, testName});
 }
 
 export async function addExercises(req, res, next){
@@ -72,5 +74,18 @@ export async function addExercises(req, res, next){
         let result = await testModel.addExercise(testID, exercises);
     }
     const path = '/teacher/test/'+testID;
+    res.redirect(path);
+}
+
+export async function newTest(req, res, next){
+    const lessonID = req.params.lessonID;
+    res.render('newTest', {lessonID});
+}
+
+export async function addNewTest(req, res, next){
+    const lessonID = req.params.lessonID;
+    const testName = req.body.testName;
+    const result = await testModel.addToLesson(testName, lessonID);
+    const path = '/teacher/tests/'+lessonID;
     res.redirect(path);
 }

@@ -1,7 +1,15 @@
 <div style="display: flex; align-items: center; justify-content: center; flex-direction: column;">
+    <div>
+        <h2>A leckéhez létrehozott feladatsorok</h2>
+    </div>
+    <div>
+        <a href="/teacher/addNewTest/<%= lessonID %>">Új feladatsor létrehozása</a>
+    </div>
+    <div style="margin-top: 30px;">
     <% for(let i=0; i<tests.length; i++) { %>
         <div>
             <a href="/teacher/test/<%= tests[i].test_id %>"><%= tests[i].test_name %></a>
         </div>
     <% } %>
+    </div>
 </div>

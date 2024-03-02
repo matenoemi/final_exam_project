@@ -17,5 +17,6 @@ router.get('/tests/:lessonID', isAuth(['teacher']), teacherController.testsByLes
 router.get('/test/:testID', isAuth(['teacher']), teacherController.testByID);
 
 router.post('/addExercises/:testID', isAuth(['teacher']), teacherController.addExercises);
-
+router.get('/addNewTest/:lessonID', isAuth(['teacher']), teacherController.newTest);
+router.post('/addNewTest/:lessonID', isAuth(['teacher']), teacherController.addNewTest);
 
