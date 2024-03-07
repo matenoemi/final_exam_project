@@ -1,10 +1,23 @@
 <form method="POST" action="/learn/exercise/<%= lessonID %>/<%= exercisePos %>">
+    <div style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
+    <div>
+        <div>
+            <p style="font-weight: bold;"><%= exercise.exercise_text %></p>
+        </div>
+        <div>
+        <% if(exercise.image_object){ %>
+        <div style="text-align: center;">
+        <img src="data:image/jpeg;base64, <%= exercise.image_object.toString('base64') %>" alt="<%= exercise.image_text %>">
+        </div>
+        <% } %>
+    </div>
+
     <div style="display: flex; justify-content: center;">
         <div style="display: flex; flex-direction: row;">
             <% for(let i=0; i<answers.items.length; i++){ %>
-                <div style="border: solid grey 1px; height: 75px; width: 95px;">
+                <div style="margin-left: 10px; border: solid grey 1px; height: 100px; width: 130px;">
                     <div draggable="true" class="image" name="image" value="<%= answers.items[i].answer_id %>">
-                        <img src="data:image/jpeg;base64, <%= answers.items[i].image_object.toString('base64') %>" style="width: 95px; height: 75px;">
+                        <img src="data:image/jpeg;base64, <%= answers.items[i].image_object.toString('base64') %>" style="width: 130px; height: 100px;">
                     </div>
                 </div>
             <% } %>
@@ -16,7 +29,7 @@
             <% for(let i=0; i<answers.groups.length; i++) { %>
                 <div style="margin-right: 40px; display: flex; justify-content: center; flex-direction: column; align-items: center;">
                     <p><%= answers.groups[i].group_name %></p>
-                    <div name="container" class="itemContainer" style="text-align: center; height: 400px; width: 125px; border: solid lightseagreen 2px;"></div>
+                    <div name="container" class="itemContainer" style="text-align: center; height: 450px; width: 140px; border: solid lightseagreen 2px;"></div>
                 </div>
             <% } %>
         </div>    
@@ -30,6 +43,7 @@
 
     <div>
         <button id="checkButton" type="button" style="height: 40px; width: 60px;">Check</button>
+    </div>
     </div>
 </form>
 

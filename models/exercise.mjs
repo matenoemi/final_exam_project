@@ -1,5 +1,4 @@
 import { conn } from "../db/mysqlconn.mjs";
-import { getByID } from "./student.mjs";
 
 export async function getID(lessonID, exercisePos){
     const [exerciseTemp] = await conn.execute(
@@ -33,19 +32,19 @@ export async function getByPosition(lessonID, exercisePos){
         "where lesson_id = ? and exercise_position = ?", [lessonID, exercisePos]   
     );
     let exercise = exerciseTemp[0];
-    console.log(exercise);
+    //console.log(exercise);
     if(exercise.image_id !== null){
         const [image] = await conn.execute(
         "select i.image_object, i.image_text "+
         "from exercises e join images i on e.image_id = i.image_id "+
         "where e.lesson_id = ? and e.exercise_position = ?", [lessonID, exercisePos]  
         );
-        console.log(image);
+        //console.log(image);
         exercise.image_object = image[0].image_object;
         exercise.image_text = image[0].image_text;
     }
 
-    console.log(exercise);
+    //console.log(exercise);
     return exercise;
 }
 
@@ -82,7 +81,7 @@ export async function getAnswersTypeOrdering(exerciseID){
     const [answers] = await conn.execute(
         "select a.answer_id, a.answer_text, i.image_object, i.image_text, a.answer_order "+
         "from answers a join images i on a.image_id = i.image_id "+
-        "where a.exercise_id = ?", [exerciseID]
+        "where a.exercise_id = ? order by a.answer_order", [exerciseID]
     );
     return answers;
 }
@@ -150,8 +149,8 @@ export async function correctAnswersTypeOrdering(exercise, answer){
     for(let i=0; i<answers.length; i++){
         correctOrder=correctOrder+answers[i].answer_id+" ";
     }
-    console.log(answer+" "+typeof(answer));
-    console.log(correctOrder+" "+typeof(correctOrder));
+    //console.log(answer+" "+typeof(answer));
+    //console.log(correctOrder+" "+typeof(correctOrder));
 
     let points=0;
     if(answer===correctOrder){
@@ -171,7 +170,7 @@ export async function correctAnswersTypeOrdering(exercise, answer){
         }
     }
     const tempAnswers = answers.concat(userAnswer);
-    console.log(points);
+    //console.log(points);
     return {points, answers: tempAnswers};
 }
 
@@ -199,7 +198,7 @@ export async function correctAnswersTypeGrouping(exercise, answer){
             }
         }
     }
-    console.log(answers);
+    //console.log(answers);
     return {points, answers, groups};
 }
 
@@ -221,7 +220,7 @@ export async function getTypes(){
     const [types] = await conn.execute(
         "select distinct exercise_type as type from exercises"
     );
-    console.log(types);
+    //console.log(types);
     return types;
 }
 

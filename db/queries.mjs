@@ -19,7 +19,7 @@ export async function saveResult(user, exerciseID, correctAnswers){
 
 export async function getChapters(){
     const [chapters] = await conn.execute(
-        "select chapter_id,chapter_name from chapters"
+        "select chapter_id,chapter_name from chapters where course_id = 4"
     );
     return chapters;
 }

@@ -4,6 +4,7 @@ import * as classModel from "../models/class.mjs";
 import * as studentModel from "../models/student.mjs";
 import * as testModel from "../models/test.mjs";
 
+import { readFile } from "fs/promises";
 
 export async function results(req, res, next){
     const results = await queries.resultsOverview();
@@ -89,3 +90,24 @@ export async function addNewTest(req, res, next){
     const path = '/teacher/tests/'+lessonID;
     res.redirect(path);
 }
+
+export async function newExercise(req, res, next){
+    const testID = req.params.testID;
+    const types = await exerciseModel.getTypes();
+    res.render('newExercise', {testID, types});
+}
+
+export async function uploadImages(req, res, next){
+    const testID = req.params.testID;
+    const type = req.body.type;
+    res.render('uploadImages', {testID, type});
+}
+
+export async function sendImages(req, res, next){
+    const im=req.file;
+    console.log("im:"+im);
+    //const tempName = join(TEMPDIR,im.filename); 
+    //let data = await readFile(tempName);
+    //if(im.size>62500){
+}
+

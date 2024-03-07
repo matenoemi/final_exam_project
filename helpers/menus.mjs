@@ -4,7 +4,7 @@ const defaultMenu = {
 };
 
 const studentMenu = {
-  Home : '/',
+  Home : '/learn/courses',
   Chapters: '/learn/chapters',
   Sort : '/learn/sort',
   Bits: '/learn/bits'
@@ -15,12 +15,9 @@ const teacherMenu = {
   Results: '/teacher/results',
   Classes: '/teacher/classes',
   Chapters: '/teacher/chapters'
-
 };
 
 export function mainMenu(user){
-  console.log("MENU MEGHIVVA");
-  console.log("User:"+user);
     if(!user){
       return defaultMenu;
     }else{

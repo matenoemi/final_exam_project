@@ -11,6 +11,8 @@ import { mainMenu } from "./helpers/menus.mjs";
 import session from "express-session";
 import filestore from "session-file-store";
 
+import multer from 'multer';
+
 const app = express();
 
 app.use(morgan("dev")); 
@@ -18,6 +20,9 @@ app.use(morgan("dev"));
 //post adatok átvevése
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+
+import { TEMPDIR } from './appdirs.mjs'; 
+const mUploads = multer({ dest: TEMPDIR });
 
 app.use('/css', express.static(join(__dirname, 'assets/css')))
 app.use('/js', express.static(join(__dirname, 'assets/js')))
@@ -44,14 +49,16 @@ app.use(
 app.locals.mainMenu = mainMenu; 
 
 app.use((req, res, next)=>{
-  console.log("RES BEALLITVA");
-  console.log("SESSION AND LOCALS: "+req.session.user);
-  console.log(req.session.user);
+  console.log("APPUSEMEGHIVVA");
   if(req.session.user){
-    console.log("TRUE");
     res.locals.user=req.session.user;
+    if(req.session.course){
+    res.locals.course = req.session.course;
+    console.log(res.locals.course.courseName);
+    }
   }else{
     res.locals.user=null;
+    //res.locals.course = null;
   }
   next();
 })

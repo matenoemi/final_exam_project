@@ -140,7 +140,11 @@ export async function postLogin(req, res, next) {
       //átléptetjük a felhasználót a fő oldalra
       console.log("Session user: "+req.session.user);
       console.log(req.session.user);
-      res.redirect("/");
+      if(req.session.user.user_role=='student'){
+        res.redirect("/learn/courses");
+      }
+      else{
+        res.redirect("/");      }
     });
   });
 }

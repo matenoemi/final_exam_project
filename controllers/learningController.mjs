@@ -1,13 +1,15 @@
 import * as queries from "../db/queries.mjs";
 import * as exerciseModel from "../models/exercise.mjs";
+import * as courseModel from "../models/course.mjs";
 
 
 export async function chapters(req,res,next){
+  console.log("CHAPTERSBEN A SZESSZIO: "+req.session.course);
   const chapters = await queries.getChapters();
-  console.log(chapters);
+  //console.log(chapters);
   for(let i=0; i<chapters.length; i++){
     const lessons = await queries.getLessonsByChapter(chapters[i].chapter_id);
-    console.log(lessons);
+    //console.log(lessons);
     chapters[i].lessons=lessons;
   }
   res.render('chapters',{
@@ -56,5 +58,17 @@ export async function getExercise(req, res, next){
   const answers = await exerciseModel.getAnswers(exercise.exercise_id);
   const file = await exerciseModel.getType(exercise.exercise_id)
   res.render(file,{exercise, answers, lessonID, exercisePos});
+}
+
+export async function courses(req, res, next){
+  const courses = await courseModel.getList(req.session.user.user_id);
+  res.render('courses', {courses});
+}
+export async function course(req, res, next){
+  const courseID = req.params.courseID;
+  const courseName = await courseModel.getByID(courseID);
+  req.session.course = {courseID: courseID, courseName: courseName};
+  console.log("Function: "+req.session.course.courseName);
+  res.redirect('/learn/chapters');
 }
 

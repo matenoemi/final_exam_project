@@ -17,7 +17,7 @@
             <button type="button" onclick="nextSlide()">Next</button>
         </div>
         <div>
-            <input id="solveButton" type="submit" value="Solve exercises" style="display: none;" />
+            <input id="solveButton" type="submit" value="Solve exercises" style="display: block;" />
         </div>
     </div>
 </form>
@@ -40,8 +40,9 @@
         if(currentSlide === slides.length-1){
             solveButton.style.display="block";
         }
+        // valtoztattam
         else{
-            solveButton.style.display="none";
+            solveButton.style.display="block";
         }
         slides.forEach((slide, i) => {
             slide.style.display = i === index ? "block" : "none";

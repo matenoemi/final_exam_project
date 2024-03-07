@@ -2,6 +2,12 @@ import express from 'express';
 import * as teacherController from '../controllers/teacherController.mjs';
 import { isAuth } from '../controllers/userController.mjs';
 
+import multer from 'multer';
+import { TEMPDIR } from '../appdirs.mjs';
+const mUploads = multer({ dest: TEMPDIR });
+
+//const uploadImages = mUploads.array('upl');
+
 export const router = express.Router();
 
 router.get('/results', isAuth(['teacher']), teacherController.results);
@@ -20,3 +26,7 @@ router.post('/addExercises/:testID', isAuth(['teacher']), teacherController.addE
 router.get('/addNewTest/:lessonID', isAuth(['teacher']), teacherController.newTest);
 router.post('/addNewTest/:lessonID', isAuth(['teacher']), teacherController.addNewTest);
 
+router.get('/addNewExercise/:testID', isAuth(['teacher']), teacherController.newExercise);
+router.post('/addNewExercise/:testID', isAuth(['teacher']), mUploads.single('upl'), teacherController.uploadImages);
+
+router.post('/uploadImages/:testID', isAuth(['teacher']), teacherController.sendImages);

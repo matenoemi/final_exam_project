@@ -15,6 +15,7 @@ router.post('/exercise/:lessonID/:exercisePos', isAuth(['student']), learningCon
 router.get('/bits', exampleController.playWithBits);
 router.get('/draganddrop', isAuth(['student']), exampleController.dragAndDrop);
 
-//router.get('/overview', isAuth(['teacher']), learningController.overview);
+router.get('/courses', isAuth(['student']), learningController.courses);
+router.get('/course/:courseID', isAuth(['student']), learningController.course);
 
 
