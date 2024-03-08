@@ -1,13 +1,29 @@
 <div style="display: flex; flex-wrap: wrap; justify-content: center; align-items: center;">
     <% for(course of courses) { %>
-        <div style="margin-right: 20px; width: 275px; height: 225px; border: solid darkcyan 2px; display: flex; justify-content: center; align-items: center; flex-direction: column;">
+        <div name="courseContainer" style="margin-right: 20px; width: 275px; height: 225px; border: solid darkcyan 2px; display: flex; justify-content: center; align-items: center; flex-direction: column;">
             <div>
                 <img src="data:image/jpeg;base64, <%= course.image_object.toString('base64') %>" style="width: 270px; height: 170px;">
                 
             </div>
-            <div>
-                <p></p><a href="/learn/course/<%= course.course_id %>"><%= course.course_name %></a></p>
-            </div>
+            
+                <% if(user.user_role == 'student') { %>
+                <p><a href="/learn/course/<%= course.course_id %>"><%= course.course_name %></a></p>
+                <% } else { %>
+                <p><a href="/teacher/course/<%= course.course_id %>"><%= course.course_name %></a></p>
+                <% } %>
+            
         </div>
     <% } %>
 </div>
+
+<script>
+    const containers = document.getElementsByName("courseContainer");
+    for(container of containers){
+        container.addEventListener('mouseover', function(e){
+            e.target.closest('div').style.backgroundColor = "darkcyan";
+        })
+        container.addEventListener('mouseout', function(e){
+            e.target.closest('div').style.backgroundColor = "lightcyan";
+        })
+    }
+</script>

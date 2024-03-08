@@ -138,13 +138,18 @@ export async function postLogin(req, res, next) {
     req.session.save(function (err) {
       if (err) return next(err);
       //átléptetjük a felhasználót a fő oldalra
-      console.log("Session user: "+req.session.user);
-      console.log(req.session.user);
-      if(req.session.user.user_role=='student'){
-        res.redirect("/learn/courses");
+      //console.log("Session user: "+req.session.user);
+      //console.log(req.session.user);
+      switch(req.session.user.user_role){
+        case 'student':
+          res.redirect("/learn/courses");
+          break;
+        case 'teacher':
+          res.redirect("/teacher/courses");  
+          break;
+        default:
+          res.redirect("/");
       }
-      else{
-        res.redirect("/");      }
     });
   });
 }

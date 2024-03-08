@@ -13,7 +13,9 @@
         <% if (user) { %>
           <li><a href="/user/logout"><%= 'Log out' %> </a></li>
           <li class="role" style="font-weight: bold;"><%= user.user_name %>, <%= user.user_role %></li>
-            
+            <% if(course) { %>
+              <li style="font-weight: bold;">Kurzus: <%= course.courseName %></li>
+            <% } %>
           <% } else { %>
           <li><a href="/user/login"><%= 'Log in' %></a></li>     
         <% } %>  

@@ -11,7 +11,7 @@ const studentMenu = {
 };
 
 const teacherMenu = {
-  Home : '/',
+  Home : '/teacher/courses',
   Results: '/teacher/results',
   Classes: '/teacher/classes',
   Chapters: '/teacher/chapters'

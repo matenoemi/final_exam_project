@@ -3,6 +3,7 @@ import * as exerciseModel from "../models/exercise.mjs";
 import * as classModel from "../models/class.mjs";
 import * as studentModel from "../models/student.mjs";
 import * as testModel from "../models/test.mjs";
+import * as courseModel from "../models/course.mjs";
 
 import { readFile } from "fs/promises";
 
@@ -43,7 +44,7 @@ export async function exercises(req, res, next){
 
 
 export async function chapters(req, res, next){
-    const chapters = await queries.getChapters();
+    const chapters = await queries.getChapters(req.session.course.courseID);
     for(let i=0; i<chapters.length; i++){
         chapters[i].lessons = await queries.getLessonsByChapter(chapters[i].chapter_id);
     }
@@ -111,3 +112,19 @@ export async function sendImages(req, res, next){
     //if(im.size>62500){
 }
 
+export async function courses(req, res, next){
+    const courses = await courseModel.getTeacherList(req.session.user.user_id);
+    res.render('courses', {courses});
+}
+
+export async function course(req, res, next){
+    const courseID = req.params.courseID;
+    const courseName = await courseModel.getByID(courseID);
+    req.session.course = {courseID: courseID, courseName: courseName};
+  
+    req.session.save( function(err) {
+      req.session.reload( function (err) {
+        res.redirect('/teacher/chapters');
+      });
+    });
+}

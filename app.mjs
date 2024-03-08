@@ -49,7 +49,6 @@ app.use(
 app.locals.mainMenu = mainMenu; 
 
 app.use((req, res, next)=>{
-  console.log("APPUSEMEGHIVVA");
   if(req.session.user){
     res.locals.user=req.session.user;
     if(req.session.course){

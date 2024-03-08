@@ -30,3 +30,6 @@ router.get('/addNewExercise/:testID', isAuth(['teacher']), teacherController.new
 router.post('/addNewExercise/:testID', isAuth(['teacher']), mUploads.single('upl'), teacherController.uploadImages);
 
 router.post('/uploadImages/:testID', isAuth(['teacher']), teacherController.sendImages);
+
+router.get('/courses', isAuth(['teacher']), teacherController.courses);
+router.get('/course/:courseID', isAuth(['teacher']), teacherController.course);

@@ -17,9 +17,9 @@ export async function saveResult(user, exerciseID, correctAnswers){
     return res;
 }
 
-export async function getChapters(){
+export async function getChapters(courseID){
     const [chapters] = await conn.execute(
-        "select chapter_id,chapter_name from chapters where course_id = 4"
+        "select chapter_id,chapter_name from chapters where course_id = ? ", [courseID]
     );
     return chapters;
 }
