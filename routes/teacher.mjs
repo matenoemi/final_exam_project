@@ -33,3 +33,9 @@ router.post('/uploadImages/:testID', isAuth(['teacher']), teacherController.send
 
 router.get('/courses', isAuth(['teacher']), teacherController.courses);
 router.get('/course/:courseID', isAuth(['teacher']), teacherController.course);
+
+router.get('/addNewCourse', isAuth(['teacher']), teacherController.newCourse);
+router.post('/addNewCourse', isAuth(['teacher']), mUploads.single('upl'), teacherController.addNewCourse);
+
+router.get('/addClassToCourse', isAuth(['teacher']), teacherController.classToCourse);
+router.post('/addClassToCourse', isAuth(['teacher']), teacherController.addClassToCourse);

@@ -26,3 +26,30 @@ export async function getTeacherList(teacherID){
     );
     return courses;
 }
+
+export async function addNew(courseName, imageID, teacherID){
+    const [result] = await conn.execute(
+        "insert into courses (course_name, image_id, teacher_id) values (?, ?, ?);", [courseName, imageID, teacherID]
+    );
+    return result;
+}
+
+async function insertClass(classID, courseID){
+
+}
+
+export async function addClass(classes, courseID){
+    if(Array.isArray(classes)){
+        for(let i=0; i<classes.length; i++){
+            const [result] = await conn.execute(
+                "insert into classes_and_courses(class_id, course_id) values(?,?)", [classes[i], courseID]
+            );
+        }
+    }
+    else{
+        const [result] = await conn.execute(
+            "insert into classes_and_courses(class_id, course_id) values(?,?)", [classes, courseID]
+        );
+    }
+    return true;
+}

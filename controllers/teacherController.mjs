@@ -4,8 +4,11 @@ import * as classModel from "../models/class.mjs";
 import * as studentModel from "../models/student.mjs";
 import * as testModel from "../models/test.mjs";
 import * as courseModel from "../models/course.mjs";
+import * as imageModel from "../models/image.mjs"
 
 import { readFile } from "fs/promises";
+import { join } from 'path';
+import { TEMPDIR } from '../appdirs.mjs';
 
 export async function results(req, res, next){
     const results = await queries.resultsOverview();
@@ -16,7 +19,7 @@ export async function results(req, res, next){
 }
 
 export async function classes(req, res, next){
-    const classes = await classModel.getList(req.session.user.user_id);
+    const classes = await classModel.getList(req.session.course.courseID);
     res.render('classes',{classes});
 }
 
@@ -127,4 +130,29 @@ export async function course(req, res, next){
         res.redirect('/teacher/chapters');
       });
     });
+}
+
+export async function newCourse(req, res, next){
+    res.render('newCourse');
+}
+
+export async function addNewCourse(req, res, next){
+    const im=req.file;
+    const courseName = req.body.courseName;
+    const tempName = join(TEMPDIR,im.filename); 
+    const data = await readFile(tempName);
+
+    const imageID = await imageModel.addNew(courseName, data);
+    const result = await courseModel.addNew(courseName, imageID, req.session.user.user_id);
+    res.redirect('/teacher/courses');
+}
+
+export async function classToCourse(req, res, next){
+    const classes = await classModel.getListToCourse(req.session.course.courseID);
+    res.render('classToCourse', {classes});
+}
+
+export async function addClassToCourse(req, res, next){
+    const result = await courseModel.addClass(req.body.class, req.session.course.courseID);
+    res.redirect('/teacher/classes');
 }

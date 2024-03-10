@@ -1,0 +1,45 @@
+<form method="POST" action="/teacher/addClassToCourse" id="form">
+<div style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
+    <div>
+        <table style="border-collapse: collapse;">
+            <thead>
+                <tr style="border: solid grey 1px;">
+                    <th style="border: solid grey 1px;"></th>
+                    <th style="border: solid grey 1px;">Osztály megnevezése</th>
+                    <th style="border: solid grey 1px;">Évfolyam</th>
+                </tr>
+            </thead>
+            <tbody>
+                    <% for(let i=0; i<classes.length; i++) { %>
+                        <tr style="border: solid grey 1px; text-align: center;">
+                            <td><input type="checkbox" value="<%= classes[i].class_id %>" name="class"></td>
+                            <td style="border: solid grey 1px;"><%= classes[i].class_name %></td>
+                            <td style="border: solid grey 1px; text-align: center;"><%= classes[i].class_grade %></td>
+                        </tr>
+                    <% } %>
+            </tbody>
+        </table>
+    </div>
+    <div>
+        <button id="submitButton">Hozzáad</button>
+    </div>
+</div>
+</form>
+
+<script>
+    const button = document.getElementById("submitButton");
+    const form = document.getElementById("form");
+    button.addEventListener('click', function(e){
+        e.preventDefault();
+        const classes = document.getElementsByName("class");
+        let count = 0;
+        for(let i=0; i<classes.length; i++){
+            if(classes[i].checked){
+                count++;
+            }
+        }
+        if(count>0){
+            form.submit();
+        }
+    });
+</script>
