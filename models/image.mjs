@@ -9,3 +9,10 @@ export async function addNew(text, data){
     )
     return image[0].image_id;
 }
+
+export async function getFour(){
+    const [images] = await conn.execute(
+        "select image_id, image_object from images order by image_id desc limit 4"
+    );
+    return images;
+}

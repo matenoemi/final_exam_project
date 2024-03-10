@@ -1,31 +1,34 @@
-<form method="POST" action="/teacher/addNewExercise/<%= testID %>">
-    <div style="font-size: 20px; display: flex; justify-content: center; align-items: center; flex-direction: column;">
+<form method="post" action="/teacher/createExercise/<%= testID %>/<%= type %>">
+    <div style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
         <div>
-            <h3>Válassza ki a feladat típusát!</h3>
+            <h2>Új feladat hozzáadása</h2>
         </div>
-        <% for(let i=0; i<types.length; i++) { %>
-            <div style="margin-top: 30px; display: flex; justify-content: center; align-items: center; flex-direction: row;">
-                <div style="width: 20px; height: 20px;">
-                    <input type="radio" name="type" value="<%= types[i].type %>">
-                </div>
-                <div style="width: 200px; height: 20px;">
-                    <label>
-                        <% switch(types[i].type) { case 'radio': %>
-                            Egy helyes válasz
-                            <% break; case 'check': %>
-                            Több helyes válasz
-                            <% break; case 'ordering': %>
-                            Sorrendbe helyezés
-                            <% break; case 'grouping': %>
-                            Csoportosítás
-                            <% break; %>        
-                        <% } %>
-                    </label>
+        <div>
+            <h4>A feladat szövege:</h4>
+            <input type="text" name="exerciseText">
+        </div>
+        <div>
+            <h4>Jelöld be a helyes válaszokat!</h4>
+        </div>
+        <div style="display: flex; flex-direction: row;">
+            <% for(let i=0; i<images.length; i++){ %>
+            <div style="margin-left: 20px; border: solid gray 1px; background-color: lightcyan;">
+                <input
+                <% if(type == 'check') { %>
+                type="checkbox"
+                <% } else { %>
+                type="radio"
+                <% } %>
+                name="correctAnswer" value="<%= images[i].image_id %>">
+                <input name="answer" type="text" style="display: none;" value="<%= images[i].image_id %>">
+                <div>
+                <img style="width: 180px; height: 130px;" src="data:image/jpeg;base64, <%= images[i].image_object.toString('base64') %>">
                 </div>
             </div>
-        <% } %>
-        <div style="margin-top: 30px; margin-left: 300px;">
-            <button>Kiválaszt</button>
+            <% } %>
+        </div>
+        <div style="margin-top: 20px;">
+            <button>Hozzáad</button>
         </div>
     </div>
 </form>

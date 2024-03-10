@@ -27,9 +27,14 @@ router.get('/addNewTest/:lessonID', isAuth(['teacher']), teacherController.newTe
 router.post('/addNewTest/:lessonID', isAuth(['teacher']), teacherController.addNewTest);
 
 router.get('/addNewExercise/:testID', isAuth(['teacher']), teacherController.newExercise);
-router.post('/addNewExercise/:testID', isAuth(['teacher']), mUploads.single('upl'), teacherController.uploadImages);
-
-router.post('/uploadImages/:testID', isAuth(['teacher']), teacherController.sendImages);
+router.post('/addNewExercise/:testID', isAuth(['teacher']), teacherController.uploadImages);
+router.post('/uploadImages/:testID/:type', isAuth(['teacher']),  mUploads.fields([
+    { name: 'upl1', maxCount: 1 },
+    { name: 'upl2', maxCount: 1 },
+    { name: 'upl3', maxCount: 1 },
+    { name: 'upl4', maxCount: 1 }
+]), teacherController.sendImages);
+router.post('/createExercise/:testID/:type', isAuth(['teacher']), teacherController.createExercise);
 
 router.get('/courses', isAuth(['teacher']), teacherController.courses);
 router.get('/course/:courseID', isAuth(['teacher']), teacherController.course);

@@ -265,3 +265,14 @@ export async function getByTestID(testID){
     return exercises;
 }
 
+export async function addNew(exerciseText, exerciseType, lessonID){
+    const [result] = await conn.execute(
+      "insert into exercises (exercise_text, exercise_type, lesson_id) values (?, ?, ?)", 
+      [exerciseText, exerciseType, lessonID]  
+    );
+    const [exercise] = await conn.execute(
+        "select max(exercise_id) as exercise_id from exercises where lesson_id = ?", [lessonID]
+    );
+    return exercise[0].exercise_id;
+}
+

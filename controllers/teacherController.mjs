@@ -5,6 +5,8 @@ import * as studentModel from "../models/student.mjs";
 import * as testModel from "../models/test.mjs";
 import * as courseModel from "../models/course.mjs";
 import * as imageModel from "../models/image.mjs"
+import * as lessonModel from "../models/lesson.mjs";
+import * as answerModel from "../models/answer.mjs";
 
 import { readFile } from "fs/promises";
 import { join } from 'path';
@@ -98,7 +100,7 @@ export async function addNewTest(req, res, next){
 export async function newExercise(req, res, next){
     const testID = req.params.testID;
     const types = await exerciseModel.getTypes();
-    res.render('newExercise', {testID, types});
+    res.render('selectType', {testID, types});
 }
 
 export async function uploadImages(req, res, next){
@@ -108,11 +110,48 @@ export async function uploadImages(req, res, next){
 }
 
 export async function sendImages(req, res, next){
-    const im=req.file;
-    console.log("im:"+im);
-    //const tempName = join(TEMPDIR,im.filename); 
-    //let data = await readFile(tempName);
-    //if(im.size>62500){
+    const type = req.params.type;
+    const testID = req.params.testID;
+    let files=[];
+    files[0] = req.files['upl1'][0];
+    files[1] = req.files['upl2'][0];
+    files[2] = req.files['upl3'][0];
+    files[3] = req.files['upl4'][0];
+    let errors = 0;
+    for(let i=0; i<files.length; i++){
+        try{
+            const tempName = join(TEMPDIR,files[i].filename); 
+            let data = await readFile(tempName);
+            const result = await imageModel.addNew(files[i].filename, data);
+        }
+        catch(err){
+            files[i].incorrect = true;
+            errors++;
+        }
+    }
+    const images = await imageModel.getFour();
+    res.render('newExercise', {images, type, testID});
+}
+
+export async function createExercise(req, res, next){
+    const type = req.params.type;
+    const testID = req.params.testID;
+    const lessonID = await lessonModel.getByTest(testID);
+
+    const exerciseID = await exerciseModel.addNew(req.body.exerciseText, type, lessonID);
+    const addToTest = await testModel.addExercise(testID, exerciseID);
+
+    // answers to exercise
+    const answers = req.body.answer;
+    const correctAnswers = req.body.correctAnswer;
+    console.log(answers);
+    console.log(correctAnswers);
+
+    const insertAnswers = await answerModel.insertAnswersTypeCheck(answers, exerciseID);
+    const setCorrectAnswers = await answerModel.setCorrectAnswersTypeCheck(correctAnswers, exerciseID);
+
+    const path = '/teacher/test/'+testID;
+    res.redirect(path);
 }
 
 export async function courses(req, res, next){
