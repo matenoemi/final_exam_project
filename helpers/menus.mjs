@@ -3,6 +3,12 @@ const defaultMenu = {
   Bits: '/learn/bits'
 };
 
+const adminMenu = {
+  Home : '/',
+  Teachers: '/admin/teachers',
+  Classes: '/admin/classes'
+};
+
 const studentMenu = {
   Home : '/learn/courses',
   Chapters: '/learn/chapters',
@@ -24,6 +30,7 @@ export function mainMenu(user){
       switch (user.user_role){
         case 'student': return studentMenu;
         case 'teacher': return teacherMenu;
+        case 'admin': return adminMenu;
         default: return defaultMenu;  
       }
     }

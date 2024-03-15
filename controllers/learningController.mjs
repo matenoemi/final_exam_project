@@ -54,7 +54,9 @@ export async function getExercise(req, res, next){
   const lessonID = Number(req.params.lessonID);
   const exercisePos = Number(req.params.exercisePos)+1; 
   const exercise = await exerciseModel.getByPosition(lessonID, exercisePos);
-  const answers = await exerciseModel.getAnswers(exercise.exercise_id);
+  let answers = await exerciseModel.getAnswers(exercise.exercise_id);
+  answers = shuffleArray(answers);
+  console.log(answers);
   const file = await exerciseModel.getType(exercise.exercise_id)
   res.render(file,{exercise, answers, lessonID, exercisePos});
 }
@@ -76,3 +78,10 @@ export async function course(req, res, next){
   });
 }
 
+function shuffleArray(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}

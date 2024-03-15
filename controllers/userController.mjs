@@ -15,7 +15,7 @@ function checkLogin(user) {
   console.log(user);
   const schema = Joi.object({
     email: Joi.string()
-      .pattern(/^([a-z0-9_]|\-|\.)+@(([a-z0-9_]|\-)+\.)+[a-z]{2,10}$/i)
+      //.pattern(/^([a-z0-9_]|\-|\.)+@(([a-z0-9_]|\-)+\.)+[a-z]{2,10}$/i)
       .required()
       .messages({ "string.pattern.base": "Az email cím hibás" }),
     password: Joi.string().min(1).max(100).required(),

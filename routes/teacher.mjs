@@ -6,8 +6,6 @@ import multer from 'multer';
 import { TEMPDIR } from '../appdirs.mjs';
 const mUploads = multer({ dest: TEMPDIR });
 
-//const uploadImages = mUploads.array('upl');
-
 export const router = express.Router();
 
 router.get('/results', isAuth(['teacher']), teacherController.results);

@@ -21,7 +21,7 @@ export async function results(req, res, next){
 }
 
 export async function classes(req, res, next){
-    const classes = await classModel.getList(req.session.course.courseID);
+    const classes = await classModel.getListByCourseID(req.session.course.courseID);
     res.render('classes',{classes});
 }
 
