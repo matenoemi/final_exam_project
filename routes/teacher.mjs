@@ -54,3 +54,4 @@ router.get('/addClassToCourse', isAuth(['teacher']), teacherController.classToCo
 router.post('/addClassToCourse', isAuth(['teacher']), teacherController.addClassToCourse);
 
 router.post('/createOrderingExercise/:testID/:direction', isAuth(['teacher']), teacherController.createOrderingExercise);
+router.post('/createGroupingExercise/:testID', isAuth(['teacher']), teacherController.createGroupingExercise);

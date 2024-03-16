@@ -290,3 +290,12 @@ export async function addNewTypeOrdering(exerciseText, exerciseDirection, lesson
     return exerciseID;
 }
 
+export async function addNewTypeGrouping(exerciseText, lessonID){
+    const [result] = await conn.execute(
+      "insert into exercises (exercise_text, exercise_type, lesson_id) "+
+      "values (?, 'grouping', ?)", [exerciseText, lessonID]  
+    );
+    const exerciseID = await getMaxID(lessonID);
+    return exerciseID;
+}
+

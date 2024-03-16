@@ -7,6 +7,7 @@ import * as courseModel from "../models/course.mjs";
 import * as imageModel from "../models/image.mjs"
 import * as lessonModel from "../models/lesson.mjs";
 import * as answerModel from "../models/answer.mjs";
+import * as groupModel from "../models/group.mjs";
 
 import { readFile } from "fs/promises";
 import { join } from 'path';
@@ -174,12 +175,27 @@ export async function sendDragImages(req, res, next){
     let groups = null;
     if(type=='ordering'){
         direction = req.body.direction;
-        res.render('setOrdering', {testID, direction, images})
+        res.render('setOrdering', {testID, direction, images});
     }
     else{
         groups = req.body.groupName;
-        
+        groups = await groupModel.addList(groups);
+        res.render('setGrouping', {testID, groups, images});
     }
+}
+
+export async function createGroupingExercise(req, res, next){
+    console.log(req.body.answer);
+    const testID = req.params.testID;
+    const lessonID = await lessonModel.getByTest(testID);
+    const exerciseID = await exerciseModel.addNewTypeGrouping(req.body.exerciseText, lessonID);
+    const addToTest = await testModel.addExercise(testID, exerciseID);
+
+    const groups = await groupModel.getList(req.body.answer.length);
+    const insertAnswers = await answerModel.setCorrectAnswersTypeGrouping(req.body.answer, exerciseID, groups);
+
+    const path = '/teacher/test/'+testID;
+    res.redirect(path);
 }
 
 export async function createOrderingExercise(req, res, next){
