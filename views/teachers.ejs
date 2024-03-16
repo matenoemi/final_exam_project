@@ -1,0 +1,19 @@
+<div style="display: flex; justify-content: flex-end; flex-direction: row;">
+    <div style="font-size: 18px;">
+        <a href="/admin/newTeacher">Új tanár hozzáadása</a>
+    </div>
+</div>
+<div style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
+    <div>
+        <table>
+            <tr><th>Tanár neve</th></tr>
+            <% for(let i=0; i<teachers.length; i++) { %>
+                <tr>
+                    <td>
+                        <%= teachers[i].user_name %>
+                    </td>
+                </tr>
+            <% } %>
+        </table>
+    </div>
+</div>

@@ -17,12 +17,12 @@ export async function results(req, res, next){
     for(let i=0; i<results.length; i++){
       results[i].total=await exerciseModel.getNumberOfCorrectAnswers(results[i].exercise_id);
     }
-    res.render('overview',{results});
+    res.render('overview', {results});
 }
 
 export async function classes(req, res, next){
     const classes = await classModel.getListByCourseID(req.session.course.courseID);
-    res.render('classes',{classes});
+    res.render('classes', {classes});
 }
 
 export async function studentsByClass(req, res, next){

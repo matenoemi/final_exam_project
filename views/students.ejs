@@ -1,15 +1,32 @@
+<% if(user.user_role == 'admin') { %>
+<div style="display: flex; justify-content: flex-end; flex-direction: row;">
+    <div style="font-size: 18px;">
+        <a href="/admin/newStudent/<%= classID %>">Új tanuló hozzáadása</a>
+    </div>
+</div>
+<% } %>
+
 <div style="display: flex; justify-content: center; align-items: center;">
     <div>
         <table style="border-collapse: collapse;">
             <thead>
                 <tr style="border: solid grey 1px;">
+                    <th></th>
                     <th style="border: solid grey 1px;">Tanuló neve</th>
                 </tr>
             </thead>
             <tbody>
                     <% for(let i=0; i<students.length; i++) { %>
                         <tr style="border: solid grey 1px;">
-                            <td style="border: solid grey 1px;"><a href="/teacher/student/<%= students[i].user_id %>"><%= students[i].user_name %></a></td>
+                            <td><%= i+1 %></td>
+                            <td style="border: solid grey 1px;">
+                                <% if(user.user_role == 'teacher') { %>
+                                    <a href="/teacher/student/<%= students[i].user_id %>"><%= students[i].user_name %></a>
+                                <% } else { %>
+                                    <a href="/admin/student/<%= students[i].user_id %>"><%= students[i].user_name %></a>
+                                <% } %>
+
+                            </td>
                         </tr>
                     <% } %>
             </tbody>

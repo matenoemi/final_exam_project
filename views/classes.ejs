@@ -1,5 +1,5 @@
 <div style="display: flex; justify-content: flex-end; flex-direction: row;">
-    <div style="font-size: 20px;">
+    <div style="font-size: 18px;">
     <% if(user.user_role == 'teacher') { %>
         <a href="/teacher/addClassToCourse">Osztály hozzáadása</a>
     <% } else { %>
@@ -24,7 +24,7 @@
                                 <% if(user.user_role == 'teacher') { %>
                                     <a href="/teacher/students/<%= classes[i].class_id %>"><%= classes[i].class_name %></a>
                                 <% } else { %>
-                                    
+                                    <a href="/admin/students/<%= classes[i].class_id %>"><%= classes[i].class_name %></a>
                                 <% } %>
 
                                 

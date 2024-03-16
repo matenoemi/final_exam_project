@@ -1,5 +1,13 @@
 <div style="display: flex; align-items: center; justify-content: center;">
-    <div>
-        <h1><%= student.user_name %> - Portfólió</h1>
-    </div>
+
+    <% if(user.user_role == 'admin') { %>
+        <div>
+            <div>Név: <%= student.user_name %></div>
+            <div>Felhasználónév: <%= student.user_email %></div>
+        </div>
+    <% } else { %>
+        <div>
+            <h1><%= student.user_name %> - Portfólió</h1>
+        </div>
+    <% } %>
 </div>

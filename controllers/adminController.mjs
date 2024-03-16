@@ -1,9 +1,6 @@
 import * as classModel from "../models/class.mjs"
-import * as xlsx from 'node-xlsx';
-
-import { readFile } from "fs/promises";
-import { join } from 'path';
-import { TEMPDIR } from '../appdirs.mjs';
+import * as studentModel from "../models/student.mjs";
+import * as teacherModel from "../models/teacher.mjs";
 
 export async function classes(req, res, next){
     const classes = await classModel.getList();
@@ -18,15 +15,48 @@ export async function addNewClass(req, res, next){
     const list = req.file;
     const name = req.body.name;
     const password = req.body.password;
+    const grade = req.body.grade;
+    const classID = await classModel.addNew(list, name, password, grade);
+    const path = '/admin/students/'+classID;
+    res.redirect(path);
+}
 
-    const tempName = join(TEMPDIR,list.filename); 
-    const workbook = await readFile(tempName);
-    const file = xlsx.parse(workbook);
-    const rows = file[0].data;
-    for(let i=0; i<rows.length; i++){
-        for(let j=0; j<rows[i].length; j++){
-            console.log(rows[i][j]);
-        }
-    }
-    
+export async function students(req, res, next){
+    const students = await studentModel.getListByClass(req.params.classID);
+    res.render('students', {students, classID: req.params.classID});
+}
+
+export async function student(req, res, next){
+    const student = await studentModel.getByID(req.params.studentID);
+    res.render('student', {student});
+}
+
+export async function teachers(req, res, next){
+    const teachers = await teacherModel.getList();
+    res.render('teachers', {teachers});
+}
+
+export async function newTeacher(req, res, next){
+    res.render('newTeacher');
+}
+
+export async function addNewTeacher(req, res, next){
+    const name = req.body.name;
+    const password = req.body.password;
+    const result = await teacherModel.addNew(name, password);
+    res.redirect('/admin/teachers');
+}
+
+export async function newStudent(req, res, next){
+    const classID = req.params.classID;
+    res.render('newStudent', {classID});
+}
+
+export async function addNewStudent(req, res, next){
+    const classID = req.params.classID;
+    const name = req.body.name;
+    const password = req.body.password;
+    const result = await studentModel.addNew(name, password, classID);
+    const path = '/admin/students/'+classID;
+    res.redirect(path);
 }

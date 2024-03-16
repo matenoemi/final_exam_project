@@ -1,4 +1,10 @@
 import { conn } from "../db/mysqlconn.mjs";
+import * as studentModel from "../models/student.mjs";
+
+import * as xlsx from 'node-xlsx';
+import { readFile } from "fs/promises";
+import { join } from 'path';
+import { TEMPDIR } from '../appdirs.mjs';
 
 export async function getListByCourseID(courseID){
     const [classes] = await conn.execute(
@@ -24,4 +30,27 @@ export async function getList(){
         "select * from classes order by class_grade"
     );
     return classes;
+}
+
+export async function addNew(list, name, password, grade){
+    const [] = await conn.execute(
+        "insert into classes(class_name, class_grade) values(?, ?)", [name, grade]
+    );
+    const [result] = await conn.execute(
+        "select max(class_id) as classID from classes"
+    );
+    const classID = result[0].classID;
+
+    const tempName = join(TEMPDIR,list.filename); 
+    const workbook = await readFile(tempName);
+    const file = xlsx.parse(workbook);
+    const rows = file[0].data;
+    for(let i=0; i<rows.length; i++){
+        for(let j=0; j<rows[i].length; j++){
+            const name = rows[i][j];
+            console.log(name+" "+password+" "+classID);
+            const result = await studentModel.addNew(name, password, classID);
+        }
+    }
+    return classID;
 }
