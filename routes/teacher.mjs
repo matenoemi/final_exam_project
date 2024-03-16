@@ -21,17 +21,27 @@ router.get('/tests/:lessonID', isAuth(['teacher']), teacherController.testsByLes
 router.get('/test/:testID', isAuth(['teacher']), teacherController.testByID);
 
 router.post('/addExercises/:testID', isAuth(['teacher']), teacherController.addExercises);
+
 router.get('/addNewTest/:lessonID', isAuth(['teacher']), teacherController.newTest);
 router.post('/addNewTest/:lessonID', isAuth(['teacher']), teacherController.addNewTest);
 
-router.get('/addNewExercise/:testID', isAuth(['teacher']), teacherController.newExercise);
-router.post('/addNewExercise/:testID', isAuth(['teacher']), teacherController.uploadImages);
-router.post('/uploadImages/:testID/:type', isAuth(['teacher']),  mUploads.fields([
+router.get('/addNewExercise/:testID', isAuth(['teacher']), teacherController.selectMainType);
+router.post('/addNewExercise/:testID', isAuth(['teacher']), teacherController.selectSecondType);
+
+
+router.post('/addNewClickExercise/:testID', isAuth(['teacher']), teacherController.uploadClick);
+router.post('/addNewDragExercise/:testID', isAuth(['teacher']), teacherController.uploadDrag);
+
+router.post('/uploadClickImages/:testID/:type', isAuth(['teacher']),  mUploads.fields([
     { name: 'upl1', maxCount: 1 },
     { name: 'upl2', maxCount: 1 },
     { name: 'upl3', maxCount: 1 },
     { name: 'upl4', maxCount: 1 }
-]), teacherController.sendImages);
+]), teacherController.sendClickImages);
+
+router.post('/uploadDragImages/:testID/:type', isAuth(['teacher']), mUploads.array("images", 8), teacherController.sendDragImages);
+
+
 router.post('/createExercise/:testID/:type', isAuth(['teacher']), teacherController.createExercise);
 
 router.get('/courses', isAuth(['teacher']), teacherController.courses);
@@ -42,3 +52,5 @@ router.post('/addNewCourse', isAuth(['teacher']), mUploads.single('upl'), teache
 
 router.get('/addClassToCourse', isAuth(['teacher']), teacherController.classToCourse);
 router.post('/addClassToCourse', isAuth(['teacher']), teacherController.addClassToCourse);
+
+router.post('/createOrderingExercise/:testID/:direction', isAuth(['teacher']), teacherController.createOrderingExercise);

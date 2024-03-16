@@ -97,40 +97,103 @@ export async function addNewTest(req, res, next){
     res.redirect(path);
 }
 
+export async function selectMainType(req, res, next){
+    const testID = req.params.testID;
+    res.render('mainType', {testID});
+}
+
+export async function selectSecondType(req, res, next){
+    const testID = req.params.testID;
+    const type = req.body.type;
+    switch(type){
+        case 'click': res.render('clickTypes', {testID}); break;
+        case 'drag': res.render('dragTypes', {testID}); break;
+    }
+}
+
 export async function newExercise(req, res, next){
     const testID = req.params.testID;
     const types = await exerciseModel.getTypes();
     res.render('selectType', {testID, types});
 }
 
-export async function uploadImages(req, res, next){
+export async function uploadClick(req, res, next){
     const testID = req.params.testID;
     const type = req.body.type;
-    res.render('uploadImages', {testID, type});
+    res.render('uploadClick', {testID, type});
 }
 
-export async function sendImages(req, res, next){
+export async function uploadDrag(req, res, next){
+    const testID = req.params.testID;
+    const type = req.body.type;
+    res.render('uploadDrag', {testID, type});
+}
+
+export async function sendClickImages(req, res, next){
     const type = req.params.type;
     const testID = req.params.testID;
-    let files=[];
-    files[0] = req.files['upl1'][0];
-    files[1] = req.files['upl2'][0];
-    files[2] = req.files['upl3'][0];
-    files[3] = req.files['upl4'][0];
-    let errors = 0;
+        let files=[];
+        files[0] = req.files['upl1'][0];
+        files[1] = req.files['upl2'][0];
+        files[2] = req.files['upl3'][0];
+        files[3] = req.files['upl4'][0];
+        let errors = 0;
+        for(let i=0; i<files.length; i++){
+            try{
+                const tempName = join(TEMPDIR,files[i].filename); 
+                let data = await readFile(tempName);
+                const result = await imageModel.addNew(files[i].filename, data, req.session.user.user_id);
+            }
+            catch(err){
+                files[i].incorrect = true;
+                errors++;
+            }
+        }
+        const images = await imageModel.get(req.session.user.user_id, 4);
+        res.render('newClickExercise', {images, type, testID}); 
+}
+
+export async function sendDragImages(req, res, next){
+    const type = req.params.type;
+    const testID = req.params.testID;
+    let files = req.files;
     for(let i=0; i<files.length; i++){
         try{
             const tempName = join(TEMPDIR,files[i].filename); 
             let data = await readFile(tempName);
-            const result = await imageModel.addNew(files[i].filename, data);
+            const result = await imageModel.addNew(files[i].filename, data, req.session.user.user_id);
         }
         catch(err){
             files[i].incorrect = true;
             errors++;
         }
     }
-    const images = await imageModel.getFour();
-    res.render('newExercise', {images, type, testID});
+    const images = await imageModel.get(req.session.user.user_id, files.length);
+
+    let direction = null;
+    let groups = null;
+    if(type=='ordering'){
+        direction = req.body.direction;
+        res.render('setOrdering', {testID, direction, images})
+    }
+    else{
+        groups = req.body.groupName;
+        
+    }
+}
+
+export async function createOrderingExercise(req, res, next){
+    console.log(req.body.answer);
+    const direction = req.params.direction;
+    const testID = req.params.testID;
+    const lessonID = await lessonModel.getByTest(testID);
+    const exerciseID = await exerciseModel.addNewTypeOrdering(req.body.exerciseText, direction, lessonID);
+   
+    const addToTest = await testModel.addExercise(testID, exerciseID);
+    const insertAnswers = await answerModel.setCorrectAnswersTypeOrdering(req.body.answer, exerciseID);
+
+    const path = '/teacher/test/'+testID;
+    res.redirect(path);
 }
 
 export async function createExercise(req, res, next){
@@ -144,8 +207,6 @@ export async function createExercise(req, res, next){
     // answers to exercise
     const answers = req.body.answer;
     const correctAnswers = req.body.correctAnswer;
-    console.log(answers);
-    console.log(correctAnswers);
 
     const insertAnswers = await answerModel.insertAnswersTypeCheck(answers, exerciseID);
     const setCorrectAnswers = await answerModel.setCorrectAnswersTypeCheck(correctAnswers, exerciseID);

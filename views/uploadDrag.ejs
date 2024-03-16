@@ -1,0 +1,55 @@
+<form method="POST" action="/teacher/uploadDragImages/<%= testID %>/<%= type %>" enctype="multipart/form-data">
+    <div style="font-size: 20px; display: flex; justify-content: center; align-items: center; flex-direction: column;">
+    
+            <div style="margin-top: 20px;">
+            <input type="file" name="images" accept="image/*" multiple>
+            </div>
+
+        <% if(type=='ordering') { %>
+            <div>
+                <p>Elrendezés:</p>
+                <input type="radio" name="direction" value="horizontal"> Vízszintes
+                <input type="radio" name="direction" value="vertical"> Függőleges
+            </div>
+        <% } else { %>
+            <div>
+                <p>Csoportok száma:</p>
+                <div style="margin-left: 40px;"><input type="radio" name="limit" value="2"> 2 </div>
+                <div style="margin-left: 40px;"><input type="radio" name="limit" value="3"> 3 </div>
+                <div style="margin-left: 40px;"><input type="radio" name="limit" value="4"> 4 </div>
+            </div>
+            <div>
+                <p>Csoportok megnevezése:</p>
+            </div>
+            <div id="groupContainer">
+                
+            </div>
+        <% } %>
+            
+        <div>
+            <button>Feltölt</button>
+        </div>
+    </div>
+</form>
+
+<script>
+    const directionRadios = document.getElementsByName("limit");
+    directionRadios.forEach(radio => {
+        radio.addEventListener('change', function() {
+            if (this.checked) {
+                const numOfGroups = parseInt(this.value);
+                const groupContainer = document.getElementById('groupContainer');
+                groupContainer.innerHTML = '';
+
+                for (let i = 0; i < numOfGroups; i++) {
+                    const input = document.createElement('input');
+                    input.type = 'text';
+                    input.name = `groupName`;
+                    const divElement = document.createElement('div');
+                    divElement.appendChild(input)
+                    groupContainer.appendChild(divElement);
+                }
+            }
+        });
+    });
+</script>

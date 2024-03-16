@@ -265,14 +265,28 @@ export async function getByTestID(testID){
     return exercises;
 }
 
+async function getMaxID(lessonID){
+    const [exercise] = await conn.execute(
+        "select max(exercise_id) as exercise_id from exercises where lesson_id = ?", [lessonID]
+    );
+    return exercise[0].exercise_id;
+}
+
 export async function addNew(exerciseText, exerciseType, lessonID){
     const [result] = await conn.execute(
       "insert into exercises (exercise_text, exercise_type, lesson_id) values (?, ?, ?)", 
       [exerciseText, exerciseType, lessonID]  
     );
-    const [exercise] = await conn.execute(
-        "select max(exercise_id) as exercise_id from exercises where lesson_id = ?", [lessonID]
+    const exerciseID = await getMaxID(lessonID);
+    return exerciseID;
+}
+
+export async function addNewTypeOrdering(exerciseText, exerciseDirection, lessonID){
+    const [result] = await conn.execute(
+      "insert into exercises (exercise_text, exercise_type, exercise_direction, lesson_id) "+
+      "values (?, 'ordering', ?, ?)", [exerciseText, exerciseDirection, lessonID]  
     );
-    return exercise[0].exercise_id;
+    const exerciseID = await getMaxID(lessonID);
+    return exerciseID;
 }
 
