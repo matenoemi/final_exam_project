@@ -33,6 +33,8 @@ export async function getByPosition(lessonID, exercisePos){
     );
     let exercise = exerciseTemp[0];
     //console.log(exercise);
+
+    /*
     if(exercise.image_id !== null){
         const [image] = await conn.execute(
         "select i.image_object, i.image_text "+
@@ -43,6 +45,7 @@ export async function getByPosition(lessonID, exercisePos){
         exercise.image_object = image[0].image_object;
         exercise.image_text = image[0].image_text;
     }
+    */
 
     //console.log(exercise);
     return exercise;

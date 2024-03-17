@@ -13,7 +13,8 @@ const studentMenu = {
   Home : '/learn/courses',
   Chapters: '/learn/chapters',
   Sort : '/learn/sort',
-  Bits: '/learn/bits'
+  Bits: '/learn/bits',
+  Sounds: '/learn/sounds'
 };
 
 const teacherMenu = {

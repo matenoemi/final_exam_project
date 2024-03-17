@@ -1,7 +1,27 @@
 import * as queries from "../db/queries.mjs";
 import * as exerciseModel from "../models/exercise.mjs";
 import * as courseModel from "../models/course.mjs";
+import { createReadStream } from "fs";
+import { statSync } from "fs";
+import { join } from 'path';
+import { __dirname } from '../dirname.mjs';
 
+export async function play(req, res, next){
+  const tempName = join(__dirname, "/sounds/", req.params.soundFile); 
+  let music = tempName;
+  let stat = statSync(music);
+
+  res.header({
+    'Content-Type': 'audio/mpeg',
+    'Content-Length': stat.size
+  });
+  let readStream = createReadStream(music);
+  readStream.pipe(res);
+}
+
+export async function sounds(req, res, next){
+  res.render('play');
+}
 
 export async function chapters(req,res,next){
   const chapters = await queries.getChapters(req.session.course.courseID);

@@ -7,11 +7,7 @@
                 <p>Eredmény: <%= correctAnswers %> / <%= points %> </p>
             </div>
             <div>
-            <% if(exercise.image_object){ %>
-            <div style="text-align: center;">
-            <img src="data:image/jpeg;base64, <%= exercise.image_object.toString('base64') %>" alt="<%= exercise.image_text %>">
-            </div>
-            <% } %>
+            
         </div>
         <!-- answers -->
         <div style="display: flex; flex-direction: row;">

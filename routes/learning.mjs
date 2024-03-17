@@ -18,4 +18,5 @@ router.get('/draganddrop', isAuth(['student']), exampleController.dragAndDrop);
 router.get('/courses', isAuth(['student']), learningController.courses);
 router.get('/course/:courseID', isAuth(['student']), learningController.course);
 
-
+router.get('/sounds', isAuth(['student']), learningController.sounds);
+router.get('/:soundFile', isAuth(['student']), learningController.play);
