@@ -4,7 +4,7 @@ import { getRoles } from "../helpers/roles.mjs";
 import { createHash } from "crypto";
 import debugMsg from 'debug';
 const debug = debugMsg('app:userController'); 
-
+import * as courseModel from "../models/course.mjs";
 
 export async function endConn() {
   await conn.end();
@@ -123,23 +123,39 @@ export async function postLogin(req, res, next) {
     return;
   }
 
+  let courses;
+  switch(rows[0].user_role){
+    case 'student':
+      courses = await courseModel.getStudentList(rows[0].user_id);
+      break;
+    case 'teacher':
+      courses = await courseModel.getTeacherList(rows[0].user_id);
+      break;
+  }
+  
   //sikeres bejelentkezés
   //töröljük a szesszió eddigi adatait
   req.session.regenerate(function (err) {
     if (err) next(err);
 
     //a felhasználó adatai tárolódnak a szesszióban
-    console.log("SZESSZIOBAN ELTAROLVA");
     req.session.user = rows[0];
-
+    if(courses.length>0){
+      req.session.course = {courseID: courses[0].course_id, courseName: courses[0].course_name};
+    }
+    
     debug(`login ok: %o`,req.session.user);
     //kimentjük a szesszió adatokat, ha jön egy új kérés mielőtt
     //ez a függvény kilép, az már az új adatokat találja
     req.session.save(function (err) {
       if (err) return next(err);
       //átléptetjük a felhasználót a fő oldalra
-      //console.log("Session user: "+req.session.user);
-      //console.log(req.session.user);
+
+      if(courses.length==0){
+        res.redirect("/");
+        return
+      }
+      
       switch(req.session.user.user_role){
         case 'student':
           res.redirect("/learn/courses");

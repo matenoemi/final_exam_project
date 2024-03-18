@@ -65,18 +65,23 @@ export async function correctAnswers(req,res,next){
       res.render('correctedGrouping', {exercise, answers, groups: result.groups, lessonID, exercisePos, correctAnswers: 9, points});
       break;
     case "radio":
-      res.render('correctedRadio', {exercise, answers, lessonID, exercisePos, correctAnswers: 1, points})
+      res.render('correctedRadio', {exercise, answers, lessonID, exercisePos, correctAnswers: 1, points});
+      break;
   }
 
 }
 
 export async function getExercise(req, res, next){
+  console.log('getExercise');
+  //console.log(req);
   const lessonID = Number(req.params.lessonID);
   const exercisePos = Number(req.params.exercisePos)+1; 
   const exercise = await exerciseModel.getByPosition(lessonID, exercisePos);
   let answers = await exerciseModel.getAnswers(exercise.exercise_id);
-  answers = shuffleArray(answers);
-  console.log(answers);
+  if(exercise.exercise_type=='ordering'){
+    answers = shuffleArray(answers);
+  }
+  //console.log(answers);
   const file = await exerciseModel.getType(exercise.exercise_id)
   res.render(file,{exercise, answers, lessonID, exercisePos});
 }

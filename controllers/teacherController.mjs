@@ -151,7 +151,7 @@ export async function sendClickImages(req, res, next){
             }
         }
         const images = await imageModel.get(req.session.user.user_id, 4);
-        res.render('newClickExercise', {images, type, testID}); 
+        res.render('setClick', {images, type, testID}); 
 }
 
 export async function sendDragImages(req, res, next){
@@ -253,13 +253,20 @@ export async function newCourse(req, res, next){
 }
 
 export async function addNewCourse(req, res, next){
+    const defaultImageID = 170;
     const im=req.file;
     const courseName = req.body.courseName;
-    const tempName = join(TEMPDIR,im.filename); 
-    const data = await readFile(tempName);
-
-    const imageID = await imageModel.addNew(courseName, data);
-    const result = await courseModel.addNew(courseName, imageID, req.session.user.user_id);
+    try{
+        const tempName = join(TEMPDIR,im.filename); 
+        const data = await readFile(tempName);
+        const imageID = await imageModel.addNew(courseName, data);
+        const courseID = await courseModel.addNew(courseName, imageID);
+        const result = await courseModel.addTeacher(courseID, req.session.user.user_id);
+    }
+    catch(e){
+        const courseID = await courseModel.addNew(courseName, defaultImageID);
+        const result = await courseModel.addTeacher(courseID, req.session.user.user_id);
+    }
     res.redirect('/teacher/courses');
 }
 

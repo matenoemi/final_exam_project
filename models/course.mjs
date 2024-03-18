@@ -21,17 +21,32 @@ export async function getByID(courseID){
 export async function getTeacherList(teacherID){
     const [courses] = await conn.execute(
         "select c.course_id, c.course_name, i.image_object "+
-        "from courses c join users u on c.teacher_id = u.user_id "+
-        "join images i on i.image_id = c.image_id where c.teacher_id = ? order by c.course_name ", [teacherID]
+        "from courses c join teachers_and_courses tc on c.course_id = tc.course_id "+
+        "join users u on tc.teacher_id = u.user_id "+
+        "join images i on i.image_id = c.image_id where tc.teacher_id = ? order by c.course_name ", [teacherID]
     );
     return courses;
 }
 
-export async function addNew(courseName, imageID, teacherID){
+export async function addTeacher(courseID, teacherID){
     const [result] = await conn.execute(
-        "insert into courses (course_name, image_id, teacher_id) values (?, ?, ?);", [courseName, imageID, teacherID]
+        "insert into teachers_and_courses (course_id, teacher_id) values (?, ?);", [courseID, teacherID]
     );
-    return result;
+}
+
+async function getMaxID(){
+    const [course] = await conn.execute(
+        "select max(course_id) as max_id from courses"
+    );
+    return course[0].max_id;
+}
+
+export async function addNew(courseName, imageID){
+    const [result] = await conn.execute(
+        "insert into courses (course_name, image_id) values (?, ?);", [courseName, imageID]
+    );
+    const maxID = await getMaxID();
+    return maxID;
 }
 
 async function insertClass(classID, courseID){

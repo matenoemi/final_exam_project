@@ -24,8 +24,8 @@ const teacherMenu = {
   Chapters: '/teacher/chapters'
 };
 
-export function mainMenu(user){
-    if(!user){
+export function mainMenu(user, course){
+    if(!user || !course){
       return defaultMenu;
     }else{
       switch (user.user_role){

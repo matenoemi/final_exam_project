@@ -1,3 +1,4 @@
+<!--
 <div class="soundContainer" style="display: none;">
     <audio controls="" id="correct">
     <source src="correct.wav" type="audio/wav">
@@ -12,6 +13,7 @@
     </audio> 
     
 </div>
+-->
 
 
 <form method="GET" action="/learn/exercise/<%= lessonID %>/<%= exercisePos %>">
@@ -48,9 +50,9 @@
 </form>
 
 <script>
-    const correct = document.getElementById("correct");
-    const incomplete = document.getElementById("incomplete");
-    const wrong = document.getElementById("wrong");
+    //const correct = document.getElementById("correct");
+    //const incomplete = document.getElementById("incomplete");
+    //const wrong = document.getElementById("wrong");
     const displayButton = document.getElementById("displayButton");
     const nextButton=document.getElementById("nextButton");
 
@@ -62,13 +64,13 @@
                 if(answers[i].getAttribute("flag")==1){
                     parentDiv.style.border="5px solid green";
                     setTimeout(() => {
-                        correct.play();
+                        //correct.play();
                     }, 1000);
                 }
                 else{
                     parentDiv.style.border="5px solid red";
                     setTimeout(() => {
-                        wrong.play();
+                        //wrong.play();
                     }, 1000);
                 }
             }
@@ -76,7 +78,7 @@
                 if(answers[i].getAttribute("flag")==1){
                     parentDiv.style.border="5px solid yellow";
                     setTimeout(() => {
-                        incomplete.play();
+                        //incomplete.play();
                     }, 1000);
                 }
             }

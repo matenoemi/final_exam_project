@@ -55,9 +55,12 @@ app.use((req, res, next)=>{
     res.locals.course = req.session.course;
     console.log(res.locals.course.courseName);
     }
+    else{
+      res.locals.course = null;
+    }
   }else{
     res.locals.user=null;
-    //res.locals.course = null;
+    res.locals.course = null;
   }
   next();
 })
