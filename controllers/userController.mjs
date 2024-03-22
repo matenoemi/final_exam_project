@@ -140,9 +140,11 @@ export async function postLogin(req, res, next) {
 
     //a felhasználó adatai tárolódnak a szesszióban
     req.session.user = rows[0];
+    if(courses != undefined){
     if(courses.length>0){
       req.session.course = {courseID: courses[0].course_id, courseName: courses[0].course_name};
     }
+  }
     
     debug(`login ok: %o`,req.session.user);
     //kimentjük a szesszió adatokat, ha jön egy új kérés mielőtt
@@ -150,6 +152,11 @@ export async function postLogin(req, res, next) {
     req.session.save(function (err) {
       if (err) return next(err);
       //átléptetjük a felhasználót a fő oldalra
+
+      if(rows[0].user_role=='admin'){
+        res.redirect("/");
+        return
+      }
 
       if(courses.length==0){
         res.redirect("/");

@@ -15,6 +15,16 @@ export async function getListByCourseID(courseID){
     return classes;
 }
 
+export async function getListToScheduleTest(courseID, testID){
+    const [classes] = await conn.execute(
+        "select cl.class_id, cl.class_name from classes cl "+
+        "join classes_and_courses clco on cl.class_id = clco.class_id "+
+        "where clco.course_id = ? and cl.class_id not in "+
+        "(select class_id from scheduled_tests where test_id = ?)", [courseID, testID]
+    );
+    return classes;
+}
+
 export async function getListToCourse(courseID){
     const [classes] = await conn.execute(
     "select class_id, class_name, class_grade from classes where class_id not in "+

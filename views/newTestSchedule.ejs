@@ -1,0 +1,22 @@
+<form method="post" action="/teacher/newTestSchedule/<%= testID %>">
+    <div style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
+        <div>
+            <select name="class">
+                <% for(let i=0; i<classes.length; i++) { %>
+                    <option value="<%= classes[i].class_id %>"><%= classes[i].class_name %></option>
+                <% } %>
+            </select>
+        </div>
+
+        <div>
+            <input type="datetime-local" name="start">
+        </div>
+
+        <div>
+            <input type="datetime-local" name="end">
+        </div>
+        <div>
+            <button>Beállítás</button>
+        </div>
+    </div>
+</form>

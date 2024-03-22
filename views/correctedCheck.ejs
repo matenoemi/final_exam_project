@@ -1,19 +1,17 @@
-<!--
 <div class="soundContainer" style="display: none;">
     <audio controls="" id="correct">
-    <source src="correct.wav" type="audio/wav">
+    <source src="/learn/sound/correct.wav" type="audio/wav">
     </audio>
 
     <audio controls="" id="incomplete">
-    <source src="incomplete.wav" type="audio/wav">
+    <source src="/learn/sound/incomplete.wav" type="audio/wav">
     </audio> 
-
+    
     <audio controls="" id="wrong">
-    <source src="wrong.mp3" type="audio/mpeg">
+    <source src="/learn/sound/wrong.mp3" type="audio/mpeg">
     </audio> 
     
 </div>
--->
 
 
 <form method="GET" action="/learn/exercise/<%= lessonID %>/<%= exercisePos %>">
@@ -43,51 +41,52 @@
             </div>
             <% } %>
         </div>
-        <div>
-            <input type="submit" value="Következő" id="nextButton">
+        <div style="display: flex; justify-content: flex-end; margin-top: 30px;">
+            <div>
+                <input type="submit" value="Következő" id="nextButton" style="display: none;">
+            </div>
         </div>
     </div>
 </form>
 
 <script>
-    //const correct = document.getElementById("correct");
-    //const incomplete = document.getElementById("incomplete");
-    //const wrong = document.getElementById("wrong");
+    const correct = document.getElementById("correct");
+    const incomplete = document.getElementById("incomplete");
+    const wrong = document.getElementById("wrong");
     const displayButton = document.getElementById("displayButton");
     const nextButton=document.getElementById("nextButton");
 
     function colour(){
         let answers=document.getElementsByClassName("answer");
+        let delay = 1500;
         for(let i=0; i<answers.length; i++){
-            let parentDiv = answers[i].closest('div');
-            if(answers[i].checked){
+                setTimeout(()=>{
+                    let parentDiv = answers[i].closest('div');
+                if(answers[i].checked){
                 if(answers[i].getAttribute("flag")==1){
-                    parentDiv.style.border="5px solid green";
-                    setTimeout(() => {
-                        //correct.play();
-                    }, 1000);
+                        parentDiv.style.border="5px solid green";
+                        correct.play();
                 }
                 else{
-                    parentDiv.style.border="5px solid red";
-                    setTimeout(() => {
-                        //wrong.play();
-                    }, 1000);
+                        parentDiv.style.border="5px solid red";
+                        wrong.play();
                 }
-            }
+                }
             else{
                 if(answers[i].getAttribute("flag")==1){
-                    parentDiv.style.border="5px solid yellow";
-                    setTimeout(() => {
-                        //incomplete.play();
-                    }, 1000);
-                }
-            }
+                        parentDiv.style.border="5px solid yellow";
+                        incomplete.play();
+                }}
+                }, delay);
+                delay+=1500;
         }
     }
     
     displayButton.addEventListener('click', function(e){
         e.preventDefault();
+        e.target.setAttribute("disabled", "true");
         colour();
+        nextButton.style.display="block";
     })
 
 </script>

@@ -55,3 +55,9 @@ router.post('/addClassToCourse', isAuth(['teacher']), teacherController.addClass
 
 router.post('/createOrderingExercise/:testID/:direction', isAuth(['teacher']), teacherController.createOrderingExercise);
 router.post('/createGroupingExercise/:testID', isAuth(['teacher']), teacherController.createGroupingExercise);
+
+router.get('/saveTest/:testID', isAuth(['teacher']), teacherController.saveTest);
+router.get('/scheduledTests/:testID', isAuth(['teacher']), teacherController.scheduledTests);
+
+router.get('/newTestSchedule/:testID', isAuth(['teacher']), teacherController.newTestSchedule);
+router.post('/newTestSchedule/:testID', isAuth(['teacher']), teacherController.addNewTestSchedule);

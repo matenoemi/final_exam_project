@@ -67,7 +67,8 @@ export async function testByID(req, res, next){
     const testID = req.params.testID;
     const testName = await testModel.getName(testID);
     const exercises = await exerciseModel.getByTestID(testID);
-    res.render('testExercises', {exercises, testID, testName});
+    const editable = await testModel.isEditable(testID);
+    res.render('testExercises', {exercises, testID, testName, editable});
 }
 
 export async function addExercises(req, res, next){
@@ -278,4 +279,34 @@ export async function classToCourse(req, res, next){
 export async function addClassToCourse(req, res, next){
     const result = await courseModel.addClass(req.body.class, req.session.course.courseID);
     res.redirect('/teacher/classes');
+}
+
+export async function saveTest(req, res, next){
+    const testID = req.params.testID;
+    const result = await testModel.setReadOnly(testID);
+    const path = '/teacher/test/'+testID;
+    res.redirect(path);
+}
+
+export async function scheduledTests(req, res, next){
+    const testID = req.params.testID;
+    const list = await testModel.getScheduledList(testID);
+    res.render('scheduledTests', {testID, list});
+}
+
+export async function newTestSchedule(req, res, next){
+    const testID = req.params.testID;
+    const classes = await classModel.getListToScheduleTest(req.session.course.courseID, testID);
+    res.render('newTestSchedule', {testID, classes});
+}
+
+export async function addNewTestSchedule(req, res, next){
+    const testID = req.params.testID;
+    const classID = req.body.class;
+    const startTime = req.body.start;
+    const endTime = req.body.end;
+    //console.log(testID+" "+classID+" "+startTime+" "+endTime);
+    const result = await testModel.addNewSchedule(testID, classID, startTime, endTime);
+    const path = '/teacher/scheduledTests/'+testID;
+    res.redirect(path);
 }

@@ -25,7 +25,7 @@ const teacherMenu = {
 };
 
 export function mainMenu(user, course){
-    if(!user || !course){
+    if(!user){
       return defaultMenu;
     }else{
       switch (user.user_role){

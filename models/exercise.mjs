@@ -18,11 +18,27 @@ export async function getType(exerciseID){
 
 
 export async function getNumberOfCorrectAnswers(exerciseID){
-    const [result] = await conn.execute(
-        "select count(*) as value from exercises e join answers a on a.exercise_id=e.exercise_id where "+
-        "a.answer_flag=1 and e.exercise_id = ? ", [exerciseID]
-    );
-    return result[0].value;
+    const exercise = await getExerciseByID(exerciseID);
+    const type = exercise.exercise_type;
+    let result = null;
+    switch(type){
+        case 'radio':
+            return 1;
+        case 'ordering':
+            return 1;
+        case 'check':
+            [result] = await conn.execute(
+                "select count(*) as value from exercises e join answers a on a.exercise_id=e.exercise_id where "+
+                "a.answer_flag = 1 and e.exercise_id = ? ", [exerciseID]
+            );
+            return result[0].value;
+        case 'grouping':
+            [result] = await conn.execute(
+                "select count(*) as value from exercises e join answers a on a.exercise_id=e.exercise_id where "+
+                "e.exercise_id = ? ", [exerciseID]
+            );
+            return result[0].value;
+    } 
 }
 
 

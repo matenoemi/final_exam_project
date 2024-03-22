@@ -7,6 +7,7 @@ import { join } from 'path';
 import { __dirname } from '../dirname.mjs';
 
 export async function play(req, res, next){
+  console.log("play meghivva");
   const tempName = join(__dirname, "/sounds/", req.params.soundFile); 
   let music = tempName;
   let stat = statSync(music);
@@ -51,24 +52,15 @@ export async function correctAnswers(req,res,next){
   const result = await exerciseModel.correct(exercise, type, answer);
   const points = result.points;
   const answers = result.answers;
-
+  const correctAnswers = await exerciseModel.getNumberOfCorrectAnswers(exercise.exercise_id);
   const saveResult = await queries.saveResult(req.session.user, exercise.exercise_id, points);
 
-  switch(type){
-    case "check":
-      res.render('correctedCheck', {exercise, answers, lessonID, exercisePos, correctAnswers: 3, points});
-      break;
-    case "ordering":
-      res.render('correctedOrdering', {exercise, answers, lessonID, exercisePos, correctAnswers: 1, points});
-      break;
-    case "grouping":
-      res.render('correctedGrouping', {exercise, answers, groups: result.groups, lessonID, exercisePos, correctAnswers: 9, points});
-      break;
-    case "radio":
-      res.render('correctedRadio', {exercise, answers, lessonID, exercisePos, correctAnswers: 1, points});
-      break;
+  let groups = null;
+  if(type == 'grouping'){
+    groups = result.groups;
   }
-
+  const file = 'corrected' + type.charAt(0).toUpperCase() + type.slice(1)
+  res.render(file, {exercise, answers, groups, lessonID, exercisePos, correctAnswers, points});
 }
 
 export async function getExercise(req, res, next){

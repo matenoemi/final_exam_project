@@ -3,13 +3,31 @@
         <div>
             <h2>A <%= testName %> nevű feladatsor</h2>
         </div>
+        <div>
+            <% if(editable) { %>
+                <h5>(módosítható)</h5>
+            <% } else { %>
+                <h5>(nem módosítható)</h5>
+            <% } %>
+        </div>
         <div style="display: flex; justify-content: center; align-items: center; flex-direction: row;">
-            <div>
+
+            <% if(editable) { %>
+                <div>
                 <a href="/teacher/exercises/<%= testID %>">Létező feladat hozzáadása</a>
-            </div>
-            <div style="margin-left: 20px;">
-                <a href="/teacher/addNewExercise/<%= testID %>">Új feladat hozzáadása</a>
-            </div>
+                </div>
+                <div style="margin-left: 20px;">
+                    <a href="/teacher/addNewExercise/<%= testID %>">Új feladat hozzáadása</a>
+                </div>
+                <div style="margin-left: 75px;">
+                    <a href="/teacher/saveTest/<%= testID %>" id="saveLink">Feladatsor véglegesítése</a>
+                </div>
+            <% } else { %>
+                <div style="margin-left: 20px;">
+                    <a href="/teacher/scheduledTests/<%= testID %>">Feladatsor ütemezése</a>
+                </div>
+            <% } %>
+            
         </div>
         <div>
             <% for(let i=0; i<exercises.length; i++) { %>
@@ -60,11 +78,18 @@
     </div>
     
 <script>
+        const saveLink = document.getElementById("saveLink");
         let containers = document.getElementsByClassName("container");
-        console.log(containers);
         for(let i=0; i<containers.length; i++){
             if(containers[i].getAttribute("orientation")=="vertical"){
                 containers[i].style.flexDirection="column";
             }
         }
+
+        saveLink.addEventListener('click', function(e){
+            confirmation = confirm("Biztosan menteni szeretné? A feladatsor a mentés után már nem lesz módosítható!");
+            if (!confirmation) {
+                event.preventDefault();
+            }
+        });
 </script>

@@ -9,7 +9,9 @@ router.get('/sort', isAuth(['student']), exampleController.sort);
 router.get('/chapters', isAuth(['student']), learningController.chapters);
 router.get('/lesson/:id', isAuth(['student']), learningController.lessonLearning);
 
+router.get('/sound/:soundFile', isAuth(['student']), learningController.play);
 router.get('/exercise/:lessonID/:exercisePos', isAuth(['student']), learningController.getExercise);
+
 router.post('/exercise/:lessonID/:exercisePos', isAuth(['student']), learningController.correctAnswers);
 
 router.get('/bits', exampleController.playWithBits);

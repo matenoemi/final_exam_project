@@ -1,3 +1,17 @@
+<div class="soundContainer" style="display: none;">
+    <audio controls="" id="correct">
+    <source src="/learn/sound/correct.wav" type="audio/wav">
+    </audio>
+
+    <audio controls="" id="incomplete">
+    <source src="/learn/sound/incomplete.wav" type="audio/wav">
+    </audio> 
+
+    <audio controls="" id="wrong">
+    <source src="/learn/sound/wrong.mp3" type="audio/mpeg">
+    </audio> 
+</div>
+
 <form method="GET" action="/learn/exercise/<%= lessonID %>/<%= exercisePos %>">
     <div style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
         <!-- exercise's text -->
@@ -5,6 +19,7 @@
             <div style="font-weight: bold;">
                 <p><%= exercise.exercise_text %></p>
                 <p>Eredmény: <%= correctAnswers %> / <%= points %> </p>
+                <button id="displayButton">Mutasd meg a válaszokat!</button>
             </div>
             <div>
             
@@ -24,33 +39,53 @@
             </div>
             <% } %>
         </div>
-        <div>
-            <input type="submit" value="Next" id="nextButton">
+        <div style="display: flex; justify-content: flex-end; margin-top: 30px;">
+            <div>
+                <input type="submit" value="Következő" id="nextButton" style="display: none;">
+            </div>
         </div>
     </div>
 </form>
 
 <script>
+    const correct = document.getElementById("correct");
+    const incomplete = document.getElementById("incomplete");
+    const wrong = document.getElementById("wrong");
+    const displayButton = document.getElementById("displayButton");
     const nextButton=document.getElementById("nextButton");
+
     function colour(){
         let answers=document.getElementsByClassName("answer");
+        let delay = 1000;
         for(let i=0; i<answers.length; i++){
+            setTimeout(()=>{
+                
             let parentDiv = answers[i].closest('div');
             if(answers[i].checked){
                 if(answers[i].getAttribute("flag")==1){
                     parentDiv.style.border="5px solid green";
+                    correct.play();
                 }
                 else{
                     parentDiv.style.border="5px solid red";
+                    wrong.play();
                 }
             }
             else{
                 if(answers[i].getAttribute("flag")==1){
                     parentDiv.style.border="5px solid yellow";
+                    incomplete.play();
                 }
             }
+            }, delay);
+            delay+=1000;
         }
     }
-    window.onload = colour;
 
+    displayButton.addEventListener('click', function(e){
+        e.preventDefault();
+        e.target.setAttribute("disabled", "true");
+        colour();
+        nextButton.style.display="block";
+    })
 </script>

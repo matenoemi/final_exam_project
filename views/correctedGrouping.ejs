@@ -1,9 +1,21 @@
+<div class="soundContainer" style="display: none;">
+    <audio controls="" id="correct">
+    <source src="/learn/sound/correct.wav" type="audio/wav">
+    </audio>
+
+    <audio controls="" id="wrong">
+    <source src="/learn/sound/wrong.mp3" type="audio/mpeg">
+    </audio>     
+</div>
+
+
 <form method="GET" action="/learn/exercise/<%= lessonID %>/<%= exercisePos %>">
 <div style="display: flex; justify-content: center; align-items: center; flex-direction: column;"">
     <div>
         <div style="font-weight: bold;">
             <p><%= exercise.exercise_text %></p>
-            <p>Eredmény: <%= points %> </p>
+            <p>Eredmény: <%= correctAnswers %> / <%= points %> </p>
+            <button id="displayButton">Mutasd meg a válaszokat!</button>
         </div>
         <div>
         <% if(exercise.image_object){ %>
@@ -18,11 +30,11 @@
             <% for(let i=0; i<groups.length; i++) { %>
                 <div style="margin-right: 40px; display: flex; justify-content: center; flex-direction: column; align-items: center;">
                     <p><%= groups[i].group_name %></p>
-                    <div value="<%= groups[i].group_id %>" name="container" class="itemContainer" style="display: flex; justify-content: flex-start; flex-direction: column; align-items: center; height: 400px; width: 125px; border: solid lightseagreen 2px;">
+                    <div value="<%= groups[i].group_id %>" name="container" class="itemContainer" style="display: flex; justify-content: flex-start; flex-direction: column; align-items: center; height: 450px; width: 140px; border: solid lightseagreen 2px;">
                     <% for(let j=0; j<answers.length; j++) { %>
                         <% if(answers[j].selectedGroup == groups[i].group_id) { %>
-                            <div value="<%= answers[j].selectedGroup %>" group="<%= answers[j].group_id %>" name="image" class="image" style="width: 95px; height: 75px;">
-                                <img src="data:image/jpeg;base64, <%= answers[j].image_object.toString('base64') %>" style="width: 95px; height: 75px;">
+                            <div value="<%= answers[j].selectedGroup %>" group="<%= answers[j].group_id %>" name="image" class="image" style="width: 130px; height: 100px;">
+                                <img src="data:image/jpeg;base64, <%= answers[j].image_object.toString('base64') %>" style="width: 130px; height: 100px;">
                             </div>
                         <% } %>
                     <% } %>
@@ -33,28 +45,50 @@
         
     </div>
 
-    <div>
-        <input type="submit" value="Next" id="nextButton">
+    <div style="display: flex; justify-content: flex-end; margin-top: 30px;">
+        <div>
+            <input type="submit" value="Következő" id="nextButton" style="display: none;">
+        </div>
     </div>
 </div>
 </form>
 
 <script>
+    const correct = document.getElementById("correct");
+    const wrong = document.getElementById("wrong");
+    const displayButton = document.getElementById("displayButton");
     const containers = document.getElementsByName("container");
+    const nextButton=document.getElementById("nextButton");
+    
     function colour(){
+        let delay = 1500;
+        let array = [];
         for(container of containers){
-            console.log(container);
-            let images = container.getElementsByClassName("image");
-            for(image of images){
-                console.log(image);
-                if(image.getAttribute("value") == image.getAttribute("group")){
-                    image.style.border="solid 3px green";
+                let images = container.getElementsByClassName("image");
+                for(image of images){
+                    array.push(image);
                 }
-                else{
-                    image.style.border="solid 3px red";
-                }
-            }
         }
+        console.log(array);
+        for(image of array){
+                   // setTimeout(()=>{
+                    if(image.getAttribute("value") == image.getAttribute("group")){
+                        image.style.border="solid 3px green";
+                        //correct.play();
+                    }
+                    else{
+                        image.style.border="solid 3px red";
+                       // wrong.play();
+                    }
+                  //  }, delay);
+                   // delay+=1500;
+            }
     }
-    window.onload = colour;
+    
+    displayButton.addEventListener('click', function(e){
+        e.preventDefault();
+        e.target.setAttribute("disabled", "true");
+        colour();
+        nextButton.style.display="block";
+    });
 </script>
