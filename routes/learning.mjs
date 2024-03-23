@@ -11,7 +11,6 @@ router.get('/lesson/:id', isAuth(['student']), learningController.lessonLearning
 
 router.get('/sound/:soundFile', isAuth(['student']), learningController.play);
 router.get('/exercise/:lessonID/:exercisePos', isAuth(['student']), learningController.getExercise);
-
 router.post('/exercise/:lessonID/:exercisePos', isAuth(['student']), learningController.correctAnswers);
 
 router.get('/bits', exampleController.playWithBits);
@@ -22,3 +21,7 @@ router.get('/course/:courseID', isAuth(['student']), learningController.course);
 
 router.get('/sounds', isAuth(['student']), learningController.sounds);
 router.get('/:soundFile', isAuth(['student']), learningController.play);
+
+router.get('/test/:scheduledTestID', isAuth(['student']), learningController.testMainPage);
+router.get('/test/:scheduledTestID/:exerciseID', isAuth(['student']), learningController.getExercise);
+router.post('/test/:scheduledTestID/:exerciseID', isAuth(['student']), learningController.correctAnswers);

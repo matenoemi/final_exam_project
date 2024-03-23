@@ -1,0 +1,13 @@
+<div style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
+    <div>
+        <h3><%= scheduled.test_name %> nevű feladatsor</h3>
+    </div>
+
+    <div>
+        Megoldható eddig: <%= scheduled.end_time %>
+    </div>
+
+    <div>
+        <a href="/learn/test/<%= scheduled.scheduled_tests_id %>/<%= exerciseID %>">Feladatsor megoldása</a>
+    </div>
+</div>

@@ -1,5 +1,5 @@
 import { conn } from "../db/mysqlconn.mjs";
-
+import * as exerciseModel from "../models/exercise.mjs";
 
 export async function getListByLesson(lessonID){
     const [tests] = await conn.execute(
@@ -57,4 +57,49 @@ export async function addNewSchedule(testID, classID, startTime, endTime){
         [testID, classID, startTime, endTime]
     );
     return result;
+}
+
+export async function getByLessonID(lessonID, classID){
+    const [test] = await conn.execute(
+        "select st.scheduled_tests_id, t.test_name from "+
+        "lessons l join tests t on l.lesson_id = t.lesson_id join "+
+        "scheduled_tests st on t.test_id = st.test_id where l.lesson_id = ? "+
+        "and st.class_id = ?", [lessonID, classID]
+    );
+    return test[0];
+}
+
+export async function getScheduled(scheduledTestID){
+    const [test] = await conn.execute(
+        "select st.scheduled_tests_id, t.test_name, t.test_id, st.end_time from "+
+        "lessons l join tests t on l.lesson_id = t.lesson_id join "+
+        "scheduled_tests st on t.test_id = st.test_id "+
+        "where st.scheduled_tests_id = ?", [scheduledTestID]
+    );
+    return test[0];
+}
+
+export async function getFirstExerciseID(testID){
+    const [exercise] = await conn.execute(
+        "select min(exercise_id) as exercise_id from tests_and_exercises where test_id = ?", [testID]
+    );
+    return exercise[0].exercise_id;
+}
+
+async function getNextID(testID, exerciseID){
+    const [exercise] = await conn.execute(
+        "select min(exercise_id) as exercise_id from tests_and_exercises where test_id = ? "+
+        "and exercise_id > ?", [testID, exerciseID]
+    );
+    return exercise[0].exercise_id;
+}
+
+export async function getNextExercise(scheduledTestID, exerciseID){
+    const scheduled = await getScheduled(scheduledTestID);
+    console.log(exerciseID);
+    const testID = scheduled.test_id;
+    const nextID = await getNextID(testID, exerciseID);
+    
+    const exercise = await exerciseModel.getExerciseByID(nextID);
+    return exercise;
 }

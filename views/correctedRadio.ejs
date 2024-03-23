@@ -12,7 +12,15 @@
     </audio> 
 </div>
 
-<form method="GET" action="/learn/exercise/<%= lessonID %>/<%= exercisePos %>">
+
+<form method="GET" 
+<% if(isTest) { %>
+    action="/learn/test/<%= scheduledTestID %>/<%= exerciseID %>"
+<% } else { %>
+    action="/learn/exercise/<%= lessonID %>/<%= exercisePos %>"
+<% } %>
+>
+
     <div style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
         <!-- exercise's text -->
         <div>

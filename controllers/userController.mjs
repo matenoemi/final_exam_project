@@ -101,7 +101,7 @@ export async function postLogin(req, res, next) {
   let fields = null;
   try {
     [rows, fields] = await conn.execute(
-      "SELECT user_id, user_email, user_name, user_role FROM users WHERE user_email = :email AND user_password = :hash",
+      "SELECT user_id, user_email, user_name, user_role, class_id FROM users WHERE user_email = :email AND user_password = :hash",
       {
         email: userData.email,
         hash: hash,

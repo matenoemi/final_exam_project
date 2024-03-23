@@ -1,4 +1,11 @@
-<form method="POST" action="/learn/exercise/<%= lessonID %>/<%= exercisePos %>">
+<form method="POST" 
+<% if(isTest) { %>
+    action="/learn/test/<%= scheduledTestID %>/<%= exercise.exercise_id %>"
+<% } else { %>
+    action="/learn/exercise/<%= lessonID %>/<%= exercisePos %>"
+<% } %>
+>
+
     <div style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
         <!-- exercise's text -->
         <div>
