@@ -25,3 +25,5 @@ router.get('/:soundFile', isAuth(['student']), learningController.play);
 router.get('/test/:scheduledTestID', isAuth(['student']), learningController.testMainPage);
 router.get('/test/:scheduledTestID/:exerciseID', isAuth(['student']), learningController.getExercise);
 router.post('/test/:scheduledTestID/:exerciseID', isAuth(['student']), learningController.correctAnswers);
+
+router.get('/test/results/:scheduledTestID/:userID', isAuth(['student']), learningController.testResults);

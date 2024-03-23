@@ -8,6 +8,10 @@
     </div>
 
     <div>
-        <a href="/learn/test/<%= scheduled.scheduled_tests_id %>/<%= exerciseID %>">Feladatsor megoldása</a>
+        <% if(isSolvable) { %>
+            <a href="/learn/test/<%= scheduled.scheduled_tests_id %>/<%= exerciseID %>">Feladatsor megoldása</a>
+        <% } else { %>
+            <a href="/learn/test/results/<%= scheduled.scheduled_tests_id %>/<%= userID %>">Eredmény megtekintése</a>
+        <% } %>
     </div>
 </div>

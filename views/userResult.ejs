@@ -1,0 +1,50 @@
+<div style="display: flex; justify-content: center; align-items: center; flex-direction: row;">
+    <div style="margin-top: 40px;">  
+        <canvas id="chart" style="width:100%;max-width:700px"></canvas>
+    </div>
+    
+    <div style="margin-left: 150px; display: flex; justify-content: center; align-items: center; flex-direction: column;">
+        <div>
+            <h4>Összes pontszám: <%= maxScore %></h4>
+        </div>
+        <div>
+            <h4>Elért pontszám: <%= achievedScore %></h4>
+        </div>
+        <div>
+            <h4>Eredmény: <span id="result"><%= percentage %></span>%</h4>
+        </div>
+    </div>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    const ctx = document.getElementById('chart');
+    const result = Number(document.getElementById("result").textContent);
+    const compl = 100 - result;
+
+    const data = {
+    labels: [
+        'achieved',
+        'failed',
+    ],
+    datasets: [{
+        data: [result, compl],
+        backgroundColor: [
+        'rgb(0, 255, 0)',
+        'rgb(255, 0, 0)'
+        ],
+        hoverOffset: 4
+    }]
+  };
+
+  new Chart(ctx, {
+    type: 'doughnut',
+    data: data,
+  });
+</script>
+
+ 
+
+ 

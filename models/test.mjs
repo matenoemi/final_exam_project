@@ -1,5 +1,6 @@
 import { conn } from "../db/mysqlconn.mjs";
 import * as exerciseModel from "../models/exercise.mjs";
+import * as resultModel from "../models/result.mjs";
 
 export async function getListByLesson(lessonID){
     const [tests] = await conn.execute(
@@ -86,20 +87,74 @@ export async function getFirstExerciseID(testID){
     return exercise[0].exercise_id;
 }
 
+export async function getLastExerciseID(testID){
+    const [exercise] = await conn.execute(
+        "select max(exercise_id) as exercise_id from tests_and_exercises where test_id = ?", [testID]
+    );
+    return exercise[0].exercise_id;
+}
+
 async function getNextID(testID, exerciseID){
     const [exercise] = await conn.execute(
         "select min(exercise_id) as exercise_id from tests_and_exercises where test_id = ? "+
         "and exercise_id > ?", [testID, exerciseID]
     );
-    return exercise[0].exercise_id;
+    if(exercise.length>0){
+        return exercise[0].exercise_id;
+    }
+    else{
+        return false;
+    }
+    
 }
 
 export async function getNextExercise(scheduledTestID, exerciseID){
     const scheduled = await getScheduled(scheduledTestID);
-    console.log(exerciseID);
     const testID = scheduled.test_id;
     const nextID = await getNextID(testID, exerciseID);
-    
-    const exercise = await exerciseModel.getExerciseByID(nextID);
-    return exercise;
+    if(!nextID){
+        return false;
+    }
+    else{
+        const exercise = await exerciseModel.getExerciseByID(nextID);
+        return exercise;
+    }
+}
+
+export async function isSolvable(scheduledTestID, userID){
+    const scheduled = await getScheduled(scheduledTestID);
+    const testID = scheduled.test_id;
+    const lastExerciseID = await getLastExerciseID(testID);
+
+    const [result] = await conn.execute(
+        "select * from results where scheduled_test_id = ? "+
+        "and user_id = ? and exercise_id = ?", [scheduledTestID, userID, lastExerciseID]
+    );
+    if(result.length>0){
+        return false;
+    }
+    else{
+        return true;
+    }
+}
+
+export async function getMaxPoints(testID){
+    const [exercises] = await conn.execute(
+        "select exercise_id from tests_and_exercises where test_id = ?", [testID]
+    );
+
+    let points = 0;
+    for(let i=0; i<exercises.length; i++){
+        const temp = await exerciseModel.getNumberOfCorrectAnswers(exercises[i].exercise_id);
+        points += temp;
+    }
+    return points;
+}
+
+export async function getPoints(scheduledTestID, userID){
+    const scheduled = await getScheduled(scheduledTestID);
+    const testID = scheduled.test_id;
+    let maxScore = await getMaxPoints(testID);
+    let achievedScore = await resultModel.getTestResult(scheduledTestID, userID);
+    return {maxScore, achievedScore};
 }

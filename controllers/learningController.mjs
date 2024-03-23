@@ -2,6 +2,7 @@ import * as queries from "../db/queries.mjs";
 import * as exerciseModel from "../models/exercise.mjs";
 import * as courseModel from "../models/course.mjs";
 import * as testModel from "../models/test.mjs";
+import * as resultModel from "../models/result.mjs";
 import { createReadStream } from "fs";
 import { statSync } from "fs";
 import { join } from 'path';
@@ -53,7 +54,7 @@ export async function correctAnswers(req,res,next){
   const array = path.split('/');
   let exercise = null; let lessonID = null; let exercisePos = null;
   let scheduledTestID = null; let exerciseID = null;
-
+  let isLast = false;
   if(array[1]=="exercise"){
     lessonID = Number(req.params.lessonID);
     exercisePos = Number(req.params.exercisePos);
@@ -65,7 +66,9 @@ export async function correctAnswers(req,res,next){
     exerciseID = req.params.exerciseID;
     exercise = await exerciseModel.getExerciseByID(exerciseID);
     const nextExercise = await testModel.getNextExercise(scheduledTestID, exerciseID);
-    console.log(nextExercise);
+    if(!nextExercise){
+      isLast = true;
+    }
     exerciseID = nextExercise.exercise_id;
   }
 
@@ -75,14 +78,15 @@ export async function correctAnswers(req,res,next){
   const points = result.points;
   const answers = result.answers;
   const correctAnswers = await exerciseModel.getNumberOfCorrectAnswers(exercise.exercise_id);
-  const saveResult = await queries.saveResult(req.session.user, exercise.exercise_id, points);
+  const saveResult = await resultModel.saveResult(req.session.user, exercise.exercise_id, points, scheduledTestID);
 
   let groups = null;
   if(type == 'grouping'){
     groups = result.groups;
   }
   const file = 'corrected' + type.charAt(0).toUpperCase() + type.slice(1)
-  res.render(file, {exercise, answers, groups, lessonID, exercisePos, correctAnswers, points, scheduledTestID, isTest, exerciseID});
+  res.render(file, {exercise, answers, groups, lessonID, exercisePos, correctAnswers,
+    points, scheduledTestID, isTest, exerciseID, isLast, userID: req.session.user.user_id});
 }
 
 export async function getExercise(req, res, next){
@@ -131,7 +135,18 @@ export async function course(req, res, next){
 export async function testMainPage(req, res, next){
   const scheduled = await testModel.getScheduled(req.params.scheduledTestID);
   const exerciseID = await testModel.getFirstExerciseID(scheduled.test_id);
-  res.render('testMainPage', {scheduled, exerciseID});
+  const isSolvable = await testModel.isSolvable(req.params.scheduledTestID, req.session.user.user_id);
+  res.render('testMainPage', {scheduled, exerciseID, isSolvable, userID: req.session.user.user_id});
+}
+
+export async function testResults(req, res, next){
+  const userID = req.params.userID;
+  const scheduledTestID = req.params.scheduledTestID;
+  const score = await testModel.getPoints(scheduledTestID, userID);
+  const maxScore = score.maxScore;
+  const achievedScore = score.achievedScore;
+  const percentage = ((achievedScore*100)/maxScore).toFixed(1);
+  res.render('userResult', {maxScore, achievedScore, percentage});
 }
 
 function shuffleArray(array) {

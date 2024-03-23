@@ -8,6 +8,7 @@ import * as imageModel from "../models/image.mjs"
 import * as lessonModel from "../models/lesson.mjs";
 import * as answerModel from "../models/answer.mjs";
 import * as groupModel from "../models/group.mjs";
+import * as resultModel from "../models/result.mjs";
 
 import { readFile } from "fs/promises";
 import { join } from 'path';
@@ -305,8 +306,19 @@ export async function addNewTestSchedule(req, res, next){
     const classID = req.body.class;
     const startTime = req.body.start;
     const endTime = req.body.end;
-    //console.log(testID+" "+classID+" "+startTime+" "+endTime);
     const result = await testModel.addNewSchedule(testID, classID, startTime, endTime);
     const path = '/teacher/scheduledTests/'+testID;
     res.redirect(path);
+}
+
+export async function classResult(req, res, next){
+    const scheduledTestID = req.params.scheduledTestID;
+    const scheduled = await testModel.getScheduled(scheduledTestID);
+    const students = await resultModel.getClassResult(scheduledTestID);
+    const maxScore = await testModel.getMaxPoints(scheduled.test_id);
+    const achievedScore = (students.score/students.list.length).toFixed(1);
+    const percentage = ((achievedScore*100)/maxScore).toFixed(1);
+
+    res.render('classResult', {scheduledTestID, students: students.list, 
+        maxScore, achievedScore, percentage});
 }

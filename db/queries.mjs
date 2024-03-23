@@ -9,13 +9,6 @@ export async function resultsOverview(){
     return res;
 }
 
-export async function saveResult(user, exerciseID, correctAnswers){
-    const [res] = await conn.execute(
-        "insert into results(user_id, exercise_id, result_value) values(?, ?, ?)",
-        [user.user_id, exerciseID, correctAnswers]
-    );
-    return res;
-}
 
 export async function getChapters(courseID){
     const [chapters] = await conn.execute(

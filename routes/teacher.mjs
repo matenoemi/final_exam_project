@@ -61,3 +61,5 @@ router.get('/scheduledTests/:testID', isAuth(['teacher']), teacherController.sch
 
 router.get('/newTestSchedule/:testID', isAuth(['teacher']), teacherController.newTestSchedule);
 router.post('/newTestSchedule/:testID', isAuth(['teacher']), teacherController.addNewTestSchedule);
+
+router.get('/test/results/:scheduledTestID', isAuth(['teacher']), teacherController.classResult);

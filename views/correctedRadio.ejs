@@ -14,8 +14,12 @@
 
 
 <form method="GET" 
-<% if(isTest) { %>
-    action="/learn/test/<%= scheduledTestID %>/<%= exerciseID %>"
+<% if(isTest) { if(isLast) { %>
+        action="/learn/test/results/<%= scheduledTestID %>/<%= userID %>"
+    <% } else { %>
+        action="/learn/test/<%= scheduledTestID %>/<%= exerciseID %>"
+    <% } %>
+    
 <% } else { %>
     action="/learn/exercise/<%= lessonID %>/<%= exercisePos %>"
 <% } %>
