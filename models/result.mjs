@@ -31,7 +31,27 @@ export async function getClassResult(scheduledTestID){
     let score = 0;
     for(let i=0; i<list.length; i++){
         list[i].score = await getTestResult(scheduledTestID, list[i].user_id);
-        score+=list[i].score;
+        score+=Number(list[i].score);
+
+        const maxScore = await testModel.getMaxPoints(scheduled.test_id);
+        const percentage = ((list[i].score*100)/maxScore).toFixed(1);
+        list[i].percentage = percentage;
+
     }
     return {list, score};
+}
+
+export function statistics(students){
+    let statArray = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    let data = [];
+    for(let i=0; i<students.length; i++){
+        const score = Number(students[i].percentage);
+        const temp = (Math.round(score / 10)) * 10;
+        statArray[temp/10]++;
+    }
+    for(let i=0; i<statArray.length; i++){
+        const obj = {x: i*10, y: statArray[i]};
+        data.push(obj);
+    }
+    return data;
 }

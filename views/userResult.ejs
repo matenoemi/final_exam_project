@@ -1,21 +1,32 @@
-<div style="display: flex; justify-content: center; align-items: center; flex-direction: row;">
-    <div style="margin-top: 40px;">  
-        <canvas id="chart" style="width:100%;max-width:700px"></canvas>
-    </div>
+<div style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
     
-    <div style="margin-left: 150px; display: flex; justify-content: center; align-items: center; flex-direction: column;">
-        <div>
-            <h4>Összes pontszám: <%= maxScore %></h4>
+        <% if(user.user_role=='teacher') { %>
+            <div>
+            <h3><%= scheduled.test_name %> feladatsor</h3>
+            </div>
+            <div>
+            <h3><%= userName %></h3>
+            </div>
+        <% } %>
+    
+    <div style="display: flex; justify-content: center; align-items: center; flex-direction: row;">
+        <div style="margin-top: 40px;">  
+            <canvas id="chart" style="width:100%;max-width:700px"></canvas>
         </div>
-        <div>
-            <h4>Elért pontszám: <%= achievedScore %></h4>
-        </div>
-        <div>
-            <h4>Eredmény: <span id="result"><%= percentage %></span>%</h4>
+        
+        <div style="margin-left: 150px; display: flex; justify-content: center; align-items: center; flex-direction: column;">
+            <div>
+                <h4>Összes pontszám: <%= maxScore %></h4>
+            </div>
+            <div>
+                <h4>Elért pontszám: <%= achievedScore %></h4>
+            </div>
+            <div>
+                <h4>Eredmény: <span id="result"><%= percentage %></span>%</h4>
+            </div>
         </div>
     </div>
 </div>
-
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 

@@ -72,9 +72,10 @@ export async function getByLessonID(lessonID, classID){
 
 export async function getScheduled(scheduledTestID){
     const [test] = await conn.execute(
-        "select st.scheduled_tests_id, t.test_name, t.test_id, st.end_time from "+
+        "select st.scheduled_tests_id, c.class_name, t.test_name, t.test_id, st.end_time from "+
         "lessons l join tests t on l.lesson_id = t.lesson_id join "+
         "scheduled_tests st on t.test_id = st.test_id "+
+        "join classes c on st.class_id = c.class_id "+
         "where st.scheduled_tests_id = ?", [scheduledTestID]
     );
     return test[0];
@@ -153,6 +154,7 @@ export async function getMaxPoints(testID){
 
 export async function getPoints(scheduledTestID, userID){
     const scheduled = await getScheduled(scheduledTestID);
+    console.log("getPoints:"+scheduledTestID);
     const testID = scheduled.test_id;
     let maxScore = await getMaxPoints(testID);
     let achievedScore = await resultModel.getTestResult(scheduledTestID, userID);

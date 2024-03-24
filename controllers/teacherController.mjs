@@ -318,7 +318,21 @@ export async function classResult(req, res, next){
     const maxScore = await testModel.getMaxPoints(scheduled.test_id);
     const achievedScore = (students.score/students.list.length).toFixed(1);
     const percentage = ((achievedScore*100)/maxScore).toFixed(1);
+    const data = resultModel.statistics(students.list);
 
     res.render('classResult', {scheduledTestID, students: students.list, 
-        maxScore, achievedScore, percentage});
+        maxScore, achievedScore, percentage, scheduled, data});
+}
+
+export async function studentResult(req, res, next){
+  const userID = req.params.userID; 
+  const user = await studentModel.getByID(userID);
+  const scheduledTestID = req.params.scheduledTestID;
+  const scheduled = await testModel.getScheduled(scheduledTestID);
+  const score = await testModel.getPoints(scheduledTestID, userID);
+  const maxScore = score.maxScore;
+  const achievedScore = score.achievedScore;
+  const percentage = ((achievedScore*100)/maxScore).toFixed(1);
+  res.render('userResult', {maxScore, achievedScore, percentage,
+    userName: user.user_name, scheduled});
 }

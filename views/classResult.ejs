@@ -1,6 +1,9 @@
 <div style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
+    <h3><%= scheduled.test_name %> feladatsor</h3>
+    <h3><%= scheduled.class_name %> osztály</h3>
+
     <div style="display: flex; justify-content: center; align-items: center; flex-direction: row;">
-        <div style="margin-top: 40px;">  
+        <div>  
             <canvas id="chart" style="width:100%;max-width:700px"></canvas>
         </div>
         
@@ -16,23 +19,74 @@
             </div>
         </div>
     </div>
+    
+    <div>
+        <h4>A feladatsort megoldották:</h4>
+    </div>
     <div>
         <table>
         <% for(let i=0; i<students.length; i++) { %>
             <tr>
                 <td>
+                <a href="/teacher/test/result/<%= scheduledTestID %>/<%= students[i].user_id %>">
                 <%= students[i].user_name %>
+                </a>
                 </td>
             </tr>
         <% } %>
         </table>
     </div>
+
+    <div>
+        <div style="margin-top: 50px;">  
+            <canvas id="chart2" style="width: 800px; height: 400px"></canvas>
+        </div>
+    </div>
 </div>
 
+<div id="data" style="display: none;">
+    <% for(let i=0; i<data.length; i++) { %>
+        <div name="dataContainer" x="<%= data[i].x %>" y="<%= data[i].y %>"></div>
+    <% } %>
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
+    //let xyValues = [];
+    let xValues = []; let yValues = [];
+    let dataContainers = document.getElementsByName("dataContainer");
+    for(container of dataContainers){
+        xValues.push(Number(container.getAttribute("x")));
+        yValues.push(Number(container.getAttribute("y")));
+        //const obj = {x: Number(container.getAttribute("x")), y: Number(container.getAttribute("y"))};
+        //xyValues.push(obj);
+    }
+
+    const ctx2 = document.getElementById('chart2');
+    new Chart(ctx2, {
+    type: "bar",
+    data: {
+            labels: xValues,
+            datasets: [{
+            label: 'diákok száma',
+            pointRadius: 4,
+            backgroundColor: "rgb(0, 255, 0, 0.75)",
+            data: yValues
+            }]
+        },
+        options: {
+        scales: {
+          y: {
+            ticks: {
+              stepSize: 1,
+              beginAtZero: true
+            }
+          }
+        }
+      }
+    });
+
     const ctx = document.getElementById('chart');
     const result = Number(document.getElementById("result").textContent);
     const compl = 100 - result;
@@ -50,10 +104,10 @@
         ],
         hoverOffset: 4
     }]
-  };
+    };
 
-  new Chart(ctx, {
-    type: 'doughnut',
-    data: data,
-  });
+    new Chart(ctx, {
+        type: 'doughnut',
+        data: data,
+    });
 </script>
