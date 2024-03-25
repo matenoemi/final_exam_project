@@ -102,8 +102,8 @@
         for(final of finalContainers){
             const hasItem = final.querySelectorAll("div");
             if(hasItem.length==0){
-                alert("!");
-                break;
+                alert("Helyezze el az összes elemet!");
+                return;
             }
             const item = hasItem[0];
             numbers=numbers+item.getAttribute("value")+" ";

@@ -1,4 +1,4 @@
-<form method="POST" 
+<form method="POST" id="form"
 <% if(isTest) { %>
     action="/learn/test/<%= scheduledTestID %>/<%= exercise.exercise_id %>"
 <% } else { %>
@@ -31,3 +31,26 @@
         </div>
     </div>
 </form>
+
+<script>
+    const checkButton = document.getElementById("checkButton");
+    const form = document.getElementById("form");
+
+    checkButton.addEventListener('click', function(e){
+        e.preventDefault();
+        const answers = document.getElementsByName("answer");
+        let checked = 0;
+        for(answer of answers){
+            if(answer.checked){
+                checked++;
+            }
+        }
+        if(checked==0){
+            alert("Jelöljön meg egy választ!");
+            return;
+        }
+        else{
+            form.submit();
+        }
+    });
+</script>

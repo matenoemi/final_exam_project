@@ -81,19 +81,18 @@
                 }
         }
         console.log(array);
-        for(image of array){
-                   // setTimeout(()=>{
-                    if(image.getAttribute("value") == image.getAttribute("group")){
-                        image.style.border="solid 3px green";
-                        //correct.play();
-                    }
-                    else{
-                        image.style.border="solid 3px red";
-                       // wrong.play();
-                    }
-                  //  }, delay);
-                   // delay+=1500;
+        for (let i = 0; i < array.length; i++) {
+        setTimeout(() => {
+            let image = array[i];
+            if (image.getAttribute("value") == image.getAttribute("group")) {
+                image.style.border = "solid 3px green";
+                correct.play();
+            } else {
+                image.style.border = "solid 3px red";
+                wrong.play();
             }
+        }, delay * i);
+        }
     }
     
     displayButton.addEventListener('click', function(e){

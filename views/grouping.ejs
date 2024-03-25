@@ -22,7 +22,7 @@
     <div style="display: flex; justify-content: center;">
         <div style="display: flex; flex-direction: row;">
             <% for(let i=0; i<answers.items.length; i++){ %>
-                <div style="margin-left: 10px; border: solid grey 1px; height: 100px; width: 130px;">
+                <div name="holder" style="margin-left: 10px; border: solid grey 1px; height: 100px; width: 130px;">
                     <div draggable="true" class="image" name="image" value="<%= answers.items[i].answer_id %>">
                         <img src="data:image/jpeg;base64, <%= answers.items[i].image_object.toString('base64') %>" style="width: 130px; height: 100px;">
                     </div>
@@ -56,14 +56,19 @@
 
 <script>
     const button = document.getElementById("checkButton");
+    const holders = document.getElementsByName("holder");
+
     button.addEventListener('click',function(e){
         let numbers="";
         e.preventDefault();
+
+        let numOfPlaced = 0;
 
         const containers = document.getElementsByName("container");
         const answers = document.getElementsByName("answer");
         for(let i=0; i<containers.length; i++){
             const images = containers[i].getElementsByClassName("image");
+            numOfPlaced+=images.length;
             let numbers = "";
             for(image of images){
                 numbers=numbers+image.getAttribute("value")+" ";
@@ -72,7 +77,11 @@
             console.log(answers[i].getAttribute("value"));
         }
 
-        
+        if(numOfPlaced != holders.length){
+            alert("Helyezze el az összes elemet!");
+            return;
+        }
+
         const form = e.target.closest("form");
         form.submit();
     })

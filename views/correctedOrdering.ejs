@@ -16,6 +16,7 @@
             <div style="font-weight: bold;">
                 <p><%= exercise.exercise_text %></p>
                 <p>Eredmény: <%= correctAnswers %> / <%= points %> </p>
+                <button id="displayButton">Mutasd meg a válaszokat!</button>
                 <p id="result" style="display: none;"><%= points %></p>
                 <p id="direction" style="display: none;"><%= exercise.exercise_direction %></p>
             </div>
@@ -64,21 +65,45 @@
     </div>
 </form>
 
+<div class="soundContainer" style="display: none;">
+    <audio controls="" id="correctSound">
+    <source src="/learn/sound/correct.wav" type="audio/wav">
+    </audio>
+
+    <audio controls="" id="wrongSound">
+    <source src="/learn/sound/wrong.mp3" type="audio/mpeg">
+    </audio>     
+</div>
+
 <script>
+    const correct = document.getElementById("correctSound");
+    const wrong = document.getElementById("wrongSound");
+
     const result=document.getElementById("result");
     const answerDiv=document.getElementById("answer");
     const correctDiv=document.getElementById("correct");
     const direction=document.getElementById("direction");
+    const displayButton=document.getElementById("displayButton");
+    let delay = 1000;
+
     function colour(){
-        console.log(result.textContent);
-        if(result.textContent == "1"){
+        setTimeout(()=>{
+            if(result.textContent == "1"){
             answerDiv.style.border="solid 2px green";
+            console.log(correct);
+            correct.play();
         }
         else{
             answerDiv.style.border="solid 2px red";
+            wrong.play();
         }
+        }, delay);
     }
-    window.onload = colour;
+    displayButton.addEventListener('click', function(e){
+        e.preventDefault();
+        e.target.setAttribute("disabled", "true");
+        colour();
+    });
 
     const container=document.getElementById("container");
     if(direction.textContent == "vertical"){

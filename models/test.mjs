@@ -122,11 +122,25 @@ export async function getNextExercise(scheduledTestID, exerciseID){
     }
 }
 
+export async function isActive(scheduledTestID){
+    const [result] = await conn.execute(
+        "select * from scheduled_tests where start_time<= curdate() "+
+        "and curdate()<end_time and scheduled_tests_id = ?", [scheduledTestID]
+    );
+    if(result.length>0){
+        return true;
+    }
+    else{
+        return false;
+    }
+}
+
 export async function isSolvable(scheduledTestID, userID){
     const scheduled = await getScheduled(scheduledTestID);
     const testID = scheduled.test_id;
     const lastExerciseID = await getLastExerciseID(testID);
 
+    // last exercise, solved
     const [result] = await conn.execute(
         "select * from results where scheduled_test_id = ? "+
         "and user_id = ? and exercise_id = ?", [scheduledTestID, userID, lastExerciseID]

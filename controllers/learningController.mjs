@@ -10,7 +10,7 @@ import { __dirname } from '../dirname.mjs';
 
 
 export async function play(req, res, next){
-  console.log("play meghivva");
+  console.log("play meghivva "+req.path);
   const tempName = join(__dirname, "/sounds/", req.params.soundFile); 
   let music = tempName;
   let stat = statSync(music);
@@ -135,8 +135,12 @@ export async function course(req, res, next){
 export async function testMainPage(req, res, next){
   const scheduled = await testModel.getScheduled(req.params.scheduledTestID);
   const exerciseID = await testModel.getFirstExerciseID(scheduled.test_id);
+  const isActive = await testModel.isActive(req.params.scheduledTestID);
+
+  // is not solved
   const isSolvable = await testModel.isSolvable(req.params.scheduledTestID, req.session.user.user_id);
-  res.render('testMainPage', {scheduled, exerciseID, isSolvable, userID: req.session.user.user_id});
+  res.render('testMainPage', {scheduled, exerciseID, isSolvable, isActive,
+    userID: req.session.user.user_id});
 }
 
 export async function testResults(req, res, next){

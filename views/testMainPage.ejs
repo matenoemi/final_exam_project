@@ -9,7 +9,12 @@
 
     <div>
         <% if(isSolvable) { %>
-            <a href="/learn/test/<%= scheduled.scheduled_tests_id %>/<%= exerciseID %>">Feladatsor megoldása</a>
+            <% if(isActive) { %>
+                <a href="/learn/test/<%= scheduled.scheduled_tests_id %>/<%= exerciseID %>">Feladatsor megoldása</a>
+            <% } else { %>
+                <h4>A feladatsor már nem oldható meg!</h4>
+            <% } %>
+
         <% } else { %>
             <a href="/learn/test/results/<%= scheduled.scheduled_tests_id %>/<%= userID %>">Eredmény megtekintése</a>
         <% } %>
