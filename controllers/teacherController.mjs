@@ -9,6 +9,8 @@ import * as lessonModel from "../models/lesson.mjs";
 import * as answerModel from "../models/answer.mjs";
 import * as groupModel from "../models/group.mjs";
 import * as resultModel from "../models/result.mjs";
+import * as helper from "../helpers/images.mjs";
+import * as chapterModel from "../models/chapter.mjs";
 
 import { readFile } from "fs/promises";
 import { join } from 'path';
@@ -55,7 +57,7 @@ export async function chapters(req, res, next){
     for(let i=0; i<chapters.length; i++){
         chapters[i].lessons = await queries.getLessonsByChapter(chapters[i].chapter_id);
     }
-    res.render('chaptersTeacher', {chapters});
+    res.render('chaptersTeacher', {chapters, courseID:req.session.course.courseID});
 }
 
 export async function testsByLesson(req, res, next){
@@ -102,18 +104,26 @@ export async function addNewTest(req, res, next){
 
 export async function selectMainType(req, res, next){
     const testID = req.params.testID;
-    res.render('mainType', {testID});
+    const clickImage = await helper.getHelperImage("check");
+    const dragImage = await helper.getHelperImage("ordering");
+    res.render('mainType', {testID, clickImage, dragImage});
 }
 
 export async function selectSecondType(req, res, next){
     const testID = req.params.testID;
     const type = req.body.type;
+    let images = null;
     switch(type){
-        case 'click': res.render('clickTypes', {testID}); break;
-        case 'drag': res.render('dragTypes', {testID}); break;
+        case 'click': 
+            images = await helper.getClickImages();
+            res.render('clickTypes', {testID, images}); break;
+        case 'drag': 
+            images = await helper.getDragImages();
+            res.render('dragTypes', {testID, images}); break;
     }
 }
 
+// old
 export async function newExercise(req, res, next){
     const testID = req.params.testID;
     const types = await exerciseModel.getTypes();
@@ -335,4 +345,43 @@ export async function studentResult(req, res, next){
   const percentage = ((achievedScore*100)/maxScore).toFixed(1);
   res.render('userResult', {maxScore, achievedScore, percentage,
     userName: user.user_name, scheduled});
+}
+
+export async function newChapter(req, res, next){
+    const courseID = req.params.courseID;
+    res.render('newChapter', {courseID});
+}
+
+export async function addNewChapter(req, res, next){
+    const courseID = req.params.courseID;
+    const chapterName = req.body.chapterName;
+    const result = await chapterModel.addNew(courseID, chapterName);
+    res.redirect('/teacher/chapters');
+}
+
+export async function chapter(req, res, next){
+    const chapterID = req.params.chapterID;
+    const chapterName = await chapterModel.getNameByID(chapterID);
+    const lessons = await queries.getLessonsByChapter(chapterID);
+    res.render('chapterTeacher', {chapterID, chapterName, lessons});
+}
+
+export async function newLesson(req, res, next){
+    const chapterID = req.params.chapterID;
+    res.render('newLesson', {chapterID});
+}
+
+export async function addNewLesson(req, res, next){
+    const chapterID = req.params.chapterID;
+    const lessonName = req.body.lessonName;
+    const result = await lessonModel.addNew(chapterID, lessonName);
+    const url = '/teacher/chapter/'+chapterID;
+    res.redirect(url);
+}
+
+export async function lesson(req, res, next){
+    const lessonID = req.params.chapterID;
+    const lessonName = await lessonModel.getNameByID(lessonID);
+    const slides = await queries.getSlidesByLesson(lessonID);
+    res.render('slidesTeacher',{slides, lessonID, lessonName});
 }

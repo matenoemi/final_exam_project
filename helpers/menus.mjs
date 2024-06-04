@@ -1,27 +1,28 @@
 const defaultMenu = {
   Home : '/',
-  Bits: '/learn/bits'
+  Bits: '/learn/bits',
+  Compiler: '/learn/compiler'
 };
 
 const adminMenu = {
-  Home : '/',
-  Teachers: '/admin/teachers',
-  Classes: '/admin/classes'
+  Főoldal : '/',
+  Tanárok : '/admin/teachers',
+  Osztályok : '/admin/classes'
 };
 
 const studentMenu = {
-  Home : '/learn/courses',
-  Chapters: '/learn/chapters',
-  Sort : '/learn/sort',
-  Bits: '/learn/bits',
-  Sounds: '/learn/sounds'
+  Főoldal : '/learn/courses',
+  Fejezetek: '/learn/chapters',
+  //Sort : '/learn/sort',
+  //Bits: '/learn/bits',
+  //Sounds: '/learn/sounds'
 };
 
 const teacherMenu = {
-  Home : '/teacher/courses',
-  Results: '/teacher/results',
-  Classes: '/teacher/classes',
-  Chapters: '/teacher/chapters'
+  Főoldal : '/teacher/courses',
+  //Results: '/teacher/results',
+  Osztályok: '/teacher/classes',
+  Fejezetek: '/teacher/chapters'
 };
 
 export function mainMenu(user, course){

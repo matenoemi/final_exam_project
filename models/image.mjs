@@ -17,3 +17,10 @@ export async function get(teacherID, limitValue){
     );
     return images;
 }
+
+export async function getByID(imageID){
+    const [images] = await conn.execute(
+        "select image_object from images where image_id = ?", [imageID]
+    );
+    return images[0];
+}

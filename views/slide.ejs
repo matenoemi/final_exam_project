@@ -4,20 +4,20 @@
         <% for(let i=0; i<slides.length; i++){ %>
             <div class="slide" <% if (i === 0) { %>style="display: block;" <% } else { %>style="display: none;" <% } %>>
                 <div>
-                <p><%= slides[i].slide_text %></p>
+                <p style="font-weight: bold; font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif"><%= slides[i].slide_text %></p>
                 </div>
                 <div style="text-align: center;">
-                <img src="data:image/jpeg;base64, <%= slides[i].image_object.toString('base64') %>" alt="<%= slides[i].image_text %>">
+                <img style="border: solid 2px darkcyan;" src="data:image/jpeg;base64, <%= slides[i].image_object.toString('base64') %>" alt="<%= slides[i].image_text %>">
                 </div>
             </div>
         <% } %>
         </div>
         <div>
-            <button type="button" id="prevButton" style="display: none;" onclick="prevSlide()">Prev</button>
-            <button type="button" onclick="nextSlide()">Next</button>
+            <button type="button" id="prevButton" style="display: none;" onclick="prevSlide()">Előző</button>
+            <button type="button" onclick="nextSlide()">Következő</button>
         </div>
         <div>
-            <input id="solveButton" type="submit" value="Solve exercises" style="display: block;" />
+            <input id="solveButton" type="submit" value="Gyakorló feladatok megoldása" style="display: block;" />
         </div>
     </div>
 </form>

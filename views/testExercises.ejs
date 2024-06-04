@@ -32,8 +32,8 @@
         <div>
             <% for(let i=0; i<exercises.length; i++) { %>
                 <div style="border: solid 2px cadetblue; margin-bottom: 10px; width: 1000px; padding: 10px;">
-                    <p>Feladat leírása: <%= exercises[i].exercise_text %></p>
-                    <p>Típusa: 
+                    <p><span style="font-weight: bold;">Feladat leírása: </span><%= exercises[i].exercise_text %></p>
+                    <p><span style="font-weight: bold;">Típusa: </span>
                         <% switch(exercises[i].exercise_type) { case 'radio': %>
                             Egy helyes válasz
                             <% break; case 'check': %>
@@ -46,9 +46,9 @@
                         <% } %>
                     </p>
                     <% if(exercises[i].exercise_type=='grouping'){ %>
-                        <p>Csoportok: 
+                        <p><span style="font-weight: bold;">Csoportok: </span>
                         <% for(let j=0; j<exercises[i].answers.groups.length; j++) { %>
-                            <%= exercises[i].answers.groups[j].group_name %>
+                            <span><%= exercises[i].answers.groups[j].group_name %>&emsp;</span>
                         <% } %>
                         </p>
                         <div style="display: flex; justify-content: center; align-items: center; flex-direction: row;">

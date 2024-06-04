@@ -64,3 +64,13 @@ router.post('/newTestSchedule/:testID', isAuth(['teacher']), teacherController.a
 
 router.get('/test/results/:scheduledTestID', isAuth(['teacher']), teacherController.classResult);
 router.get('/test/result/:scheduledTestID/:userID', isAuth(['teacher']), teacherController.studentResult);
+
+router.get('/addNewChapter/:courseID', isAuth(['teacher']), teacherController.newChapter);
+router.post('/addNewChapter/:courseID', isAuth(['teacher']), teacherController.addNewChapter);
+
+router.get('/chapter/:chapterID', isAuth(['teacher']), teacherController.chapter);
+
+router.get('/addNewLesson/:chapterID', isAuth(['teacher']), teacherController.newLesson);
+router.post('/addNewLesson/:chapterID', isAuth(['teacher']), teacherController.addNewLesson);
+
+router.get('/lesson/:lessonID', isAuth(['teacher']), teacherController.lesson);

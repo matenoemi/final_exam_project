@@ -1,6 +1,11 @@
 <form method="POST" action="/teacher/uploadClickImages/<%= testID %>/<%= type %>" enctype="multipart/form-data">
     <div style="font-size: 20px; display: flex; justify-content: center; align-items: center; flex-direction: column;">
         
+            <div>
+                <h3>Feladat képeinek feltöltése</h3>
+            </div>
+
+
             <div style="margin-top: 20px;">
             <input type="file" accept="image/*" name="upl1">
             </div>
@@ -17,7 +22,7 @@
             <input type="file" accept="image/*" name="upl4">
             </div>
 
-        <div>
+        <div style="margin-top: 20px;">
             <button>Feltölt</button>
         </div>
     </div>

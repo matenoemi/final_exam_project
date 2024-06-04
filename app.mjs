@@ -70,7 +70,7 @@ import { router as indexRouter } from './routes/index.mjs';
 import { router as learningRouter }  from './routes/learning.mjs';
 import { router as userRouter }  from './routes/user.mjs';
 import { router as teacherRouter } from './routes/teacher.mjs';
-import {router as adminRouter} from './routes/admin.mjs';
+import { router as adminRouter } from './routes/admin.mjs';
 
 
 // útvonalválasztók
@@ -99,3 +99,4 @@ const server = http.createServer(app);
 server.listen(3000, ()=>{
   console.log("szerver fut a 3000-esen");
 });
+

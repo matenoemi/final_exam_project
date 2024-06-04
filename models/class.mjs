@@ -30,7 +30,7 @@ export async function getListToCourse(courseID){
     "select class_id, class_name, class_grade from classes where class_id not in "+
     "(select cl.class_id from classes cl "+
         "join classes_and_courses clco on cl.class_id = clco.class_id "+
-        "where clco.course_id = ? )", [courseID]
+        "where clco.course_id = ? ) order by class_grade", [courseID]
     );
     return classes;
 }

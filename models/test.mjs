@@ -67,7 +67,7 @@ export async function getByLessonID(lessonID, classID){
         "scheduled_tests st on t.test_id = st.test_id where l.lesson_id = ? "+
         "and st.class_id = ?", [lessonID, classID]
     );
-    return test[0];
+    return test;
 }
 
 export async function getScheduled(scheduledTestID){

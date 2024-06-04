@@ -8,7 +8,11 @@
             <input type="text" name="exerciseText" style="width: 300px">
         </div>
         <div>
-            <h4>Jelöld be a helyes válaszokat!</h4>
+            <% if(type == 'check') { %>
+                <h4>Jelöld be a helyes válaszokat!</h4>
+            <% } else { %>
+                <h4>Jelöld be a helyes választ!</h4>
+            <% } %>
         </div>
         <div style="display: flex; flex-direction: row;">
             <% for(let i=0; i<images.length; i++){ %>

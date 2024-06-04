@@ -33,10 +33,12 @@ export async function chapters(req,res,next){
     const lessons = await queries.getLessonsByChapter(chapters[i].chapter_id);
     chapters[i].lessons=lessons;
     for(let j=0; j<chapters[i].lessons.length; j++){
-      const test = await testModel.getByLessonID(chapters[i].lessons[j].lesson_id, req.session.user.class_id);
-      chapters[i].lessons[j].test = test;
+      const tests = await testModel.getByLessonID(chapters[i].lessons[j].lesson_id, req.session.user.class_id);
+      chapters[i].lessons[j].tests = tests;
+      console.log(tests);
     }
   }
+  //console.log(chapters);
   res.render('chapters',{
     chapters
   });
@@ -100,6 +102,10 @@ export async function getExercise(req, res, next){
     lessonID = Number(req.params.lessonID);
     exercisePos = Number(req.params.exercisePos)+1; 
     exercise = await exerciseModel.getByPosition(lessonID, exercisePos);
+    if(exercise === undefined){
+      res.render('lastExercise',{lessonID});
+      return;
+    }
   }
   else{
     isTest = true;

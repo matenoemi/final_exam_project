@@ -14,7 +14,7 @@ router.get('/exercise/:lessonID/:exercisePos', isAuth(['student']), learningCont
 router.post('/exercise/:lessonID/:exercisePos', isAuth(['student']), learningController.correctAnswers);
 
 router.get('/bits', exampleController.playWithBits);
-router.get('/draganddrop', isAuth(['student']), exampleController.dragAndDrop);
+//router.get('/draganddrop', isAuth(['student']), exampleController.dragAndDrop);
 
 router.get('/courses', isAuth(['student']), learningController.courses);
 router.get('/course/:courseID', isAuth(['student']), learningController.course);
@@ -27,3 +27,6 @@ router.get('/test/:scheduledTestID/:exerciseID', isAuth(['student']), learningCo
 router.post('/test/:scheduledTestID/:exerciseID', isAuth(['student']), learningController.correctAnswers);
 
 router.get('/test/results/:scheduledTestID/:userID', isAuth(['student']), learningController.testResults);
+
+//compiler
+router.get('/compiler', exampleController.compiler);

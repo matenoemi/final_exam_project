@@ -1,0 +1,12 @@
+<form method="POST" action="/teacher/addNewChapter/<%= courseID %>">
+    <div style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
+        <h2>Új fejezet hozzáadása a kurzushoz</h2>
+        <div>
+            <label>Fejezet címe:</label>
+            <input type="text" name="chapterName" required>
+        </div>
+        <div style="margin-top: 30px;">
+            <button type="submit">Hozzáad</button>
+        </div>
+    </div>
+</form>

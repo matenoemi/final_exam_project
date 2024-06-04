@@ -25,6 +25,7 @@ export async function getTeacherList(teacherID){
         "join users u on tc.teacher_id = u.user_id "+
         "join images i on i.image_id = c.image_id where tc.teacher_id = ? order by c.course_name ", [teacherID]
     );
+    console.log(courses.length);
     return courses;
 }
 

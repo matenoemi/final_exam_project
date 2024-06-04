@@ -19,7 +19,7 @@
             <tbody>
                     <% for(let i=0; i<classes.length; i++) { %>
                         <tr style="border: solid grey 1px;">
-                            <td style="border: solid grey 1px;">
+                            <td style="border: solid grey 1px; text-align: center;">
 
                                 <% if(user.user_role == 'teacher') { %>
                                     <a href="/teacher/students/<%= classes[i].class_id %>"><%= classes[i].class_name %></a>
