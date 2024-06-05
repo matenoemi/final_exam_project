@@ -11,6 +11,7 @@ import * as groupModel from "../models/group.mjs";
 import * as resultModel from "../models/result.mjs";
 import * as helper from "../helpers/images.mjs";
 import * as chapterModel from "../models/chapter.mjs";
+import * as slideModel from "../models/slide.mjs";
 
 import { readFile } from "fs/promises";
 import { join } from 'path';
@@ -380,8 +381,42 @@ export async function addNewLesson(req, res, next){
 }
 
 export async function lesson(req, res, next){
-    const lessonID = req.params.chapterID;
+    const lessonID = req.params.lessonID;
     const lessonName = await lessonModel.getNameByID(lessonID);
     const slides = await queries.getSlidesByLesson(lessonID);
+    console.log(slides);
     res.render('slidesTeacher',{slides, lessonID, lessonName});
+}
+
+export async function newSlide(req, res, next){
+    const lessonID = req.params.lessonID;
+    const video = 'https://www.youtube.com/embed/watch?v=Sj_9CiNkkn4&list=RDSj_9CiNkkn4&start_radio=1';
+
+
+    res.render('newSlide', {lessonID, video});
+}
+
+export async function addNewSlide(req, res, next){
+    let video = null;
+    let image = null;
+
+    const lessonID = req.params.lessonID;
+    const slideText = req.body.slideText;
+    const upload = req.body.upload;
+    let fileName = null;
+    console.log('req'+req.file);
+    if(upload == 'imageRadio'){
+        image = req.file;
+        
+        fileName = image.filename;
+        const tempName = join(TEMPDIR, fileName);
+        image = await readFile(tempName);
+    }
+    else{
+        video = req.body.videoUrl;
+    }
+    console.log("image:"+image);
+    const result = await slideModel.addNew(slideText, image, video, lessonID, req.session.user.user_id, fileName);
+    const url = '/teacher/lesson/'+lessonID;
+    res.redirect(url);
 }

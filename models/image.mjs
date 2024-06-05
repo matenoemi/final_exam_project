@@ -5,7 +5,7 @@ export async function addNew(text, data, userID){
         "insert into images (image_text, image_object, teacher_id) values(?, ?, ?);", [text, data, userID]
     );
     const [image] = await conn.execute(
-        "select max(image_id) as image_id from images"
+        "select max(image_id) as image_id from images where teacher_id = ?",[userID]
     )
     return image[0].image_id;
 }

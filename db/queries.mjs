@@ -25,8 +25,32 @@ export async function getLessonsByChapter(id){
 }
 
 export async function getSlidesByLesson(id){
-    const [slides] = await conn.execute(
-        "select s.slide_id, s.slide_text, i.image_object, i.image_text from slides s join images i on s.image_id = i.image_id where lesson_id = ? order by slide_position", [id]
+    const [slide] = await conn.execute(
+        "select * from slides where lesson_id = ? order by slide_position",[id]
     );
+    let slides = [];
+    for(let i=0; i<slide.length; i++){
+        const slideID = slide[i].slide_id;
+        if(slide[i].image_id == null){
+            slides[slides.length] = await getWithVideo(slideID);
+        }
+        else{
+            slides[slides.length] = await getWithImage(slideID);
+        }
+    }
     return slides;
+}
+
+async function getWithImage(slideID){
+    const [slides] = await conn.execute(
+        "select s.slide_id, s.slide_text, i.image_id, i.image_object, i.image_text from slides s join images i on s.image_id = i.image_id where s.slide_id = ?", [slideID]
+    );
+    return slides[0];
+}
+
+async function getWithVideo(slideID){
+    const [slides] = await conn.execute(
+        "select * from slides where slide_id = ?", [slideID]
+    );
+    return slides[0];
 }

@@ -1,0 +1,45 @@
+<form method="POST" action="/teacher/addNewSlide/<%= lessonID %>" enctype="multipart/form-data">
+    <div style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
+        <h2>Új dia hozzáadása a leckéhez</h2>
+        <div>
+            <label>Dia szövege:</label>
+            <input size="70" type="text" name="slideText" required>
+        </div>
+
+        <div style="margin-top: 20px;">
+            <label>Kép:</label>
+            <input type="radio" name="upload" value="imageRadio" id="imageRadio" checked>
+            <label>Youtube link:</label>
+            <input type="radio" name="upload" value="videoRadio" id="videoRadio">
+        </div>
+
+        <div class="image">
+            <input type="file" name="upl">
+        </div>
+
+        <div class="video" style="display: none;">
+            <input type="text" name="videoUrl" size="40">
+        </div>
+
+        <div style="margin-top: 30px;">
+            <button type="submit">Hozzáad</button>
+        </div>
+    </div>
+</form>
+
+<script>
+    const imageRadio = document.getElementById('imageRadio');
+    const videoRadio = document.getElementById('videoRadio');
+    const imageDiv = document.querySelector('.image');
+    const videoDiv = document.querySelector('.video');
+
+    imageRadio.addEventListener('click', () => {
+        imageDiv.style.display = 'block';
+        videoDiv.style.display = 'none';
+    });
+
+    videoRadio.addEventListener('click', () => {
+        imageDiv.style.display = 'none';
+        videoDiv.style.display = 'block';
+    });
+</script>

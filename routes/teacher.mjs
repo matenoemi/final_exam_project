@@ -74,3 +74,6 @@ router.get('/addNewLesson/:chapterID', isAuth(['teacher']), teacherController.ne
 router.post('/addNewLesson/:chapterID', isAuth(['teacher']), teacherController.addNewLesson);
 
 router.get('/lesson/:lessonID', isAuth(['teacher']), teacherController.lesson);
+
+router.get('/addNewSlide/:lessonID', isAuth(['teacher']), teacherController.newSlide);
+router.post('/addNewSlide/:lessonID', isAuth(['teacher']), mUploads.single('upl'), teacherController.addNewSlide);
