@@ -1,1 +1,51 @@
 <p>HOME</p>
+<div data-pym-src="https://www.jdoodle.com/embed/v1/3a26af62d2c4994a"></div>
+<script src="https://www.jdoodle.com/assets/jdoodle-pym.min.js" type="text/javascript"> </script>
+
+<h4>OPEN AI</h4>
+<div id="chat-container">
+    <div id="messages"></div>
+    <form id="chat-form">
+      <input type="text" id="message-input" placeholder="Type a message..." required>
+      <button type="submit">Send</button>
+    </form>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const form = document.getElementById('chat-form');
+      const messageInput = document.getElementById('message-input');
+      const messagesDiv = document.getElementById('messages');
+
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const message = messageInput.value;
+
+        fetch('/chat', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ message: message })
+        })
+        .then(response => response.json())
+        .then(data => {
+          const userMessageDiv = document.createElement('div');
+          userMessageDiv.classList.add('message', 'user');
+          userMessageDiv.textContent = message;
+          messagesDiv.appendChild(userMessageDiv);
+
+          const botMessageDiv = document.createElement('div');
+          botMessageDiv.classList.add('message', 'bot');
+          botMessageDiv.textContent = data.response;
+          messagesDiv.appendChild(botMessageDiv);
+
+          messageInput.value = '';
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+      });
+    });
+</script>
+        

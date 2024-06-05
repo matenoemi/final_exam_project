@@ -1,7 +1,6 @@
 const defaultMenu = {
   Home : '/',
-  Bits: '/learn/bits',
-  Compiler: '/learn/compiler'
+  Bits: '/learn/bits'
 };
 
 const adminMenu = {

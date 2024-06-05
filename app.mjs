@@ -4,6 +4,7 @@ import { join } from 'path';
 import expressLayouts from 'express-ejs-layouts';
 import httpStatus from 'http-status-codes';
 import morgan from 'morgan';
+import axios from 'axios';
 
 import { __dirname } from './dirname.mjs';
 import { mainMenu } from "./helpers/menus.mjs";
@@ -64,6 +65,29 @@ app.use((req, res, next)=>{
   }
   next();
 })
+
+// Handle chat requests
+app.post('/chat', async (req, res) => {
+  const userMessage = req.body.message;
+
+  try {
+    const response = await axios.post('https://api.openai.com/v1/chat/completions', {
+      model: 'gpt-3.5-turbo',
+      messages: [{ role: 'user', content: userMessage }]
+    }, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer sk-proj-LV4otlmZXKaPQcWQgJmBT3BlbkFJaqWZ7QtybG7zhFy1YkwZ`
+      }
+    });
+
+    const botResponse = response.data.choices[0].message.content;
+    res.json({ response: botResponse });
+  } catch (error) {
+    console.error('Error communicating with OpenAI API:', error.message);
+    res.status(500).json({ error: 'Error communicating with OpenAI API' });
+  }
+});
 
 
 import { router as indexRouter } from './routes/index.mjs';
