@@ -1,29 +1,82 @@
-<div style="display: flex; justify-content: flex-end">
-    <div>
+<style>
+
+    table {
+        width: 50%; 
+        border-collapse: collapse;
+        margin: 25px auto; 
+        font-size: 18px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        background-color: #ffffff;
+    }
+    table th,
+    table td {
+        padding: 12px 15px;
+        text-align: left;
+        border-bottom: 1px solid #dddddd;
+    }
+    table th {
+        background-color: darkcyan;
+        color: #ffffff;
+    }
+    table tr:nth-child(even) {
+        background-color: #f3f3f3;
+    }
+    table tr:hover {
+        background-color: #f1f1f1;
+    }
+    a {
+        text-decoration: none;
+        color: darkcyan;
+        font-weight: bold;
+    }
+    a:hover {
+        text-decoration: underline;
+    }
+    .chapter-icon {
+        display: inline-block;
+        width: 75px; 
+        height: 75px; 
+        margin-right: 10px; 
+        vertical-align: middle;
+        overflow: hidden; 
+        border-radius: 50%; 
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); 
+    }
+    .chapter-icon img {
+        width: 100%; 
+        height: auto; 
+    }
+</style>
+
+<div class="link-section">
+    <div style="margin-left: 900px;">
         <a href="/teacher/addNewChapter/<%= courseID %>">Új fejezet hozzáadása</a>
     </div>
 </div>
-<div style="display: flex; justify-content: center; align-items: center;">
-    <div>
-    <ol>
-    <% for(let i=0; i<chapters.length; i++){ %>
-        <li>
-        <a href="/teacher/chapter/<%= chapters[i].chapter_id %>"><%= chapters[i].chapter_name %></a>
-        </li>
 
-        <!--
-        <ol style="list-style-position: inside; list-style-type: decimal;">
-        <% for(let j=0; j<chapters[i].lessons.length; j++){ %>
-            <li>
-                <span style="font-weight: bold;"><%= chapters[i].lessons[j].lesson_name %></span>
-                <p>
-                    <a href="/teacher/tests/<%= chapters[i].lessons[j].lesson_id %>">Teszt feladatsorok</a>
-                </p>
-            </li>
-        <% } %>
-        </ol>
-        -->
-    <% } %>
-    </ol>
+<div class="chapters-section">
+    <div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Fejezet neve</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% for(let i=0; i<chapters.length; i++){ %>
+                    <tr>
+                        <td>
+                            <span class="chapter-icon">
+                                <img src="data:image/jpeg;base64,<%= image.image_object.toString('base64') %>" alt="Chapter Icon">
+                            </span>
+                            <a href="/teacher/chapter/<%= chapters[i].chapter_id %>"><%= chapters[i].chapter_name %></a>
+                        </td>
+                    </tr>
+                <% } %>
+            </tbody>
+        </table>
     </div>
 </div>
+
+</div>
+

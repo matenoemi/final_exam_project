@@ -1,26 +1,119 @@
+<style>
+
+  #menu-holder {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: darkcyan;
+      color: white;
+      padding: 10px;
+  }
+
+  #menu-holder nav {
+      display: flex;
+      align-items: center;
+  }
+
+  #menu-holder nav ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+  }
+
+  #menu-holder nav ul li {
+      margin-right: 20px;
+  }
+
+  #menu-holder nav ul li:last-child {
+      margin-right: 0;
+  }
+
+  #menu-holder nav ul li a {
+      text-decoration: none;
+      color: white;
+      font-weight: bold;
+      font-size: 16px;
+      transition: color 0.3s ease;
+  }
+
+  #menu-holder nav ul li a:hover {
+      color: lightcyan;
+  }
+
+  #menu-holder nav ul li.role {
+      margin-right: 10px;
+      font-size: 14px;
+  }
+
+  #menu-holder nav ul li.course {
+      font-size: 14px;
+  }
+
+  #loginmenu {
+      margin-left: 20px;
+  }
+
+  #loginmenu ul {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+  }
+
+  #loginmenu ul li {
+      margin-right: 10px;
+  }
+
+  #loginmenu ul li:last-child {
+      margin-right: 0;
+  }
+
+  #loginmenu ul li a {
+      text-decoration: none;
+      color: white;
+      font-weight: bold;
+      font-size: 16px;
+      transition: color 0.3s ease;
+  }
+
+  #loginmenu ul li a:hover {
+      color: lightcyan;
+  }
+
+  .logout-link {
+      border-left: 1px solid white;
+      padding-left: 10px;
+      margin-left: 10px;
+  }
+</style>
+
+
 <div id="menu-holder">
-<div>
-    <nav id="mainmenu" class="nav">
-      <ul id="menu">
-        <% for (const [menu, link] of Object.entries(mainMenu(user, course))) {%>
-        <li><a href="<%= link %>"><%= menu %></a></li>
-        <% } %>
-      </ul>
-    </nav>
-</div>
-<div>
-    <nav id="loginmenu" class="nav">
+  <div>
+      <nav id="mainmenu" class="nav">
+          <ul id="menu">
+              <% for (const [menu, link] of Object.entries(mainMenu(user, course))) { %>
+                  <li><a href="<%= link %>"><%= menu %></a></li>
+              <% } %>
+          </ul>
+      </nav>
+  </div>
+
+  <div id="loginmenu" class="nav">
       <ul>
-        <% if (user) { %>
-          <li><a href="/user/logout"><%= 'Kijelentkezés' %> </a></li>
-          <li class="role" style="font-weight: bold;"><%= user.user_name %></li>
-            <% if(course) { %>
-              <li style="font-weight: bold;">Kurzus: <%= course.courseName %></li>
-            <% } %>
+          <% if (user) { %>
+              <li class="role">
+                <a href="/user/profile"><%= user.user_name %></a>
+              </li>
+              <% if(course) { %>
+                  <li class="course">Kurzus: <%= course.courseName %></li>
+              <% } %>
+              <li class="logout-link"><a href="/user/logout">Kijelentkezés</a></li>
           <% } else { %>
-          <li><a href="/user/login"><%= 'Bejelentkezés' %></a></li>     
-        <% } %>  
+              <li><a href="/user/login">Bejelentkezés</a></li>
+          <% } %>
       </ul>
-    </nav>
-    </div>
-  </div> 
+  </div>
+</div>
+

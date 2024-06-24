@@ -1,39 +1,81 @@
+<style>
+
+    /* Új kurzus létrehozása link */
+    .new-course-link {
+        display: flex;
+        justify-content: flex-end;
+        margin-right: 60px;
+        font-size: 18px;
+        margin-bottom: 20px; /* Szükséges a tartalom elmozdulásához a következő elem alatt */
+    }
+
+    .new-course-link a {
+        text-decoration: none;
+        color: darkcyan;
+        font-weight: bold;
+        transition: color 0.3s ease;
+    }
+
+    .new-course-link a:hover {
+        color: #008b8b;
+    }
+
+    /* Kurzusok tartályának stílusa */
+    .course-container {
+        margin-top: 20px;
+        margin-right: 20px;
+        width: 275px;
+        height: 225px;
+        border: 2px solid darkcyan;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        background-color: lightcyan; /* Alap háttérszín */
+        transition: background-color 0.3s ease;
+    }
+
+    .course-container img {
+        width: 270px;
+        height: 170px;
+        object-fit: cover;
+    }
+
+    .course-container p {
+        margin-top: 10px;
+        text-align: center;
+    }
+
+    .course-container a {
+        text-decoration: none;
+        color: darkcyan;
+        font-weight: bold;
+        font-size: 16px;
+        transition: color 0.3s ease;
+    }
+
+</style>
+
+
 <% if(user.user_role == 'teacher') { %>
-    <div style="display: flex; justify-content: flex-end; flex-direction: row;  position: sticky; top: 0;">
-        <div style="font-size: 18px; margin-right: 60px;">
+    <div class="new-course-link">
         <a href="/teacher/addNewCourse">Új kurzus létrehozása</a>
-        </div>
     </div>
 <% } %>
 
 <div style="display: flex; flex-wrap: wrap; justify-content: center; align-items: center;">
-    
 
     <% for(course of courses) { %>
-        <div name="courseContainer" style="margin-top: 20px; margin-right: 20px; width: 275px; height: 225px; border: solid darkcyan 2px; display: flex; justify-content: center; align-items: center; flex-direction: column;">
-            <div>
-                <img src="data:image/jpeg;base64, <%= course.image_object.toString('base64') %>" style="width: 270px; height: 170px;">
-                
-            </div>
+        <div class="course-container">
+            <img src="data:image/jpeg;base64, <%= course.image_object.toString('base64') %>" alt="Course Image">
             
-                <% if(user.user_role == 'student') { %>
+            <% if(user.user_role == 'student') { %>
                 <p><a href="/learn/course/<%= course.course_id %>"><%= course.course_name %></a></p>
-                <% } else { %>
+            <% } else { %>
                 <p><a href="/teacher/course/<%= course.course_id %>"><%= course.course_name %></a></p>
-                <% } %>
-            
+            <% } %>
         </div>
     <% } %>
 </div>
 
-<script>
-    const containers = document.getElementsByName("courseContainer");
-    for(container of containers){
-        container.addEventListener('mouseover', function(e){
-            e.target.closest('div').style.backgroundColor = "darkcyan";
-        })
-        container.addEventListener('mouseout', function(e){
-            e.target.closest('div').style.backgroundColor = "lightcyan";
-        })
-    }
-</script>
+

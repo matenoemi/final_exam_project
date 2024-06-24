@@ -24,3 +24,24 @@ export async function getByID(imageID){
     );
     return images[0];
 }
+
+export async function getChapterIcon(){
+    const [images] = await conn.execute(
+        "select image_object from images where image_id = ?", [357]
+    );
+    return images[0];
+}
+
+export async function getLessonIcon(){
+    const [images] = await conn.execute(
+        "select image_object from images where image_id = ?", [358]
+    );
+    return images[0];
+}
+
+export async function getTestIcon(){
+    const [images] = await conn.execute(
+        "select image_object from images where image_id = ?", [359]
+    );
+    return images[0];
+}

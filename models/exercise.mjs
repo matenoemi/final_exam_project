@@ -41,6 +41,20 @@ export async function getNumberOfCorrectAnswers(exerciseID){
     } 
 }
 
+async function getImage(exercise){
+    if(exercise.image_id !== null){
+        const [image] = await conn.execute(
+        "select i.image_object, i.image_text "+
+        "from exercises e join images i on e.image_id = i.image_id "+
+        "where e.exercise_id = ?", [exercise.exercise_id]  
+        );
+        exercise.image_object = image[0].image_object;
+    }
+    else{
+        exercise.image_object = null;
+    }
+    return exercise;
+}
 
 export async function getByPosition(lessonID, exercisePos){
     const [exerciseTemp] = await conn.execute(
@@ -48,21 +62,9 @@ export async function getByPosition(lessonID, exercisePos){
         "where lesson_id = ? and exercise_position = ?", [lessonID, exercisePos]   
     );
     let exercise = exerciseTemp[0];
-    //console.log(exercise);
-
-    /*
-    if(exercise.image_id !== null){
-        const [image] = await conn.execute(
-        "select i.image_object, i.image_text "+
-        "from exercises e join images i on e.image_id = i.image_id "+
-        "where e.lesson_id = ? and e.exercise_position = ?", [lessonID, exercisePos]  
-        );
-        //console.log(image);
-        exercise.image_object = image[0].image_object;
-        exercise.image_text = image[0].image_text;
+    if(exercise!==undefined){
+        exercise = await getImage(exercise);
     }
-    */
-
     //console.log(exercise);
     return exercise;
 }
@@ -264,9 +266,13 @@ export async function getList(type, testID){
 }
 
 export async function getExerciseByID(exerciseID){
-    const [exercise] = await conn.execute(
+    const [exerciseTemp] = await conn.execute(
         "select * from exercises where exercise_id = ?", [exerciseID]);
-    return exercise[0];
+    let exercise = exerciseTemp[0];
+    if(exercise!==undefined){
+        exercise = await getImage(exercise);
+    }
+    return exercise;
 }
 
 export async function getByTestID(testID){

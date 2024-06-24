@@ -3,6 +3,7 @@ import * as exerciseModel from "../models/exercise.mjs";
 import * as courseModel from "../models/course.mjs";
 import * as testModel from "../models/test.mjs";
 import * as resultModel from "../models/result.mjs";
+import * as lessonModel from "../models/lesson.mjs";
 import { createReadStream } from "fs";
 import { statSync } from "fs";
 import { join } from 'path';
@@ -30,9 +31,13 @@ export async function sounds(req, res, next){
 export async function chapters(req,res,next){
   const chapters = await queries.getChapters(req.session.course.courseID);
   for(let i=0; i<chapters.length; i++){
-    const lessons = await queries.getLessonsByChapter(chapters[i].chapter_id);
+    const lessons = await lessonModel.getStudentList(chapters[i].chapter_id);
     chapters[i].lessons=lessons;
     for(let j=0; j<chapters[i].lessons.length; j++){
+      if(!chapters[i].lessons[j].lesson_flag){
+
+      }
+
       const tests = await testModel.getByLessonID(chapters[i].lessons[j].lesson_id, req.session.user.class_id);
       chapters[i].lessons[j].tests = tests;
       console.log(tests);

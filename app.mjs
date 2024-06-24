@@ -96,8 +96,6 @@ import { router as userRouter }  from './routes/user.mjs';
 import { router as teacherRouter } from './routes/teacher.mjs';
 import { router as adminRouter } from './routes/admin.mjs';
 
-
-// útvonalválasztók
 app.use('/', indexRouter);
 app.use('/learn', learningRouter);
 app.use('/user', userRouter);

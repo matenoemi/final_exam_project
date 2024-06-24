@@ -19,7 +19,7 @@ export async function getChapters(courseID){
 
 export async function getLessonsByChapter(id){
     const [lessons] = await conn.execute(
-        "select lesson_id, lesson_name from lessons where chapter_id = ? order by lesson_position", [id]
+        "select lesson_id, lesson_flag, lesson_position, lesson_name from lessons where chapter_id = ? order by lesson_position", [id]
     );
     return lessons;
 }

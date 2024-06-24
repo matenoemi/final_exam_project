@@ -13,8 +13,9 @@
             <input type="radio" name="upload" value="videoRadio" id="videoRadio">
         </div>
 
-        <div class="image">
-            <input type="file" name="upl">
+        <div class="image" style="margin-top: 20px;">
+            <input type="file" name="upl" hidden id="first-btn"/>
+            <label id="upload-btn" for="first-btn">Kép feltöltése...</label>
         </div>
 
         <div class="video" style="display: none;">
@@ -43,3 +44,15 @@
         videoDiv.style.display = 'block';
     });
 </script>
+
+<style>
+  #upload-btn {
+  background-color: lightgray;
+  color: black;
+  padding: 0.25rem;
+  border: solid 1px gray;
+  border-radius: 0.3rem;
+  cursor: pointer;
+  }
+
+</style>

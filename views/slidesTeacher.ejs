@@ -8,7 +8,7 @@
     <h3>A <%= lessonName %> című leckéhez tartozó diák</h3>
     <div>
     <% for(let i=0; i<slides.length; i++){ %>
-         <div class="slide">
+         <div class="slide" style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
             <div>
             <p style="font-size: 12px; font-weight: bold; font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif"><%= slides[i].slide_text %></p>
             </div>
@@ -18,9 +18,11 @@
                     <img style="width: 350px; height: 250px; border: solid 2px darkcyan;" src="data:image/jpeg;base64, <%= slides[i].image_object.toString('base64') %>">
                 </div>
             <% } else { %>
+                <div>
                 <iframe width="350" height="250" src="<%= slides[i].video_url %>" 
                     title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen>
                 </iframe>
+                </div>
             <% } %>
         </div>
     <% } %>

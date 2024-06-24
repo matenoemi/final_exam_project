@@ -55,10 +55,11 @@ export async function exercises(req, res, next){
 
 export async function chapters(req, res, next){
     const chapters = await queries.getChapters(req.session.course.courseID);
+    const image = await imageModel.getChapterIcon();
     for(let i=0; i<chapters.length; i++){
         chapters[i].lessons = await queries.getLessonsByChapter(chapters[i].chapter_id);
     }
-    res.render('chaptersTeacher', {chapters, courseID:req.session.course.courseID});
+    res.render('chaptersTeacher', {chapters, courseID:req.session.course.courseID, image});
 }
 
 export async function testsByLesson(req, res, next){
@@ -308,8 +309,9 @@ export async function scheduledTests(req, res, next){
 
 export async function newTestSchedule(req, res, next){
     const testID = req.params.testID;
+    const testName = await testModel.getName(testID);
     const classes = await classModel.getListToScheduleTest(req.session.course.courseID, testID);
-    res.render('newTestSchedule', {testID, classes});
+    res.render('newTestSchedule', {testID, classes, testName});
 }
 
 export async function addNewTestSchedule(req, res, next){
@@ -361,10 +363,13 @@ export async function addNewChapter(req, res, next){
 }
 
 export async function chapter(req, res, next){
+    const lesson = await imageModel.getLessonIcon();
+    const test = await imageModel.getTestIcon();
+
     const chapterID = req.params.chapterID;
     const chapterName = await chapterModel.getNameByID(chapterID);
     const lessons = await queries.getLessonsByChapter(chapterID);
-    res.render('chapterTeacher', {chapterID, chapterName, lessons});
+    res.render('chapterTeacher', {chapterID, chapterName, lessons, lesson, test});
 }
 
 export async function newLesson(req, res, next){
@@ -418,5 +423,22 @@ export async function addNewSlide(req, res, next){
     console.log("image:"+image);
     const result = await slideModel.addNew(slideText, image, video, lessonID, req.session.user.user_id, fileName);
     const url = '/teacher/lesson/'+lessonID;
+    res.redirect(url);
+}
+
+export async function updateTest(req, res, next){
+    const testID = req.params.testID;
+    console.log(req.body.id, req.body.start, req.body.end);
+    const result = await testModel.updateDate(req.body.id, req.body.start, req.body.end);    
+    const url = '/teacher/scheduledTests/' + testID;
+    res.redirect(url);
+}
+
+export async function updateLesson(req, res, next){
+    let lessonID = req.body.element;
+    console.log(req.body.flag);
+    await lessonModel.updatePosition(lessonID);
+    await lessonModel.updateFlag(lessonID, req.body.flag);
+    const url = '/teacher/chapter/' + req.params.chapterID;
     res.redirect(url);
 }

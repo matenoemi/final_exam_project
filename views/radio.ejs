@@ -8,11 +8,16 @@
 
     <div style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
         <!-- exercise's text -->
-        <div>
+        <div style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
             <div>
                 <p style="font-weight: bold;"><%= exercise.exercise_text %></p>
             </div>
-            <div>
+            <% if(exercise.image_object !== null) { %>
+                <div>
+                    <img src="data:image/jpeg;base64, <%= exercise.image_object.toString('base64') %>">
+                </div>
+            <% } %>
+        <div>
             
         </div>
         <!-- answers -->
@@ -27,7 +32,7 @@
             <% } %>
         </div>
         <div>
-            <button id="checkButton">Check</button>
+            <button id="checkButton">Küldés</button>
         </div>
     </div>
 </form>

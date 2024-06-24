@@ -28,32 +28,34 @@
     </div>
 </div>
 
+
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
+    
     const ctx = document.getElementById('chart');
     const result = Number(document.getElementById("result").textContent);
-    const compl = 100 - result;
 
     const data = {
-    labels: [
-        'helyes válasz',
-        'rossz válasz',
-    ],
-    datasets: [{
-        data: [result, compl],
-        backgroundColor: [
-        'rgb(0, 255, 0)',
-        'rgb(255, 0, 0)'
+        labels: [
+            'helyes válasz',
+            'rossz válasz',
         ],
-        hoverOffset: 4
-    }]
-  };
+        datasets: [{
+            data: [result, 100-result],
+            backgroundColor: [
+            'rgb(0, 255, 0)',
+            'rgb(255, 0, 0)'
+            ],
+            hoverOffset: 10
+        }]
+    };
 
-  new Chart(ctx, {
-    type: 'doughnut',
-    data: data,
-  });
+    new Chart(ctx, {
+        type: 'doughnut',
+        data: data,
+    });
+
 </script>
 
  

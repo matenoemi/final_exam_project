@@ -25,3 +25,35 @@ export async function getNameByID(lessonID){
     );
     return result[0].lesson_name;
 }
+
+export async function updatePosition(lessonID){
+    for(let i=0; i<lessonID.length; i++){
+        const pos = i+1;
+        //console.log(pos, lessonID[i]);
+        const [res] = await conn.execute(
+            "update lessons set lesson_position = ? where lesson_id = ?", [pos, lessonID[i]]
+        );
+    }
+}
+
+export async function updateFlag(lessonID, flag){
+    for(let i=0; i<lessonID.length; i++){
+        if(!flag.includes(lessonID[i])){
+            const [res] = await conn.execute(
+                "update lessons set lesson_flag = 0 where lesson_id = ?", [lessonID[i]]
+            );
+        }
+        else{
+            const [res] = await conn.execute(
+                "update lessons set lesson_flag = 1 where lesson_id = ?", [lessonID[i]]
+            );
+        }
+    }
+}
+
+export async function getStudentList(id){
+    const [lessons] = await conn.execute(
+        "select lesson_id, lesson_flag, lesson_position, lesson_name from lessons where lesson_flag = 1 and chapter_id = ? order by lesson_position", [id]
+    );
+    return lessons;
+}

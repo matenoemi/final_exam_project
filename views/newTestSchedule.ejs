@@ -1,6 +1,62 @@
+<style>
+    form {
+        max-width: 400px;
+        margin: 25px auto;
+        font-size: 18px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        border-radius: 5px;
+        background-color: white;
+        border: 3px solid darkcyan;
+    }
+    form div {
+        margin-bottom: 15px;
+    }
+    form div label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
+    form div select,
+    form div input[type="datetime-local"],
+    form div button {
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #dddddd;
+        border-radius: 5px;
+        width: 100%;
+        box-sizing: border-box;
+        background-color: #dddddd;
+    }
+    form div button {
+        background-color: darkcyan;
+        color: #ffffff;
+        cursor: pointer;
+    }
+    form div button:hover {
+        background-color: #008b8b;
+    }
+
+    form h3 {
+        background-color: darkcyan;
+        color: white;
+        padding: 10px;
+        text-align: center;
+        border-radius: 5px;
+        margin-top: 0; /* Adjust spacing as needed */
+    }
+</style>
+
+
+
+
+
 <form method="post" action="/teacher/newTestSchedule/<%= testID %>">
+    <h3><%= testName %> ütemezése</h3>
     <div style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
+       
         <div>
+            <label>Osztály:</label>
             <select name="class">
                 <% for(let i=0; i<classes.length; i++) { %>
                     <option value="<%= classes[i].class_id %>"><%= classes[i].class_name %></option>
@@ -9,10 +65,12 @@
         </div>
 
         <div>
+            <label>Kezdés:</label>
             <input type="datetime-local" name="start">
         </div>
 
         <div>
+            <label>Befejezés:</label>
             <input type="datetime-local" name="end">
         </div>
         <div>

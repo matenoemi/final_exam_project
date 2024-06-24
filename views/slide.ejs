@@ -9,7 +9,7 @@
 
                 <% if(slides[i].image_id){ %>
                     <div style="text-align: center;">
-                        <img style="width: 450px; height: 300px; border: solid 2px darkcyan;" src="data:image/jpeg;base64, <%= slides[i].image_object.toString('base64') %>">
+                        <img src="data:image/jpeg;base64, <%= slides[i].image_object.toString('base64') %>">
                     </div>
                 <% } else { %>
                     <iframe width="550" height="450" src="<%= slides[i].video_url %>" 
@@ -20,12 +20,12 @@
             </div>
         <% } %>
         </div>
-        <div style="margin-top: 20px;">
+        <div style="margin-top: 50px;">
             <button type="button" id="prevButton" style="display: none;" onclick="prevSlide()">Előző</button>
             <button type="button" onclick="nextSlide()">Következő</button>
         </div>
         <div>
-            <input id="solveButton" type="submit" value="Gyakorló feladatok megoldása" style="display: block;" />
+            <input id="solveButton" type="submit" value="Gyakorló feladatok megoldása"  />
         </div>
     </div>
 </form>
@@ -50,7 +50,7 @@
         }
         // valtoztattam
         else{
-            solveButton.style.display="block";
+            solveButton.style.display="none";
         }
         slides.forEach((slide, i) => {
             slide.style.display = i === index ? "block" : "none";

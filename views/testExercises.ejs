@@ -6,6 +6,7 @@
         <div>
             <% if(editable) { %>
                 <h5>(módosítható)</h5>
+                <p id = "testLength" style="display: none;"><%= exercises.length %></p>
             <% } else { %>
                 <h5>(nem módosítható)</h5>
             <% } %>
@@ -87,8 +88,16 @@
         }
 
         saveLink.addEventListener('click', function(e){
-            confirmation = confirm("Biztosan menteni szeretné? A feladatsor a mentés után már nem lesz módosítható!");
-            if (!confirmation) {
+            const numOfExercises = document.getElementById("testLength").innerHTML;
+            console.log(numOfExercises);
+            if(Number(numOfExercises) > 0){
+                confirmation = confirm("Biztosan menteni szeretné? A feladatsor a mentés után már nem lesz módosítható!");
+                if (!confirmation) {
+                    event.preventDefault();
+                }
+            }
+            else{
+                alert("A teszt egyetlen feladatot sem tartalmaz!");
                 event.preventDefault();
             }
         });

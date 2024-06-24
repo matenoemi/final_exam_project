@@ -30,10 +30,15 @@
         <div>
             <div style="font-weight: bold;">
                 <p><%= exercise.exercise_text %></p>
+                <% if(exercise.image_object !== null) { %>
+                    <div>
+                        <img src="data:image/jpeg;base64, <%= exercise.image_object.toString('base64') %>">
+                    </div>
+                <% } %>
                 <p>Eredmény: <%= correctAnswers %> / <%= points %> </p>
                 <button id="displayButton">Mutasd meg a válaszokat!</button>
             </div>
-            <div>
+            
             
         </div>
         <!-- answers -->

@@ -1,3 +1,62 @@
+<style>
+    .outer-container {
+        display: flex;
+        justify-content: flex-end;
+        flex-direction: row;
+        font-size: 18px;
+    }
+
+    .table-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 25px auto;
+        font-size: 18px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        background-color: #ffffff;
+        border: solid grey 1px;
+    }
+
+    table th,
+    table td {
+        padding: 12px 15px;
+        text-align: center;
+        border: solid grey 1px;
+    }
+
+    table th {
+        background-color: darkcyan;
+        color: #ffffff;
+    }
+
+    table tbody tr:nth-child(even) {
+        background-color: #f3f3f3;
+    }
+
+    table tbody tr:hover {
+        background-color: #f1f1f1;
+    }
+
+    table a {
+        text-decoration: none;
+        color: darkcyan;
+        font-weight: bold;
+    }
+    a{
+        text-decoration: none;
+        color: darkcyan;
+    }
+    a:hover {
+        text-decoration: underline;
+    }
+</style>
+
+
 <div style="display: flex; justify-content: flex-end; flex-direction: row;">
     <div style="font-size: 18px;">
     <% if(user.user_role == 'teacher') { %>

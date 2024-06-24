@@ -47,7 +47,7 @@ export async function setReadOnly(testID){
 export async function getScheduledList(testID){
     const [result] = await conn.execute(
         "select c.class_name, st.scheduled_tests_id, st.start_time, st.end_time from scheduled_tests st join classes c "+
-        "on st.class_id = c.class_id where st.test_id = ? order by st.start_time desc", [testID]
+        "on st.class_id = c.class_id where st.test_id = ? order by st.scheduled_tests_id", [testID]
     );
     return result;
 }
@@ -173,4 +173,12 @@ export async function getPoints(scheduledTestID, userID){
     let maxScore = await getMaxPoints(testID);
     let achievedScore = await resultModel.getTestResult(scheduledTestID, userID);
     return {maxScore, achievedScore};
+}
+
+export async function updateDate(testID, startTime, endTime){
+    for(let i=0; i<startTime.length; i++){
+        const [result] = await conn.execute(
+            "update scheduled_tests set start_time = ?, end_time = ? where scheduled_tests_id = ?", [startTime[i], endTime[i], testID[i]]
+        );
+    }
 }

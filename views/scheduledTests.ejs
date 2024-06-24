@@ -1,3 +1,55 @@
+<style>
+   
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 25px 0;
+        font-size: 18px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        background-color: #ffffff;
+    }
+    table th, table td {
+        padding: 12px 15px;
+        text-align: left;
+        border-bottom: 1px solid #dddddd;
+    }
+    table th {
+        background-color: darkcyan;
+        color: #ffffff;
+    }
+    table tr:nth-child(even) {
+        background-color: #f3f3f3;
+    }
+    table tr:hover {
+        background-color: #f1f1f1;
+    }
+    a {
+        text-decoration: none;
+        color: darkcyan;
+        font-weight: bold;
+    }
+    a:hover {
+        text-decoration: underline;
+    }
+
+    .save-button {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 20px 0;
+            background-color: darkcyan;
+            color: #ffffff;
+            border: none;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            font-size: 16px;
+            border-radius: 5px;
+            right: 20px;
+            bottom: 20px;
+        }
+</style>
+
+<form action="/teacher/updateTestDate/<%= testID %>" method="POST">
 <div style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
     <div>
         <div style="margin-bottom: 20px;">
@@ -15,13 +67,39 @@
             </tr>
 
             <% for(let i=0; i<list.length; i++) { %>
+                <input style="display: none;" name="id" type="text" value="<%= list[i].scheduled_tests_id %>"/>
                 <tr>
                     <td><%= list[i].class_name %></td>
-                    <td><%= list[i].start_time %></td>
-                    <td><%= list[i].end_time %></td>
+                    <td>
+                        <input class="dateTime" type="datetime-local" name="start" value="<%= new Date(list[i].start_time).toISOString().slice(0, 16) %>" id="start_time_<%= i %>">
+                    </td>
+                    <td>
+                        <input class="dateTime" type="datetime-local" name="end" value="<%= new Date(list[i].end_time).toISOString().slice(0, 16) %>" id="end_time_<%= i %>">
+                    </td>
                     <td><a href="/teacher/test/results/<%= list[i].scheduled_tests_id %>">Eredmények</a></td>
                 </tr>
             <% } %>
         </table>
+        
+    </div>
+    <div style="margin-left: 450px;">
+        <button id="saveButton" type="submit" class="save-button">Módosítások mentése</button>
     </div>
 </div>
+</form>
+
+<script>
+    const button = document.getElementById("saveButton");
+    button.addEventListener('click', function(event){
+        event.preventDefault();
+        let elements = document.getElementsByClassName("dateTime");
+        for(let i=0; i<elements.length; i++){
+            const localDate = new Date(elements[i].getAttribute("value"));
+            elements[i].setAttribute("value", new Date(localDate.getTime() - localDate.getTimezoneOffset() * 60000).toISOString().slice(0, 16));
+        }
+        const form = event.target.closest("form");
+        console.log(form);
+        form.submit();
+    })
+</script>
+

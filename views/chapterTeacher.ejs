@@ -1,21 +1,202 @@
-<div style="display: flex; justify-content: flex-end">
-    <div>
-        <a href="/teacher/addNewLesson/<%= chapterID %>">Új lecke hozzáadása</a>
-    </div>
-</div>
+<style>
+    .container {
+        max-width: 800px;
+        margin: 20px auto;
+        background-color: #ffffff;
+        padding: 20px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+    }
+    .link-section {
+        display: flex;
+        justify-content: flex-end;
+        margin-bottom: 20px;
+    }
+    .chapter-title {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    table {
+        width: 100%; 
+        border-collapse: collapse;
+        margin: 25px auto; 
+        font-size: 18px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        background-color: #ffffff;
+    }
+    table th,
+    table td {
+        padding: 12px 15px;
+        text-align: left;
+        border-bottom: 1px solid #dddddd;
+        vertical-align: middle;
+    }
+    table th {
+        background-color: darkcyan;
+        color: #ffffff;
+    }
+    table tr:nth-child(even) {
+        background-color: #f3f3f3;
+    }
+    table tr:hover {
+        background-color: #f1f1f1;
+    }
+    .lesson-name {
+        font-weight: bold;
+        color: darkcyan;
+        text-decoration: none;
+        display: inline-block;
+        vertical-align: middle;
+        font-size: 18px; 
+    }
+    .lesson-name:hover {
+        text-decoration: none;
+    }
+    .icon {
+        width: 75px; 
+        height: 75px; 
+        margin-right: 10px;
+        vertical-align: middle;
+        border-radius: 50%;
+        overflow: hidden;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        display: inline-flex; 
+        align-items: center; 
+        justify-content: center;
+    }
+    .icon img {
+        width: 100%; 
+        height: auto; 
+        object-fit: cover;
+    }
+    .sortable-row.dragging {
+        background-color: rgb(10, 150, 150, 0.7);
+        opacity: 1; 
+    }
+    .save-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: darkcyan;
+            color: #ffffff;
+            border: none;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            font-size: 14px;
+            border-radius: 5px;
+            right: 20px;
+            bottom: 20px;
+        }
+</style>
 
-<div style="display: flex; justify-content: center; flex-direction: column; align-items: center;">
-    <h3>A <%= chapterName %> című fejezethez tartozó leckék</h3>
-        <ol style="list-style-position: inside; list-style-type: decimal;">
-        <% for(let j=0; j<lessons.length; j++){ %>
-            <div style="border: solid darkcyan 2px;">
-            <li>
-                <a href="/teacher/lesson/<%= lessons[j].lesson_id %>" style="font-weight: bold;"><%= lessons[j].lesson_name %></a>
-                <p>
-                    <a href="/teacher/tests/<%= lessons[j].lesson_id %>">Teszt feladatsorok</a>
-                </p>
-            </li>
-            </div>
-        <% } %>
-        </ol>
+<form action="/teacher/updateLessonPosition/<%= chapterID %>" method="POST">
+<div class="container">
+    <div class="link-section">
+        <a href="/teacher/addNewLesson/<%= chapterID %>" style="text-decoration: none; color: darkcyan;">Új lecke hozzáadása</a>
+    </div>
+
+    <div class="chapter-title">
+        <h3><%= chapterName %> című fejezethez tartozó leckék</h3>
+    </div>
+
+    <table id="sortable-table">
+        <thead>
+            <tr>
+                <th>Sorrend</th>
+                <th>Lecke neve</th>
+                <th>Láthatóság</th>
+                <th>Tesztfeladatsorok</th>
+            </tr>
+        </thead>
+        <tbody id="sortable-body">
+            <% for(let j=0; j<lessons.length; j++){ %>
+                <tr draggable="true" class="sortable-row">
+                    
+                    <td><%= lessons[j].lesson_position %>
+                        <input name="element" style="display: none;" type="text" value="<%= lessons[j].lesson_id %>"></td>
+                    <td>
+                        <span class="icon">
+                            <img src="data:image/jpeg;base64,<%= lesson.image_object.toString('base64') %>" alt="Lesson Icon">
+                        </span>
+                        <a href="/teacher/lesson/<%= lessons[j].lesson_id %>" class="lesson-name"><%= lessons[j].lesson_name %></a>
+                    </td>
+                    <td>
+                        <input name="flag" type="checkbox" value="<%= lessons[j].lesson_id %>"
+                        <% if(lessons[j].lesson_flag=="1") { %>
+                            checked
+                        <% } %>
+                        >
+                    </td>
+                    <td>
+                        <span class="icon">
+                            <img src="data:image/jpeg;base64,<%= test.image_object.toString('base64') %>" alt="Test Icon">
+                        </span>
+                        <a href="/teacher/tests/<%= lessons[j].lesson_id %>" class="lesson-name">Tesztek</a>
+                    </td>
+                </tr>
+            <% } %>
+        </tbody>
+        
+    </table>
+    <button id="saveButton" type="submit" class="save-button" style="margin-left: 650px;">Módosítások mentése</button>
 </div>
+</form>
+
+<script>
+    const button = document.getElementById("saveButton");
+    button.addEventListener('click', function(e){
+        e.preventDefault();
+        confirmation = confirm("Biztosan menteni szeretné a módosításokat?");
+        if(confirmation){
+            const form = button.closest("form");
+            form.submit();
+        }
+    });
+
+    let dragSrcEl = null;
+
+    document.addEventListener('DOMContentLoaded', function() {
+        let rows = document.querySelectorAll('#sortable-body .sortable-row');
+
+        rows.forEach(function(row) {
+            row.addEventListener('dragstart', dragStart);
+            row.addEventListener('dragover', dragOver);
+            row.addEventListener('drop', drop);
+            row.addEventListener('dragend', dragEnd);
+        });
+    });
+
+    function dragStart(e) {
+        dragSrcEl = this;
+        e.dataTransfer.effectAllowed = 'move';
+        e.dataTransfer.setData('text/html', this.innerHTML);
+        this.classList.add('dragging');
+    }
+
+    function dragOver(e) {
+        if (e.preventDefault) {
+            e.preventDefault(); 
+        }
+        this.classList.add('over');
+        e.dataTransfer.dropEffect = 'move';
+        return false;
+    }
+
+    function drop(e) {
+        if (e.stopPropagation) {
+            e.stopPropagation(); 
+        }
+
+        if (dragSrcEl !== this) {
+            this.parentNode.insertBefore(dragSrcEl, this);
+        }
+
+        this.classList.remove('over');
+        return false;
+    }
+
+    function dragEnd(e) {
+        this.classList.remove('over');
+        this.classList.remove('dragging');
+    }
+</script>

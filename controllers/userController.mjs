@@ -194,4 +194,7 @@ export async function logout(req, res, next) {
   });
 }
 
-
+export async function profile(req, res, next){
+  const userID = req.session.user.user_id;
+  res.render('profile');
+}
