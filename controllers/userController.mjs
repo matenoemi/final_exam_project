@@ -5,6 +5,7 @@ import { createHash } from "crypto";
 import debugMsg from 'debug';
 const debug = debugMsg('app:userController'); 
 import * as courseModel from "../models/course.mjs";
+import * as userModel from "../models/user.mjs";
 
 export async function endConn() {
   await conn.end();
@@ -196,5 +197,21 @@ export async function logout(req, res, next) {
 
 export async function profile(req, res, next){
   const userID = req.session.user.user_id;
-  res.render('profile');
+  res.render('profile',{message:""});
+}
+
+export async function updatePassword(req, res, next){
+  const userID = req.session.user.user_id;
+  const oldP = req.body.old;
+  const newP = req.body.new;
+
+  const result = await userModel.updatePassword(userID, oldP, newP);
+  let message = null;
+  if(result){
+    message = "A jelszó sikeresen módosult!"
+  }
+  else{
+    message = "A jelszó módosítása sikertelen!"
+  }
+  res.render('profile',{message});
 }

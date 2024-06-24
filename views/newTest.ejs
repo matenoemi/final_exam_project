@@ -1,17 +1,85 @@
+<style>
+    .form-container {
+        max-width: 500px;
+        width: 100%;
+        margin: 25px auto;
+        padding: 20px;
+        border-radius: 10px;
+        background-color: #ffffff;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        border: 3px solid darkcyan;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    h2 {
+        margin-bottom: 20px;
+        color: darkcyan;
+        font-size: 24px;
+        text-align: center;
+    }
+
+    .form-group {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        margin-bottom: 10px;
+        font-weight: bold;
+        color: darkcyan;
+    }
+
+    .form-group input[type="text"] {
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #dddddd;
+        border-radius: 5px;
+        width: calc(100% - 20px); /* Adjust for margin */
+        box-sizing: border-box;
+        background-color: #f9f9f9;
+    }
+
+    .form-group input[type="text"]:focus {
+        outline: none;
+        border-color: darkcyan;
+        background-color: #ffffff;
+    }
+
+    .submit-container {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+
+    .submit-btn {
+        padding: 10px 20px;
+        font-size: 14px;
+        border: none;
+        border-radius: 5px;
+        background-color: darkcyan;
+        color: #ffffff;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .submit-btn:hover {
+        background-color: #008b8b;
+    }
+</style>
+
+
 <form method="POST" action="/teacher/addNewTest/<%= lessonID %>">
-<div style="display: flex; align-items: center; justify-content: center; flex-direction: column;">
-    <div>
+    <div class="form-container">
         <h2>Új feladatsor létrehozása</h2>
-    </div>
-    <div style="display: flex; align-items: center; justify-content: center; flex-direction: row;">
-        <div>
-            <label>Az új feladatsor neve: </label>
-            <input type="text" name="testName">
+        <div class="form-group">
+            <label for="testName">Az új feladatsor neve:</label>
+            <input type="text" id="testName" name="testName" required>
         </div>
 
-        <div style="margin-left: 10px;">
-            <button>Hozzáad</button>
+        <div class="submit-container">
+            <button class="submit-btn" type="submit">Hozzáad</button>
         </div>
     </div>
-</div>
 </form>

@@ -1,3 +1,41 @@
+<style>
+  
+    table {
+        width: 150%; 
+        border-collapse: collapse;
+        margin: 25px auto; 
+        font-size: 18px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        background-color: #ffffff;
+    }
+    table th,
+    table td {
+        padding: 12px 15px;
+        text-align: left;
+        border-bottom: 1px solid #dddddd;
+        vertical-align: middle;
+    }
+    table th {
+        background-color: darkcyan;
+        color: #ffffff;
+    }
+    table tr:nth-child(even) {
+        background-color: #f3f3f3;
+    }
+    table tr:hover {
+        background-color: #f1f1f1;
+    }
+    a, h3 {
+        color: darkcyan;
+        text-decoration: none;
+    }
+
+    a:hover {
+        text-decoration: underline;
+    }
+
+</style>
+
 <% if(user.user_role == 'admin') { %>
 <div style="display: flex; justify-content: flex-end; flex-direction: row;">
     <div style="font-size: 18px;">
@@ -7,7 +45,11 @@
 <% } %>
 
 <div style="display: flex; justify-content: center; align-items: center;">
+    
     <div>
+        <div>
+            <h3>A <%= className %> tanulói</h3>
+        </div>
         <table style="border-collapse: collapse;">
             <thead>
                 <tr style="border: solid grey 1px;">

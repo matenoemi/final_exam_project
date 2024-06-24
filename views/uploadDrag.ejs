@@ -1,5 +1,61 @@
-<form method="POST" action="/teacher/uploadDragImages/<%= testID %>/<%= type %>" enctype="multipart/form-data">
-    <div style="font-size: 20px; display: flex; justify-content: center; align-items: center; flex-direction: column;">
+<style>
+    
+
+form {
+    font-size: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: #ffffff;
+    padding: 20px;
+    border: 2px solid darkcyan;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+form p {
+    margin-bottom: 10px;
+}
+
+form input[type="file"] {
+    margin-top: 10px;
+}
+
+form div {
+    margin-top: 10px;
+}
+
+form input[type="radio"] {
+    margin-left: 10px;
+}
+
+#groupContainer {
+    margin-top: 10px;
+}
+
+#groupContainer div {
+    margin-bottom: 5px;
+}
+
+form button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 18px;
+    background-color: darkcyan;
+    color: #ffffff;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+form button:hover {
+    background-color: #008080;
+}
+</style>
+
+<form style="width: 500px; color: darkcyan;" method="POST" action="/teacher/uploadDragImages/<%= testID %>/<%= type %>" enctype="multipart/form-data">
+    <div class="container" style="font-size: 20px; display: flex; justify-content: center; align-items: center; flex-direction: column;
+    width: 500px;">
     
             <div style="margin-top: 20px;">
             <p>Képek feltöltése(min. 2, max. 8):</p>

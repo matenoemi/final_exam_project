@@ -1,82 +1,161 @@
+<style>
 
-    <div style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
-        <div>
-            <h2>A <%= testName %> nevű feladatsor</h2>
-        </div>
-        <div>
-            <% if(editable) { %>
-                <h5>(módosítható)</h5>
-                <p id = "testLength" style="display: none;"><%= exercises.length %></p>
-            <% } else { %>
-                <h5>(nem módosítható)</h5>
-            <% } %>
-        </div>
-        <div style="display: flex; justify-content: center; align-items: center; flex-direction: row;">
+    .test-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        max-width: 1000px;
+        margin: 25px auto;
+        padding: 20px;
+        border: solid 3px darkcyan;
+        border-radius: 10px;
+        background-color: #ffffff;
+    }
 
-            <% if(editable) { %>
-                <div>
+    .test-container h2 {
+        color: darkcyan;
+        font-size: 24px;
+        margin-bottom: 10px;
+    }
+
+    .editable-section,
+    .link-section {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: row;
+        margin-bottom: 20px;
+    }
+
+    .editable-section h5,
+    .link-section a {
+        margin-left: 20px;
+        color: darkcyan;
+    }
+
+    .exercises-section {
+        width: 100%;
+    }
+
+    .exercise-item {
+        border: solid 2px cadetblue;
+        margin-bottom: 20px;
+        padding: 10px;
+    }
+
+    .bold-text {
+        font-weight: bold;
+    }
+
+    .image-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    .image-item {
+        border: solid 1px gray;
+        background-color: white;
+        width: 100px;
+        height: 80px;
+        margin-right: 10px;
+        margin-bottom: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .image-item img {
+        max-width: 100%;
+        max-height: 100%;
+    }
+
+    #saveLink {
+        color: darkcyan;
+    }
+
+</style>
+
+
+<div class="test-container">
+    <div>
+        <h2>A <%= testName %> nevű feladatsor</h2>
+    </div>
+    <div class="editable-section">
+        <% if(editable) { %>
+            <h5>(módosítható)</h5>
+            <p id="testLength" style="display: none;"><%= exercises.length %></p>
+        <% } else { %>
+            <h5>(nem módosítható)</h5>
+        <% } %>
+    </div>
+    <div class="link-section">
+        <% if(editable) { %>
+            <div>
                 <a href="/teacher/exercises/<%= testID %>">Létező feladat hozzáadása</a>
-                </div>
-                <div style="margin-left: 20px;">
-                    <a href="/teacher/addNewExercise/<%= testID %>">Új feladat hozzáadása</a>
-                </div>
-                <div style="margin-left: 75px;">
-                    <a href="/teacher/saveTest/<%= testID %>" id="saveLink">Feladatsor véglegesítése</a>
-                </div>
-            <% } else { %>
-                <div style="margin-left: 20px;">
-                    <a href="/teacher/scheduledTests/<%= testID %>">Feladatsor ütemezése</a>
-                </div>
-            <% } %>
-            
-        </div>
-        <div>
-            <% for(let i=0; i<exercises.length; i++) { %>
-                <div style="border: solid 2px cadetblue; margin-bottom: 10px; width: 1000px; padding: 10px;">
-                    <p><span style="font-weight: bold;">Feladat leírása: </span><%= exercises[i].exercise_text %></p>
-                    <p><span style="font-weight: bold;">Típusa: </span>
-                        <% switch(exercises[i].exercise_type) { case 'radio': %>
+            </div>
+            <div style="margin-left: 20px;">
+                <a href="/teacher/addNewExercise/<%= testID %>">Új feladat hozzáadása</a>
+            </div>
+            <div style="margin-left: 75px;">
+                <a href="/teacher/saveTest/<%= testID %>" id="saveLink">Feladatsor véglegesítése</a>
+            </div>
+        <% } else { %>
+            <div style="margin-left: 20px;">
+                <a href="/teacher/scheduledTests/<%= testID %>">Feladatsor ütemezése</a>
+            </div>
+        <% } %>
+    </div>
+    <div class="exercises-section">
+        <% for(let i=0; i<exercises.length; i++) { %>
+            <div class="exercise-item">
+                <p><span class="bold-text">Feladat leírása: </span><%= exercises[i].exercise_text %></p>
+                <p><span class="bold-text">Típusa: </span>
+                    <% switch(exercises[i].exercise_type) { 
+                        case 'radio': %>
                             Egy helyes válasz
-                            <% break; case 'check': %>
+                        <% break; 
+                        case 'check': %>
                             Több helyes válasz
-                            <% break; case 'ordering': %>
+                        <% break; 
+                        case 'ordering': %>
                             Sorrendbe helyezés
-                            <% break; case 'grouping': %>
+                        <% break; 
+                        case 'grouping': %>
                             Csoportosítás
-                            <% break; %>    
-                        <% } %>
-                    </p>
-                    <% if(exercises[i].exercise_type=='grouping'){ %>
-                        <p><span style="font-weight: bold;">Csoportok: </span>
+                        <% break; %>    
+                    <% } %>
+                </p>
+                <% if(exercises[i].exercise_type=='grouping'){ %>
+                    <p><span class="bold-text">Csoportok: </span>
                         <% for(let j=0; j<exercises[i].answers.groups.length; j++) { %>
                             <span><%= exercises[i].answers.groups[j].group_name %>&emsp;</span>
                         <% } %>
-                        </p>
-                        <div style="display: flex; justify-content: center; align-items: center; flex-direction: row;">
+                    </p>
+                    <div class="image-container">
                         <% for(let j=0; j<exercises[i].answers.items.length; j++) { %>
-                            <div style="border: solid gray 1px; background-color: white; width: 100px; height: 80px;">
-                                <div>
-                                <img src="data:image/jpeg;base64, <%= exercises[i].answers.items[j].image_object.toString('base64') %>" style="width: 100px; height: 80px;">
-                                </div>
+                            <div class="image-item">
+                                <img src="data:image/jpeg;base64, <%= exercises[i].answers.items[j].image_object.toString('base64') %>" alt="Image">
                             </div>
                         <% } %>
-                        </div>
-                    <% } else {  %>
-                        <div class="container" orientation="<%= exercises[i].exercise_direction %>" style="display: flex; justify-content: center; align-items: center; flex-direction: row;">
+                    </div>
+                <% } else {  %>
+                    <div class="image-container">
                         <% for(let j=0; j<exercises[i].answers.length; j++) { %>
-                            <div style="border: solid gray 1px; background-color: white; width: 100px; height: 80px;">
-                                <div>
-                                <img src="data:image/jpeg;base64, <%= exercises[i].answers[j].image_object.toString('base64') %>" style="width: 100px; height: 80px;">
-                                </div>
+                            <div class="image-item">
+                                <img src="data:image/jpeg;base64, <%= exercises[i].answers[j].image_object.toString('base64') %>" alt="Image">
                             </div>
                         <% } %>
-                        </div>
-                    <% } %>
-                </div>
-            <% } %>
-        </div>
-    
+                    </div>
+                <% } %>
+            </div>
+        <% } %>
     </div>
+</div>
+
     
 <script>
         const saveLink = document.getElementById("saveLink");

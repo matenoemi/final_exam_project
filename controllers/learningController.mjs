@@ -4,6 +4,8 @@ import * as courseModel from "../models/course.mjs";
 import * as testModel from "../models/test.mjs";
 import * as resultModel from "../models/result.mjs";
 import * as lessonModel from "../models/lesson.mjs";
+import * as imageModel from "../models/image.mjs"
+import * as chapterModel from "../models/chapter.mjs";
 import { createReadStream } from "fs";
 import { statSync } from "fs";
 import { join } from 'path';
@@ -28,24 +30,27 @@ export async function sounds(req, res, next){
   res.render('play');
 }
 
-export async function chapters(req,res,next){
-  const chapters = await queries.getChapters(req.session.course.courseID);
-  for(let i=0; i<chapters.length; i++){
-    const lessons = await lessonModel.getStudentList(chapters[i].chapter_id);
-    chapters[i].lessons=lessons;
-    for(let j=0; j<chapters[i].lessons.length; j++){
-      if(!chapters[i].lessons[j].lesson_flag){
-
-      }
-
-      const tests = await testModel.getByLessonID(chapters[i].lessons[j].lesson_id, req.session.user.class_id);
-      chapters[i].lessons[j].tests = tests;
-      console.log(tests);
-    }
+export async function chapter(req, res, next){
+  const lessonImage = await imageModel.getLessonIcon();
+  const testImage = await imageModel.getTestIcon();
+  const chapterID = req.params.chapterID;
+  const chapterName = await chapterModel.getNameByID(chapterID);
+  const lessons = await lessonModel.getStudentList(chapterID);
+    
+  for(let j=0; j<lessons.length; j++){
+    const tests = await testModel.getByLessonID(lessons[j].lesson_id, req.session.user.class_id);
+    lessons[j].tests = tests;
   }
-  //console.log(chapters);
+
+  res.render('chapter', {lessons, testImage, lessonImage, chapterName})
+}
+
+export async function chapters(req,res,next){
+  const chapterImage = await imageModel.getChapterIcon();
+  
+  const chapters = await queries.getChapters(req.session.course.courseID);
   res.render('chapters',{
-    chapters
+    chapters, chapterImage
   });
 }
 

@@ -14,16 +14,16 @@
         <div id="container" style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
             <div id="first" style="display: flex; flex-direction: row;">
                 <% for(let i=0; i<images.length; i++){ %>
-                <div class="initialContainer"  style="border: solid gray 1px; background-color: white; width: 180px; height: 130px;">
+                <div class="initialContainer"  style="border: solid gray 1px; background-color: white; width: 100px; height: 100px;">
                     <div class = "item" draggable="true" value="<%= images[i].image_id %>">
-                    <img src="data:image/jpeg;base64, <%= images[i].image_object.toString('base64') %>"  style="width: 180px; height: 130px;">
+                    <img src="data:image/jpeg;base64, <%= images[i].image_object.toString('base64') %>"  style="width: 100px; height: 100px;">
                     </div>
                 </div>
                 <% } %>
             </div>
             <div id="second" style="display: flex; flex-direction: row; margin-top: 20px;">
                 <% for(let i=0; i<images.length; i++){ %>
-                <div class="finalContainer" style="border: solid gray 1px; background-color: white; width: 180px; height: 130px;">
+                <div class="finalContainer" style="border: solid gray 1px; background-color: white; width: 100px; height: 100px;">
                 </div>
                 <% } %>
             </div>

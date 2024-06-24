@@ -1,26 +1,76 @@
-<div style="display: flex; justify-content: center; align-items: center;">
-    <div>
-    <ol>
-    <% for(let i=0; i<chapters.length; i++){ %>
-        <li>
-        <%= chapters[i].chapter_name %>
-        </li>
-        <ol style="list-style-position: inside; list-style-type: decimal;">
-        <% for(let j=0; j<chapters[i].lessons.length; j++){ %>
-            <li>
-            <a href="/learn/lesson/<%= chapters[i].lessons[j].lesson_id %>"><%= chapters[i].lessons[j].lesson_name %></a>
-            </li>
+<style>
 
-            <ul>
-            <% for(let k=0; k<chapters[i].lessons[j].tests.length; k++) { %>
-                <li>
-                <a href="/learn/test/<%= chapters[i].lessons[j].tests[k].scheduled_tests_id %>"><%= chapters[i].lessons[j].tests[k].test_name %></a>
-                </li>
-            <% } %>
-            </ul>
-        <% } %>
-        </ol>
-    <% } %>
-    </ol>
+    table {
+        width: 50%; 
+        border-collapse: collapse;
+        margin: 25px auto; 
+        font-size: 18px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        background-color: #ffffff;
+    }
+    table th,
+    table td {
+        padding: 12px 15px;
+        text-align: left;
+        border-bottom: 1px solid #dddddd;
+    }
+    table th {
+        background-color: darkcyan;
+        color: #ffffff;
+    }
+    table tr:nth-child(even) {
+        background-color: #f3f3f3;
+    }
+    table tr:hover {
+        background-color: #f1f1f1;
+    }
+    a {
+        text-decoration: none;
+        color: darkcyan;
+        font-weight: bold;
+    }
+    a:hover {
+        text-decoration: underline;
+    }
+    .chapter-icon {
+        display: inline-block;
+        width: 75px; 
+        height: 75px; 
+        margin-right: 10px; 
+        vertical-align: middle;
+        overflow: hidden; 
+        border-radius: 50%; 
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); 
+    }
+    .chapter-icon img {
+        width: 100%; 
+        height: auto; 
+    }
+</style>
+
+<div class="chapters-section">
+    <div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Fejezet neve</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% for(let i=0; i<chapters.length; i++){ %>
+                    <tr>
+                        <td>
+                            <span class="chapter-icon">
+                                <img src="data:image/jpeg;base64,<%= chapterImage.image_object.toString('base64') %>" alt="Chapter Icon">
+                            </span>
+                            <a href="/learn/chapter/<%= chapters[i].chapter_id %>"><%= chapters[i].chapter_name %></a>
+                        </td>
+                    </tr>
+                <% } %>
+            </tbody>
+        </table>
     </div>
 </div>
+
+</div>
+

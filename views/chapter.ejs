@@ -1,0 +1,132 @@
+<style>
+ .link-section {
+    text-align: right;
+    margin-right: 50px;
+    margin-top: 20px;
+}
+
+.link-section a {
+    text-decoration: none;
+    color: darkcyan;
+    font-weight: bold;
+}
+
+.link-section a:hover {
+    text-decoration: underline;
+}
+
+.chapters-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 20px;
+    width: 70%; /* Reduced width */
+}
+
+table {
+    width: 75%;
+    border-collapse: collapse;
+    margin: 25px 0;
+    font-size: 18px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
+}
+
+th, td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #dddddd;
+    vertical-align: top;
+}
+
+th {
+    background-color: darkcyan;
+    color: #ffffff;
+}
+
+tr:nth-child(even) {
+    background-color: #f3f3f3;
+}
+
+tr:hover {
+    background-color: #f1f1f1;
+}
+
+a {
+    text-decoration: none;
+    color: darkcyan;
+    font-weight: bold;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+.icon {
+    display: inline-block;
+    width: 75px;
+    height: 75px;
+    margin-right: 10px;
+    vertical-align: middle;
+    overflow: hidden;
+    border-radius: 50%;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.icon img {
+    width: 100%;
+    height: auto;
+}
+
+.sub-table {
+    width: 75%; /* Reduced width */
+    border-collapse: collapse;
+    margin: 10px 0 10px 70px;  /* Increased margin-left for more indentation */
+}
+
+.sub-table td {
+    padding: 5px;
+    border-bottom: none;
+    background-color: #f9f9f9;
+}
+
+
+</style>
+
+
+<div class="chapters-section">
+    <table>
+        <thead>
+            <tr>
+                <th>Fejezet neve: <%= chapterName %></th>
+            </tr>
+        </thead>
+        <tbody>
+            <% for(let i = 0; i < lessons.length; i++) { %>
+                <tr>
+                    <td>
+                        <span class="icon">
+                            <img src="data:image/jpeg;base64,<%= lessonImage.image_object.toString('base64') %>" alt="Lesson Icon">
+                        </span>
+                        <a href="/learn/lesson/<%= lessons[i].lesson_id %>"><%= lessons[i].lesson_name %></a>
+                        <table class="sub-table">
+                            <% for(let j = 0; j < lessons[i].tests.length; j++) { %>
+                                <tr>
+                                    <td>
+                                        <span class="icon">
+                                            <img src="data:image/jpeg;base64,<%= testImage.image_object.toString('base64') %>" alt="Test Icon">
+                                        </span>
+                                        <a href="/learn/test/<%= lessons[i].tests[j].scheduled_tests_id %>"><%= lessons[i].tests[j].test_name %></a>
+                                    </td>
+                                </tr>
+                            <% } %>
+                        </table>
+                    </td>
+                </tr>
+            <% } %>
+        </tbody>
+    </table>
+</div>
+
+

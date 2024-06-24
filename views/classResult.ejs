@@ -1,3 +1,48 @@
+<style>
+    .container {
+        width: 80%; /* Példa: A konténer szélessége 80% */
+        margin: 25px auto;
+    }
+    
+    table {
+        width: 30%;
+        border-collapse: collapse;
+        margin: 25px auto; 
+        font-size: 18px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        background-color: #ffffff;
+    }
+    
+    table th, table td {
+        padding: 12px 15px;
+        text-align: center; /* Szöveg középre igazítása */
+        border-bottom: 1px solid #dddddd;
+        vertical-align: middle;
+    }
+    
+    table th {
+        background-color: darkcyan;
+        color: #ffffff;
+    }
+    
+    table tr:nth-child(even) {
+        background-color: #f3f3f3;
+    }
+    
+    table tr:hover {
+        background-color: #f1f1f1;
+    }
+    
+    a {
+        color: darkcyan;
+        text-decoration: none;
+    }
+    
+    a:hover {
+        text-decoration: underline;
+    }
+</style>
+
 <div style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
     <h3><%= scheduled.test_name %> feladatsor</h3>
     <h3><%= scheduled.class_name %> osztály</h3>
@@ -23,18 +68,25 @@
     <div>
         <h4>A feladatsort megoldották:</h4>
     </div>
-    <div>
-        <table>
-        <% for(let i=0; i<students.length; i++) { %>
-            <tr>
-                <td>
-                <a href="/teacher/test/result/<%= scheduledTestID %>/<%= students[i].user_id %>">
-                <%= students[i].user_name %>
-                </a>
-                </td>
-            </tr>
-        <% } %>
-        </table>
+    <div class="container">
+        <div class="test-results">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Diák neve</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% for(let i=0; i<students.length; i++) { %>
+                        <tr>
+                            <td>
+                                <a href="/teacher/test/result/<%= scheduledTestID %>/<%= students[i].user_id %>"><%= students[i].user_name %></a>
+                            </td>
+                        </tr>
+                    <% } %>
+                </tbody>
+            </table>
+        </div>
     </div>
 
     <div>

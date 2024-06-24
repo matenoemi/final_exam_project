@@ -1,29 +1,127 @@
+<style>
+    .form-container {
+        max-width: 500px;
+        width: 100%;
+        margin: 25px auto;
+        padding: 20px;
+        border-radius: 10px;
+        background-color: #ffffff;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        border: 3px solid darkcyan;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    h2 {
+        margin-bottom: 20px;
+        color: darkcyan;
+        font-size: 24px;
+        text-align: center;
+    }
+
+    .form-group {
+        width: 100%;
+        margin-bottom: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .form-group label {
+        margin-bottom: 10px;
+        font-weight: bold;
+        color: darkcyan;
+    }
+
+    .form-group input[type="text"],
+    .form-group input[type="file"] {
+        padding: 10px;
+        font-size: 14px;
+        border: 1px solid #dddddd;
+        border-radius: 5px;
+        width: 100%;
+        box-sizing: border-box;
+        background-color: #f9f9f9;
+    }
+
+    .form-group input[type="text"]:focus,
+    .form-group input[type="file"]:focus {
+        outline: none;
+        border-color: darkcyan;
+        background-color: #ffffff;
+    }
+
+    .form-group input[type="file"] {
+        font-size: 14px; /* Match the font size of other inputs */
+    }
+
+    .radio-group {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around; 
+        width: 100%;
+    }
+
+    .radio-group label {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+    }
+
+    .submit-container {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+
+    .submit-btn {
+        padding: 10px 20px;
+        font-size: 14px;
+        border: none;
+        border-radius: 5px;
+        background-color: darkcyan;
+        color: #ffffff;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .submit-btn:hover {
+        background-color: #008b8b;
+    }
+</style>
+
+
 <form method="POST" action="/teacher/addNewSlide/<%= lessonID %>" enctype="multipart/form-data">
-    <div style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
+    <div class="form-container">
         <h2>Új dia hozzáadása a leckéhez</h2>
-        <div>
-            <label>Dia szövege:</label>
-            <input size="70" type="text" name="slideText" required>
+        <div class="form-group">
+            <label for="slideText">Dia szövege:</label>
+            <input size="70" type="text" id="slideText" name="slideText" required>
         </div>
 
-        <div style="margin-top: 20px;">
-            <label>Kép:</label>
-            <input type="radio" name="upload" value="imageRadio" id="imageRadio" checked>
-            <label>Youtube link:</label>
-            <input type="radio" name="upload" value="videoRadio" id="videoRadio">
+        <div class="form-group radio-group">
+            <label for="imageRadio">
+                <input type="radio" name="upload" value="imageRadio" id="imageRadio" checked>
+                Kép
+            </label>
+            <label for="videoRadio">
+                <input type="radio" name="upload" value="videoRadio" id="videoRadio">
+                Youtube link
+            </label>
         </div>
 
-        <div class="image" style="margin-top: 20px;">
-            <input type="file" name="upl" hidden id="first-btn"/>
-            <label id="upload-btn" for="first-btn">Kép feltöltése...</label>
+        <div class="form-group image">
+            <input type="file" name="upl" id="first-btn"/>
         </div>
 
-        <div class="video" style="display: none;">
-            <input type="text" name="videoUrl" size="40">
+        <div class="form-group video" style="display: none;">
+            <label for="videoUrl">Youtube link:</label>
+            <input type="text" id="videoUrl" name="videoUrl" size="40">
         </div>
 
-        <div style="margin-top: 30px;">
-            <button type="submit">Hozzáad</button>
+        <div class="submit-container">
+            <button class="submit-btn" type="submit">Hozzáad</button>
         </div>
     </div>
 </form>
@@ -44,15 +142,3 @@
         videoDiv.style.display = 'block';
     });
 </script>
-
-<style>
-  #upload-btn {
-  background-color: lightgray;
-  color: black;
-  padding: 0.25rem;
-  border: solid 1px gray;
-  border-radius: 0.3rem;
-  cursor: pointer;
-  }
-
-</style>

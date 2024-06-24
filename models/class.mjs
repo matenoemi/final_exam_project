@@ -64,3 +64,10 @@ export async function addNew(list, name, password, grade){
     }
     return classID;
 }
+
+export async function getNameByID(classID){
+    const [result] = await conn.execute(
+        "select class_name from classes where class_id = ?",[classID]
+    );
+    return result[0].class_name;
+}

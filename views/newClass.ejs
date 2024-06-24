@@ -1,3 +1,90 @@
+<style>
+form {
+    max-width: 400px;
+    margin: 25px auto;
+    font-size: 18px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    border-radius: 10px;
+    background-color: #ffffff;
+    border: 3px solid darkcyan;
+}
+
+.form-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+h2 {
+    margin-bottom: 20px;
+    color: darkcyan;
+    font-size: 24px;
+    text-align: center;
+}
+
+table {
+    width: 100%;
+}
+
+td {
+    padding: 10px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: darkcyan;
+}
+
+input[type="text"],
+input[type="password"] {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #dddddd;
+    border-radius: 5px;
+    width: 100%;
+    box-sizing: border-box;
+    background-color: #f9f9f9;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus {
+    outline: none;
+    border-color: darkcyan;
+    background-color: #ffffff;
+}
+
+.submit-container {
+    margin-top: 30px;
+    width: 100%;
+}
+
+.submit-btn {
+    padding: 10px;
+    font-size: 18px;
+    border: none;
+    border-radius: 5px;
+    width: 100%;
+    background-color: darkcyan;
+    color: #ffffff;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.submit-btn:hover {
+    background-color: #008b8b;
+}
+
+.error {
+    color: red;
+    margin-bottom: 15px;
+    font-size: 16px;
+    text-align: center;
+}
+</style>
+
 <form method="POST" action="/admin/newClass" enctype="multipart/form-data">
 <div style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
     <div>
@@ -15,7 +102,9 @@
                 <td><input type="number" name="grade" min="1" max="12" step="1"></td>
     </tr>
     <tr>  
-                <td><label>Osztály névsora(Excel fájl):</label></td>
+                <td><label>Osztály névsora</label>
+                    <label>(Excel fájl):</label>
+                </td>
                 <td><input type="file" name="list"></td>
     </tr>
     <tr>    
@@ -25,7 +114,7 @@
 
     </table>
     <div style="margin-top: 20px;">
-        <button>Hozzáad</button>
+        <button class="submit-btn">Hozzáad</button>
     </div>
 </div>
 </form>

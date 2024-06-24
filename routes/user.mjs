@@ -12,3 +12,5 @@ router.post('/login', userController.postLogin );
 
 router.get('/logout', userController.isAuth([]), userController.logout);
 router.get('/profile', userController.isAuth([]), userController.profile);
+
+router.post('/updatePassword', userController.isAuth([]), userController.updatePassword);

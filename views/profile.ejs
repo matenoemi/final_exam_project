@@ -1,0 +1,93 @@
+<style>
+    .container {
+    width: 80%;
+    margin: 50px auto;
+    text-align: center;
+}
+
+.password-form {
+    width: 300px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 3px solid darkcyan;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.password-form h3 {
+    font-size: 24px;
+    color: darkcyan;
+}
+
+.password-form p {
+    margin-bottom: 10px;
+}
+
+.password-form label {
+    display: block;
+    margin-bottom: 8px;
+    color: darkcyan;
+}
+
+.password-form input[type="password"], .password-form button {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin-bottom: 15px;
+    font-size: 16px;
+    border: 1px solid darkcyan;
+    border-radius: 4px;
+}
+
+.password-form button {
+    background-color: darkcyan;
+    color: #ffffff;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.password-form button:hover {
+    background-color: #008080;
+}
+</style>
+
+<div class="container">
+    <form action="/user/updatePassword" method="post" class="password-form">
+        <p class="message"><%= message %></p>
+        <h3>Jelszó megváltoztatása</h3>
+        <p>Felhasználónév: <%= user.user_email %></p>
+
+        <label for="old">Régi jelszó:</label>
+        <input type="password" id="old" name="old" required>
+
+        <label for="new">Új jelszó:</label>
+        <input type="password" id="new" name="new" required>
+
+        <label for="confirm">Új jelszó megerősítése:</label>
+        <input type="password" id="confirm" name="confirm" required>
+
+        <button type="submit">Módosítás</button>
+        <p id="password-error" style="color: red;" class="error-message"></p>
+    </form>
+</div>
+
+<script>
+    const form = document.querySelector('.password-form');
+    const newPass = form.querySelector('#new');
+    const confirmPass = form.querySelector('#confirm');
+    const errorText = document.querySelector('#password-error');
+
+    form.addEventListener('submit', function(event) {
+        event.preventDefault();
+        confirm('Biztosan meg szeretné változtatni a jelszavát?');
+        if(confirm){
+            if (newPass.value !== confirmPass.value) {
+                errorText.textContent = 'A megadott jelszavak nem egyeznek!';
+            } else {
+                errorText.textContent = '';
+                form.submit();
+            }
+        }
+    });
+</script>

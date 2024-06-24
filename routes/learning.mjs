@@ -7,6 +7,7 @@ export const router = express.Router();
 
 router.get('/sort', isAuth(['student']), exampleController.sort);
 router.get('/chapters', isAuth(['student']), learningController.chapters);
+router.get('/chapter/:chapterID', isAuth(['student']), learningController.chapter);
 router.get('/lesson/:id', isAuth(['student']), learningController.lessonLearning);
 
 router.get('/sound/:soundFile', isAuth(['student']), learningController.play);

@@ -1,15 +1,76 @@
-<div style="display: flex; align-items: center; justify-content: center; flex-direction: column;">
+<style>
+    .container {
+        width: 80%; /* Példa: A konténer szélessége 80% */
+        margin: 25px auto;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 25px auto; 
+        font-size: 18px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        background-color: #ffffff;
+    }
+    
+    table th, table td {
+        padding: 12px 15px;
+        text-align: left; /* Szöveg középre igazítása */
+        border-bottom: 1px solid #dddddd;
+        vertical-align: middle;
+    }
+    
+    table th {
+        background-color: darkcyan;
+        color: #ffffff;
+    }
+    
+    table tr:nth-child(even) {
+        background-color: #f3f3f3;
+    }
+    
+    table tr:hover {
+        background-color: #f1f1f1;
+    }
+    
+    a, h2 {
+        color: darkcyan;
+        text-decoration: none;
+    }
+    
+    a:hover {
+        text-decoration: underline;
+    }
+</style>
+
+
+<div class="container">
     <div>
         <h2>A leckéhez létrehozott feladatsorok</h2>
     </div>
     <div>
         <a href="/teacher/addNewTest/<%= lessonID %>">Új feladatsor létrehozása</a>
     </div>
-    <div style="margin-top: 30px;">
-    <% for(let i=0; i<tests.length; i++) { %>
-        <div>
-            <a href="/teacher/test/<%= tests[i].test_id %>"><%= tests[i].test_name %></a>
-        </div>
-    <% } %>
+    <div class="test-list">
+        <table>
+            <thead>
+                <tr>
+                    <th>Feladatsor neve</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% for(let i=0; i<tests.length; i++) { %>
+                    <tr>
+                        <td>
+                            <a href="/teacher/test/<%= tests[i].test_id %>"><%= tests[i].test_name %></a>
+                        </td>
+                    </tr>
+                <% } %>
+            </tbody>
+        </table>
     </div>
 </div>

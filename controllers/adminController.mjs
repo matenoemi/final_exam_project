@@ -23,7 +23,8 @@ export async function addNewClass(req, res, next){
 
 export async function students(req, res, next){
     const students = await studentModel.getListByClass(req.params.classID);
-    res.render('students', {students, classID: req.params.classID});
+    const className = await classModel.getNameByID(req.params.classID);
+    res.render('students', {students, classID: req.params.classID, className});
 }
 
 export async function student(req, res, next){
@@ -49,7 +50,8 @@ export async function addNewTeacher(req, res, next){
 
 export async function newStudent(req, res, next){
     const classID = req.params.classID;
-    res.render('newStudent', {classID});
+    const className = await classModel.getNameByID(classID);
+    res.render('newStudent', {classID, className});
 }
 
 export async function addNewStudent(req, res, next){
